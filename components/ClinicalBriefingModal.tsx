@@ -66,7 +66,7 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({
                 NatalRecall Antenatal Briefing
               </h1>
               <p className="text-xs text-slate-500 mt-0.5">
-                Decentralized Longitudinal Memory Record • Stored via Walrus Protocol on Sui
+                Decentralized In-The-Moment Incident Receipts • Captured across 40 weeks via Walrus Protocol
               </p>
             </div>
             <div className="text-right font-mono text-xs text-slate-500">

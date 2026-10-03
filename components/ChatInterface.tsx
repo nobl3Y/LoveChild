@@ -26,9 +26,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   useEffect(() => {
     let initialGreeting = '';
     if (withMemory) {
-      initialGreeting = `Hello ${patient.name}. I am your NatalRecall clinical scribe. I have synchronized your ${patient.memories.length} decentralized Walrus memory blobs across Week ${patient.gestationalWeek}. How are you feeling today? Any changes in swelling, headaches, or fetal kicks?`;
+      initialGreeting = `Hello ${patient.name}. I am your in-the-moment antenatal incident logbook. Whenever something feels uncomfortable, painful, or unusual, tell me what happened once. I preserve the exact timing, context, and receipts across your 40 weeks on Walrus Memory—so when you see the doctor, you have the exact specifics ready.`;
     } else {
-      initialGreeting = `Hello! I am a standard pregnancy assistant. How can I help you today? (Note: Stateless mode active. Memory is disabled.)`;
+      initialGreeting = `Hello! I am a standard pregnancy assistant. How can I help you today? (Note: Stateless mode active. In-the-moment memory is disabled.)`;
     }
 
     setMessages([
@@ -164,8 +164,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
         {/* The Decisive Hackathon Toggle */}
         <div className="flex items-center space-x-2 bg-white px-3 py-1 rounded-xl border border-slate-200 shadow-2xs">
-          <span className={`text-xs font-semibold ${withMemory ? 'text-slate-400' : 'text-slate-900'}`}>
-            Without Memory
+          <span className={`text-xs font-semibold ${withMemory ? 'text-slate-400' : 'text-slate-900 font-bold'}`}>
+            Without Memory (Loses Details)
           </span>
           <button
             onClick={() => setWithMemory(!withMemory)}
@@ -180,7 +180,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </button>
           <span className={`text-xs font-bold flex items-center ${withMemory ? 'text-teal-700' : 'text-slate-400'}`}>
             <Database className="w-3 h-3 mr-1" />
-            With Walrus Memory
+            With Walrus Memory (Full Receipts)
           </span>
         </div>
       </div>

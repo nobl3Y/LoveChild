@@ -10,14 +10,18 @@
 
 ## 🌟 Executive Summary & Problem Statement
 
-Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits her clinic only once every 4 weeks. Between these visits, critical micro-symptoms occur: a sudden morning headache, swollen fingers, altered kick patterns, or severe nausea.
+Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits her clinic once every 4 weeks. When something feels uncomfortable, painful, or unusual, she complains in the moment.
 
-When the mother arrives at her 10-minute prenatal checkup, **80% of these symptoms are forgotten or dismissed as "normal pregnancy discomfort."** 
-Tragically, missing early warning signs—like a persistent headache accompanied by sudden ankle swelling—leads to undetected **Pre-Eclampsia** (gestational hypertension), a leading cause of maternal and fetal mortality globally.
+Weeks later at her 10-minute prenatal checkup, **she naturally remembers the broad headline ("I had headaches and swollen ankles last month")—but her doctor needs the exact receipts**:
+- Did the headache start *before* or *after* the swelling?
+- Exactly what time did it hit, and how many hours did it last?
+- What was the progression over the last 3 weeks?
 
-Standard AI chatbots have **amnesia**: they forget the mother the moment the browser tab closes.
+Without the exact timeline, life-threatening complications like **Pre-Eclampsia** (gestational hypertension) get dismissed as general pregnancy fatigue until an emergency occurs.
 
-**NatalRecall** fixes this by serving as an **Objective Antenatal Clinical Scribe & Medical Flight Recorder**. Powered by **Walrus Memory (`MemWal`)**, NatalRecall encrypts and stores maternal health events into decentralized Walrus blobs across all three trimesters. When the mother visits her clinic, NatalRecall synthesizes her longitudinal history into a 1-page **OB-GYN Clinical Briefing (SOAP Format)**.
+Standard chatbots have **amnesia**—they wipe their memory the second you close the tab.
+
+**NatalRecall** fixes this by serving as an **In-The-Moment Antenatal Incident & Detail Logbook**. Powered by **Walrus Memory (`MemWal`)**, NatalRecall encrypts and stores maternal health events into decentralized Walrus blobs across all 40 weeks. When the mother visits her clinic, NatalRecall synthesizes her longitudinal history into a 1-page **OB-GYN Clinical Briefing (SOAP Format)** with the exact chronological receipts her physician needs.
 
 ---
 

@@ -60,17 +60,17 @@ export default function Home() {
               Walrus Session 8 Submission • "Chatbots That Remember"
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-              Sovereign Antenatal Memory for Safe Mothers & Babies
+              You remember what happened. NatalRecall preserves the exact details your doctor needs.
             </h1>
             <p className="mt-2 text-rose-100 text-xs sm:text-base leading-relaxed">
-              Standard chatbots forget you the moment you close the tab. <span className="font-bold text-white">NatalRecall</span> uses decentralized Walrus Memory to track subtle symptoms across 40 weeks of pregnancy—catching life-threatening complications like <span className="underline decoration-amber-300 decoration-2 font-bold">Pre-Eclampsia</span> and preparing a 1-page Clinical Briefing for the OB-GYN.
+              When you feel sick or notice something unusual during pregnancy, you complain in the moment. Weeks later, you remember the general headline—but your doctor needs the <span className="underline decoration-amber-300 decoration-2 font-bold text-white">exact timeline, triggers, and specifics</span>. <span className="font-bold text-white">NatalRecall</span> logs every problem into decentralized Walrus Memory, so your OB-GYN gets the whole truth, not guesswork.
             </p>
 
             {/* Quick Proof Badges */}
             <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold">
               <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-black/25 backdrop-blur-sm text-rose-100 border border-white/10">
                 <Database className="w-3.5 h-3.5 mr-1 text-teal-300" />
-                Walrus Mainnet Storage
+                Walrus Mainnet Memory
               </span>
               <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-black/25 backdrop-blur-sm text-rose-100 border border-white/10">
                 <Cpu className="w-3.5 h-3.5 mr-1 text-amber-300" />
@@ -104,10 +104,10 @@ export default function Home() {
               1
             </div>
             <h3 className="font-bold text-slate-900 text-sm mb-1">
-              Why Walrus Memory Matters
+              The Headline vs. The Receipts
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Expectant mothers will never trust closed clouds with their intimate bodily symptoms. SEAL-encrypted storage on Walrus gives sovereign data ownership that follows the mother between clinics, midwives, and hospitals.
+              You know you felt bad last month. But your doctor needs to know: did the headache start before or after the swelling? Did it last 20 minutes or 4 hours? NatalRecall logs the exact receipts in the moment.
             </p>
           </div>
 
@@ -116,10 +116,10 @@ export default function Home() {
               2
             </div>
             <h3 className="font-bold text-slate-900 text-sm mb-1">
-              No Unlicensed Prescriptions
+              Log Your Issues Once
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              NatalRecall never acts as an unlicensed prescriber. It actively flags contraindicated drugs (like Ibuprofen/NSAIDs) and synthesizes raw facts into an objective SOAP report for attending physicians.
+              Whenever you feel unusual pain, dizziness, or bodily changes, mention it naturally. NatalRecall archives the exact specifics permanently on Walrus Memory so nothing gets lost over 40 weeks.
             </p>
           </div>
 
@@ -128,10 +128,10 @@ export default function Home() {
               3
             </div>
             <h3 className="font-bold text-slate-900 text-sm mb-1">
-              1-Click OB-GYN Briefing
+              The Complete Clinic Hand-Off
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Doctors only have 8 minutes per patient. Instead of vague answers, the mother hands over a chronological briefing highlighting blood pressure shifts, kick trends, and pre-eclampsia warning signs.
+              Doctors only have 8 minutes per appointment. Instead of trying to reconstruct past weeks from memory, tap one button to hand over a chronological, detailed briefing of every issue you experienced.
             </p>
           </div>
         </div>

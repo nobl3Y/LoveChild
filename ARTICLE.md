@@ -4,23 +4,26 @@
 
 ---
 
-A human pregnancy lasts 40 weeks. Yet, in modern obstetrics—especially across clinics in Nigeria and emerging healthcare systems—an expectant mother only sees her doctor or midwife once every four weeks. In the interim, her body goes through a dizzying cascade of physiological shifts: sudden swelling after work, brief flutter kicks, morning dizziness, or a dull headache behind the eyes.
+A human pregnancy lasts 40 weeks. In modern obstetrics—especially across clinics in Nigeria and emerging healthcare systems—an expectant mother only sees her doctor or midwife once every four weeks. In the interim, her body experiences dozens of micro-events: sudden swelling after work, brief flutter kicks, morning dizziness, or a dull headache behind the eyes.
 
-When that mother sits down for her brief 8-minute antenatal checkup, she inevitably forgets 80% of what transpired over the preceding month. She smiles and says: *"Everything is fine doctor, just the usual pregnancy tiredness."* 
+When that mother sits down for her brief 8-minute antenatal checkup, she obviously remembers that she had problems: *"Yes doctor, I had headaches and swollen feet last month."* 
 
-Tragically, that "usual tiredness" often conceals **Pre-Eclampsia**—a life-threatening condition marked by sudden spikes in blood pressure, swelling, and persistent headaches that claims the lives of over 70,000 mothers and 500,000 babies worldwide every year.
+**The tragedy is not that she forgets she felt sick—it is that human memory loses the exact specifics and receipts:**
+Did the headache start *before* or *after* the swelling? Did it hit in the morning or at night? How many hours did it last?
 
-Standard AI chatbots are useless here because they suffer from catastrophic amnesia. Close the browser tab or start a new session, and the chatbot completely forgets that you were struggling with borderline blood pressure two weeks ago.
+Doctors cannot make safe clinical triage decisions based on vague headlines. Tragically, when the exact timeline is missing, early warning signs of **Pre-Eclampsia** (gestational hypertension)—which claims the lives of over 70,000 mothers and 500,000 babies globally each year—get brushed aside as "normal pregnancy discomfort."
 
-We built **NatalRecall** to permanently fix that.
+Standard AI chatbots fail here because they suffer from catastrophic amnesia: close the tab, and the bot completely forgets every detail you ever told it.
+
+We built **NatalRecall** to permanently capture the in-the-moment truth.
 
 ---
 
 ### What NatalRecall Does
 
-NatalRecall is an **Objective Antenatal Clinical Scribe & Medical Flight Recorder**. It is not an unlicensed doctor; it does not hand out random prescription drugs. Instead, it allows expectant mothers to check in naturally via conversation throughout their 40-week pregnancy. 
+NatalRecall is an **In-The-Moment Antenatal Incident & Detail Logbook**. It is not an unlicensed doctor; it does not hand out random prescription drugs. Instead, it allows expectant mothers to report their issues once, naturally, the moment they occur.
 
-Whenever a mother reports a symptom, kick count, or vital sign, NatalRecall encrypts the data using SEAL and archives it onto the **Walrus decentralized storage network**. When she arrives at the clinic, a single tap generates a comprehensive, chronological **OB-GYN Clinical Briefing (SOAP Format)** that gives the physician high-signal medical intelligence in thirty seconds.
+Whenever a mother logs a symptom, cramp, or bodily change, NatalRecall encrypts the granular context using SEAL and archives it onto the **Walrus decentralized storage network**. When clinic day arrives, she doesn't have to reconstruct weeks of fuzzy details from memory. A single tap generates a comprehensive, chronological **OB-GYN Clinical Briefing (SOAP Format)** that gives the physician the exact receipts in thirty seconds.
 
 ---
 
