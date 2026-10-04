@@ -26,9 +26,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   useEffect(() => {
     let initialGreeting = '';
     if (withMemory) {
-      initialGreeting = `Hello ${patient.name}. I am here to help you keep track of your pregnancy. Tell me about any problem you're facing today, big or small. I will remember the details, how you felt, and when it started, so your doctor has the full picture on clinic day.`;
+      initialGreeting = `Hello ${patient.name}. I have your maternal health journal loaded with ${patient.memories.length} past records from Weeks 12 to ${patient.gestationalWeek} on Walrus Memory.
+
+Tell me about any symptom or question you have today, or click one of the quick test prompts below to see how I connect your past history for the doctor.`;
     } else {
-      initialGreeting = `Hello! I am in standard chat mode. Memory is turned off for this test, so I will not remember details across your visits.`;
+      initialGreeting = `Hello! Memory is currently turned OFF. In this mode, I have no access to your past notes, blood pressure trends, or previous gestational milestones. Any issue you describe will be treated as an isolated event.`;
     }
 
     setMessages([
@@ -137,15 +139,15 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const samplePrompts = [
     {
-      label: 'Headache & swollen ankles',
+      label: 'Test 1: Headache & Swollen Ankles (Pre-Eclampsia Risk)',
       text: 'My ankles are quite swollen today and I have had a persistent frontal headache since yesterday afternoon.',
     },
     {
-      label: 'Pain reliever safety question',
+      label: 'Test 2: Can I take Ibuprofen? (Drug Contraindication)',
       text: 'Can I take an Ibuprofen or Felvin for this lower back cramp?',
     },
     {
-      label: 'Baby movement pattern',
+      label: 'Test 3: Baby Kick Pattern (Longitudinal Trend)',
       text: 'How does my baby’s movement look compared to previous weeks?',
     },
   ];

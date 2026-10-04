@@ -89,6 +89,33 @@ export default function Home() {
           />
         </section>
 
+        {/* Quick Testing Guide for Evaluators */}
+        <section className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 text-xs text-slate-700 shadow-2xs">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex items-center space-x-2 text-rose-950 font-bold tracking-tight">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-700"></span>
+              <span className="text-xs sm:text-sm">How to test in 30 seconds:</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-slate-600 font-medium">
+              <span className="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 tracking-tight">
+                <strong className="text-slate-900">1.</strong> Choose a mother above
+              </span>
+              <span className="text-slate-300">→</span>
+              <span className="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 tracking-tight">
+                <strong className="text-slate-900">2.</strong> Click a quick prompt below
+              </span>
+              <span className="text-slate-300">→</span>
+              <span className="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 tracking-tight">
+                <strong className="text-slate-900">3.</strong> Toggle Memory Off vs On
+              </span>
+              <span className="text-slate-300">→</span>
+              <span className="bg-rose-50 text-rose-900 px-2.5 py-1 rounded-lg border border-rose-200 font-semibold tracking-tight">
+                <strong className="text-rose-950">4.</strong> Check Doctor&apos;s Report (top right)
+              </span>
+            </div>
+          </div>
+        </section>
+
         {/* Live Chat Experience */}
         <section>
           <ChatInterface
