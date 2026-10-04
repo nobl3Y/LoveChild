@@ -16,18 +16,19 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   letter-spacing: -0.015em;
-  line-height: 1.68;
+  line-height: 1.75;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  letter-spacing: -0.03em;
-  line-height: 1.2;
+  letter-spacing: -0.028em;
+  line-height: 1.28;
 }
 
 p {
-  letter-spacing: -0.015em;
-  line-height: 1.72;
+  letter-spacing: -0.012em;
+  line-height: 1.8;
 }
 
 /* Subtle, clean scrollbars */

@@ -7,10 +7,10 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "seed:walrus": "tsx scripts/seed-walrus.ts"
+    "lint": "next lint"
   },
   "dependencies": {
+    "@mysten-incubation/memwal": "^0.1.8",
     "clsx": "^2.1.1",
     "lucide-react": "^0.453.0",
     "next": "^14.2.15",

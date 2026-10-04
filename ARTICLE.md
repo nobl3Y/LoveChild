@@ -25,7 +25,9 @@ We built **LoveChild** to permanently capture the in-the-moment truth.
 
 LoveChild is not an unlicensed doctor; it does not hand out random prescription drugs. Instead, it allows expectant mothers to report their issues once, naturally, the moment they occur.
 
-Whenever a mother logs a symptom, cramp, or bodily change, LoveChild encrypts the granular context using SEAL and archives it onto the **Walrus decentralized storage network**. When clinic day arrives, she doesn't have to reconstruct weeks of fuzzy details from memory. A single tap generates a comprehensive, chronological **OB-GYN Clinical Briefing (SOAP Format)** that gives the physician the exact receipts in thirty seconds.
+Whenever a mother logs a symptom, cramp, or bodily change, LoveChild encrypts the granular context and archives it onto the **Walrus decentralized storage network**. When clinic day arrives, she doesn't have to reconstruct weeks of fuzzy details from memory. A single tap generates a comprehensive, chronological **OB-GYN Clinical Briefing (SOAP Format)** that gives the physician the exact receipts in thirty seconds.
+
+Crucially, **this saves the doctor enormous amounts of time**. Instead of burning 10–15 minutes of a rushed consultation trying to interrogate vague patient recollections ("When did the pain start? How often?"), the physician reads a structured chronological timeline in under a minute. Clinical triage happens faster, diagnostics are accurate, and more time is spent examining and counseling the mother.
 
 ---
 

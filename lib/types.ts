@@ -1,32 +1,24 @@
-export type GestationalTrimester = 'Trimester 1' | 'Trimester 2' | 'Trimester 3' | 'Postpartum (4th Trimester)';
-
-export interface WalrusMemoryItem {
-  id: string;
-  blobId: string;
-  timestamp: string;
-  gestationalWeek: number;
-  category: 'symptom' | 'fetal_movement' | 'vitals' | 'nutrition' | 'labor_sign' | 'clinical_alert';
-  severity?: 'Mild' | 'Moderate' | 'Severe' | 'Critical';
-  summary: string;
-  rawDetails: string;
-  tags: string[];
-  isRedFlag?: boolean;
+/** Who is chatting. Name is a nickname; the PIN only separates one person's notes from another's. */
+export interface Profile {
+  name: string;
+  pin: string;
+  week: number | null;
 }
 
-export interface PatientPersona {
-  id: string;
-  name: string;
-  age: number;
-  gestationalWeek: number;
-  trimester: GestationalTrimester;
-  estimatedDueDate: string;
-  gravidaPara: string; // e.g., 'G1P0' (First pregnancy)
-  bloodType: string;
-  avatar: string;
-  shortBio: string;
-  coreWatchArea: string;
-  walrusNamespace: string;
-  memories: WalrusMemoryItem[];
+/** One memory as returned by Walrus Memory (no invented fields). */
+export interface MemoryItem {
+  blobId: string;
+  text: string;
+  createdAt?: string;
+}
+
+export interface RecordedNote {
+  /** The note LoveChild wrote down from what she said. */
+  note: string;
+  /** Real Walrus blob id once the write has finished. */
+  blobId?: string;
+  status: 'saved' | 'pending' | 'skipped' | 'failed';
+  error?: string;
 }
 
 export interface ChatMessage {
@@ -34,27 +26,7 @@ export interface ChatMessage {
   sender: 'user' | 'assistant';
   content: string;
   timestamp: string;
-  recalledMemoryIds?: string[];
-  newBlobIdCreated?: string;
-  clinicalAlert?: {
-    level: 'info' | 'warning' | 'critical';
-    title: string;
-    details: string;
-  };
-}
-
-export interface ClinicalSOAPReport {
-  patient: PatientPersona;
-  generatedAt: string;
-  totalBlobsAnalyzed: number;
-  subjectiveTimeline: {
-    week: number;
-    date: string;
-    notes: string;
-    isRedFlag: boolean;
-  }[];
-  fetalMovementAssessment: string;
-  surveillanceAlerts: string[];
-  doctorDiscussionPoints: string[];
-  disclaimer: string;
+  recalled?: MemoryItem[];
+  recorded?: RecordedNote;
+  isError?: boolean;
 }
