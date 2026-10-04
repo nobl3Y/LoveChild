@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Sparkles, Database, ShieldAlert, ToggleLeft, ToggleRight, ArrowRight, CornerDownLeft, Loader2 } from 'lucide-react';
+import { Send, Database, ShieldAlert, ToggleLeft, ToggleRight, Loader2, Info } from 'lucide-react';
 import { PatientPersona, ChatMessage, WalrusMemoryItem } from '@/lib/types';
 import { walrusService } from '@/lib/walrusClient';
 
@@ -26,9 +26,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   useEffect(() => {
     let initialGreeting = '';
     if (withMemory) {
-      initialGreeting = `Hello ${patient.name}. I am your maternal care companion. Tell me about any problem you're facing, big or small. I keep a record of every detail you share over time, so before your doctor's visit, we can turn everything into a clear report and make sure nothing gets missed.`;
+      initialGreeting = `Hello ${patient.name}. I am here to help you keep track of your pregnancy. Tell me about any problem you're facing today, big or small. I will remember the details, how you felt, and when it started, so your doctor has the full picture on clinic day.`;
     } else {
-      initialGreeting = `Hello! I am a standard pregnancy chatbot. How can I help you today? (Note: Stateless mode active. Memory is disabled.)`;
+      initialGreeting = `Hello! I am in standard chat mode. Memory is turned off for this test, so I will not remember details across your visits.`;
     }
 
     setMessages([
@@ -63,17 +63,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     try {
       if (!withMemory) {
         // STATELESS MODE: Standard generic chatbot response (No recall, no pattern recognition)
-        await new Promise((r) => setTimeout(r, 900));
+        await new Promise((r) => setTimeout(r, 800));
         let genericReply = '';
 
         if (/headache|swell|edema/i.test(text)) {
-          genericReply = "Headaches and swelling can happen during pregnancy due to hormonal changes and fluid retention. Make sure to put your feet up, drink plenty of water, and rest in a cool room. Mention it at your next checkup if it continues.";
-        } else if (/ibuprofen|aspirin|painkiller/i.test(text)) {
-          genericReply = "It's generally recommended to consult your healthcare provider before taking any over-the-counter pain relievers while pregnant.";
+          genericReply = "Headaches and swelling can happen during pregnancy due to hormonal changes and fluid retention. Make sure to rest, elevate your feet, and stay hydrated. Let your doctor know at your next visit if it continues.";
+        } else if (/ibuprofen|aspirin|painkiller|felvin/i.test(text)) {
+          genericReply = "It is generally best to consult your doctor or midwife before taking any over-the-counter pain medications while pregnant.";
         } else if (/kick|movement/i.test(text)) {
-          genericReply = "Babies tend to move more at certain times of the day. If you notice changes, rest quietly and count movements.";
+          genericReply = "Babies tend to have active and quiet periods. If you feel like movement has decreased, lie down quietly on your side and count.";
         } else {
-          genericReply = "Thank you for sharing. Remember to stay hydrated, eat balanced meals, and attend all your scheduled prenatal visits with your doctor.";
+          genericReply = "Thank you for sharing. Remember to stay hydrated, rest when you can, and bring this up at your next routine checkup.";
         }
 
         setMessages((prev) => [
@@ -94,25 +94,25 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         const newMemory = await walrusService.remember(patient, text);
         onMemoryAdded(newMemory);
 
-        await new Promise((r) => setTimeout(r, 1200));
+        await new Promise((r) => setTimeout(r, 1000));
 
         let intelligentReply = '';
         let clinicalAlert: ChatMessage['clinicalAlert'] | undefined = undefined;
 
         if (/headache|swell|feet|ankles|face/i.test(text) && patient.id === 'amina-bello') {
-          intelligentReply = `Logged to your private Walrus Vault as Blob ${newMemory.blobId.slice(0, 8)}... (Week ${patient.gestationalWeek}).\n\n⚠️ **Clinical Correlation with Past Memory:**\nIn your Walrus history from Week 24, your blood pressure was recorded at 118/78 mmHg. Now at Week 30, you have concurrently logged bilateral ankle swelling and a persistent 48-hour frontal headache.\n\nIn the third trimester, persistent headache combined with rapid swelling is a primary clinical indicator of **Pre-Eclampsia** (gestational hypertension).\n\n**Immediate Scribe Guidance:**\n• Do NOT take NSAIDs (like Ibuprofen or Diclofenac)—they elevate renal strain.\n• Please sit down immediately with feet elevated above heart level and sip water.\n• I have flagged this as an Urgent Red Flag in your OB-GYN Clinical Briefing. Please contact your maternity center today for a manual blood pressure check and urine protein screen.`;
+          intelligentReply = `I have logged this in your health journal.\n\nLooking back at your notes: in Week 24, your blood pressure was borderline at 118/78 mmHg. Now in Week 30, you have had persistent forehead headaches alongside sudden swelling in both ankles.\n\nIn the third trimester, a persistent headache paired with sudden swelling is a well-known warning sign for Pre-Eclampsia (pregnancy high blood pressure).\n\nWhat to do right now:\n• Please sit down with your feet propped up above hip level and drink water.\n• Do not take Ibuprofen or strong painkillers, as they can stress your kidneys and elevate blood pressure.\n• I have added this directly to your Doctor's Briefing as an important topic for today. Please contact your clinic or midwife for a quick blood pressure and urine check.`;
 
           clinicalAlert = {
             level: 'warning',
-            title: 'Pre-Eclampsia Surveillance Triggered',
-            details: 'Co-occurrence of bilateral edema + refractory cephalea in Trimester 3 (Week 30).',
+            title: 'Clinical Notice for Your Next Visit',
+            details: 'Persistent headache combined with sudden ankle swelling in Week 30 flagged for doctor review.',
           };
         } else if (/ibuprofen|diclofenac|felvin|pain/i.test(text)) {
-          intelligentReply = `Logged to Walrus as Blob ${newMemory.blobId.slice(0, 8)}...\n\n🛑 **Pharmacological Safety Warning:**\nDo NOT take Ibuprofen, Diclofenac, or Aspirin during pregnancy, especially in the third trimester. These are NSAIDs that can cause premature closure of the fetal ductus arteriosus (a vital heart blood vessel) and impair fetal kidney function.\n\n• For non-medical comfort: use a warm (not hot) compress on your lower back and maintain proper lumbar support.\n• If pain relief is clinically necessary, your midwife or OB-GYN can evaluate safe prenatal alternatives. I have added this question to your clinic briefing.`;
+          intelligentReply = `I have recorded this question in your notes.\n\nPlease do not take Ibuprofen, Felvin, or Diclofenac during pregnancy, especially in the third trimester. These medications can affect the baby's developing circulation and kidney function.\n\n• For safe relief right now: try applying a warm cloth to your lower back, resting with a pillow between your knees, or taking a warm shower.\n• If you need medicine for pain, your doctor can advise on safe options like paracetamol based on your current stage. I have noted this on your visit summary.`;
         } else if (/kick|movement|flutter/i.test(text)) {
-          intelligentReply = `Logged to Walrus as Blob ${newMemory.blobId.slice(0, 8)}...\n\nCross-referencing your Walrus records from Week 26 and Week 28: your baseline fetal activity has averaged 12–14 distinct kicks in 2-hour evening resting windows. Reassuring active movement is continuing consistently. Keep logging your daily evening kick counts!`;
+          intelligentReply = `I checked your previous logs from Week 26 and Week 28: your baby has consistently averaged 12 to 14 active movements during your 2-hour evening quiet times. Your movement patterns look steady and reassuring. Continue counting during your regular evening rest periods.`;
         } else {
-          intelligentReply = `Logged to Walrus as Blob ${newMemory.blobId.slice(0, 8)}... (Week ${patient.gestationalWeek}).\n\nI have archived this entry into your encrypted decentralized record for ${patient.name}. Your longitudinal timeline will include this context when you generate your OB-GYN Briefing for your next antenatal checkup.`;
+          intelligentReply = `I have saved this note to your private record for Week ${patient.gestationalWeek}. All the specifics—the time, how it felt, and what you noted—are safely kept and will appear in your visit summary for the doctor.`;
         }
 
         setMessages((prev) => [
@@ -137,56 +137,55 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const samplePrompts = [
     {
-      label: '⚠️ Log Swelling & Headache',
+      label: 'Headache & swollen ankles',
       text: 'My ankles are quite swollen today and I have had a persistent frontal headache since yesterday afternoon.',
     },
     {
-      label: '💊 Ask about Painkillers',
+      label: 'Pain reliever safety question',
       text: 'Can I take an Ibuprofen or Felvin for this lower back cramp?',
     },
     {
-      label: '👶 Check Kick Trends',
+      label: 'Baby movement pattern',
       text: 'How does my baby’s movement look compared to previous weeks?',
     },
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col h-[650px] overflow-hidden">
+    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs flex flex-col h-[640px] overflow-hidden">
       
-      {/* Chat Sub-Header: Mode Toggle (Before vs. After Memory) */}
-      <div className="p-3.5 border-b border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-        <div className="flex items-center space-x-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+      {/* Chat Sub-Header: Mode Toggle */}
+      <div className="p-4 border-b border-slate-200/80 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center space-x-2.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-rose-700"></span>
           <span className="text-xs font-bold text-slate-800">
-            Active Patient: <span className="text-rose-600">{patient.name}</span> (Week {patient.gestationalWeek})
+            Active Mother: <span className="text-rose-900">{patient.name}</span> (Week {patient.gestationalWeek})
           </span>
         </div>
 
-        {/* The Decisive Hackathon Toggle */}
-        <div className="flex items-center space-x-2 bg-white px-3 py-1 rounded-xl border border-slate-200 shadow-2xs">
-          <span className={`text-xs font-semibold ${withMemory ? 'text-slate-400' : 'text-slate-900 font-bold'}`}>
-            Without Memory (Loses Details)
+        {/* Clean Mode Toggle */}
+        <div className="flex items-center space-x-2.5 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
+          <span className={`text-xs font-medium ${withMemory ? 'text-slate-400' : 'text-slate-900 font-bold'}`}>
+            Memory Off (Forgetful)
           </span>
           <button
             onClick={() => setWithMemory(!withMemory)}
-            className="text-teal-600 focus:outline-none transition-transform active:scale-95"
-            title="Toggle Walrus Memory Mode"
+            className="text-rose-700 focus:outline-none transition-transform active:scale-95"
+            title="Toggle Memory Mode"
           >
             {withMemory ? (
-              <ToggleRight className="w-7 h-7 text-teal-600" />
+              <ToggleRight className="w-6 h-6 text-rose-700" />
             ) : (
-              <ToggleLeft className="w-7 h-7 text-slate-400" />
+              <ToggleLeft className="w-6 h-6 text-slate-400" />
             )}
           </button>
-          <span className={`text-xs font-bold flex items-center ${withMemory ? 'text-teal-700' : 'text-slate-400'}`}>
-            <Database className="w-3 h-3 mr-1" />
-            With Walrus Memory (Full Receipts)
+          <span className={`text-xs font-bold ${withMemory ? 'text-rose-900' : 'text-slate-400'}`}>
+            Memory On (Holds Details)
           </span>
         </div>
       </div>
 
       {/* Messages Stream */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/30">
         {messages.map((msg) => {
           const isUser = msg.sender === 'user';
           return (
@@ -195,43 +194,43 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
             >
               <div
-                className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-xs sm:text-sm leading-relaxed ${
+                className={`max-w-[85%] sm:max-w-[78%] rounded-2xl p-4 text-xs sm:text-sm leading-relaxed ${
                   isUser
-                    ? 'bg-gradient-to-r from-rose-600 to-rose-700 text-white rounded-br-xs shadow-sm'
-                    : 'bg-slate-100/90 text-slate-800 rounded-bl-xs border border-slate-200/80 shadow-2xs'
+                    ? 'bg-rose-900 text-white rounded-br-xs shadow-xs'
+                    : 'bg-white text-slate-800 rounded-bl-xs border border-slate-200/80 shadow-xs'
                 }`}
               >
                 {/* Clinical Alert Card inside assistant message */}
                 {!isUser && msg.clinicalAlert && (
-                  <div className="mb-3 p-3 rounded-xl bg-rose-100/90 border border-rose-300 text-rose-950 text-xs">
-                    <div className="font-bold flex items-center text-rose-800">
-                      <ShieldAlert className="w-4 h-4 mr-1.5 text-rose-600" />
+                  <div className="mb-3 p-3.5 rounded-xl border-l-4 border-rose-700 bg-rose-50 text-rose-950 text-xs">
+                    <div className="font-bold flex items-center text-rose-900">
+                      <ShieldAlert className="w-4 h-4 mr-1.5 text-rose-700" />
                       {msg.clinicalAlert.title}
                     </div>
-                    <p className="mt-1 font-medium">{msg.clinicalAlert.details}</p>
+                    <p className="mt-1 font-normal text-rose-900/90 leading-relaxed">{msg.clinicalAlert.details}</p>
                   </div>
                 )}
 
-                <div className="whitespace-pre-line">{msg.content}</div>
+                <div className="whitespace-pre-line font-normal">{msg.content}</div>
 
                 {/* Recalled Memory Badges */}
                 {!isUser && msg.recalledMemoryIds && msg.recalledMemoryIds.length > 0 && (
-                  <div className="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500">
-                    <span className="flex items-center text-teal-700 font-medium">
-                      <Database className="w-3 h-3 mr-1 text-teal-600" />
-                      {msg.recalledMemoryIds.length} Walrus Blobs Recalled
+                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                    <span className="flex items-center text-rose-800 font-semibold">
+                      <Database className="w-3 h-3 mr-1 text-rose-700" />
+                      {msg.recalledMemoryIds.length} past records connected
                     </span>
                     <button
                       onClick={onOpenVault}
-                      className="text-teal-700 underline hover:text-teal-900 font-semibold"
+                      className="text-slate-600 underline hover:text-slate-900 font-medium"
                     >
-                      View in Vault
+                      View journal records
                     </button>
                   </div>
                 )}
               </div>
 
-              <span className="text-[10px] text-slate-400 mt-1 px-1 font-mono">
+              <span className="text-[10px] text-slate-400 mt-1 px-1">
                 {msg.timestamp}
               </span>
             </div>
@@ -239,9 +238,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         })}
 
         {isTyping && (
-          <div className="flex items-center space-x-2 text-slate-400 text-xs py-2 px-3 bg-slate-50 rounded-xl max-w-xs border border-slate-200">
-            <Loader2 className="w-4 h-4 animate-spin text-teal-600" />
-            <span>Consulting Walrus Memory Vault & analyzing patterns...</span>
+          <div className="flex items-center space-x-2 text-slate-500 text-xs py-2.5 px-3.5 bg-white rounded-xl max-w-xs border border-slate-200 shadow-2xs">
+            <Loader2 className="w-4 h-4 animate-spin text-rose-700" />
+            <span>Reviewing past records and context...</span>
           </div>
         )}
 
@@ -249,15 +248,15 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {/* Suggested Quick Prompts */}
-      <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center gap-1.5 overflow-x-auto text-xs">
-        <span className="text-[10px] font-bold text-slate-400 uppercase whitespace-nowrap">
-          Quick Test:
+      <div className="px-5 py-2.5 bg-slate-50/80 border-t border-slate-100 flex items-center gap-2 overflow-x-auto text-xs">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
+          Quick test:
         </span>
         {samplePrompts.map((p, idx) => (
           <button
             key={idx}
             onClick={() => handleSendMessage(p.text)}
-            className="whitespace-nowrap px-2.5 py-1 rounded-lg bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-800 border border-slate-200 text-xs font-medium transition-all shadow-2xs hover:border-rose-200"
+            className="whitespace-nowrap px-3 py-1.5 rounded-lg bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-900 border border-slate-200 text-xs font-medium transition-colors shadow-2xs"
           >
             {p.label}
           </button>
@@ -265,28 +264,28 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {/* Input Form */}
-      <div className="p-3.5 border-t border-slate-200 bg-white">
+      <div className="p-4 border-t border-slate-200/90 bg-white">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSendMessage();
           }}
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2.5"
         >
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={`Tell me about any problem you're facing, big or small (Week ${patient.gestationalWeek})...`}
-            className="flex-1 px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-slate-50/50"
+            className="flex-1 px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-700/20 focus:border-rose-700 bg-slate-50/50"
             disabled={isTyping}
           />
           <button
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="px-4 py-2.5 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 disabled:opacity-50 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center space-x-1.5 shadow-md shadow-rose-200 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="px-5 py-3 bg-rose-800 hover:bg-rose-900 disabled:opacity-50 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center space-x-1.5 shadow-xs transition-colors"
           >
-            <span>Log</span>
+            <span>Send</span>
             <Send className="w-3.5 h-3.5" />
           </button>
         </form>

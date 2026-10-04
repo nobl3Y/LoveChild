@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-lato)', 'sans-serif'],
+      },
       colors: {
         walrus: {
           50: '#f0fdf9',

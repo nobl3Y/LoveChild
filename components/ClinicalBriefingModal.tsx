@@ -113,7 +113,7 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({
           {/* Section 1: Longitudinal Symptom Timeline */}
           <div>
             <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-2.5 flex items-center">
-              <span className="w-2 h-2 rounded-full bg-teal-600 mr-2"></span>
+              <span className="w-2 h-2 rounded-full bg-rose-700 mr-2"></span>
               1. Chronological Symptom & Milestone Timeline ({report.totalBlobsAnalyzed} Recorded Sessions)
             </h3>
             <div className="border border-slate-200 rounded-xl overflow-hidden">

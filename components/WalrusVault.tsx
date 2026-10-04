@@ -42,14 +42,14 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({
           <div className="p-5 border-b border-slate-200 bg-slate-50/80">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2.5">
-                <div className="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shadow-sm">
+                <div className="w-9 h-9 rounded-xl bg-rose-800 text-white flex items-center justify-center shadow-xs">
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-slate-900 flex items-center">
-                    Walrus Memory Vault
-                    <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                      Mainnet Live
+                    Walrus Memory Records
+                    <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">
+                      Decentralized
                     </span>
                   </h2>
                   <p className="text-xs text-slate-500 font-mono">
@@ -69,7 +69,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({
             <div className="mt-4 p-3 rounded-xl bg-white border border-slate-200 text-xs shadow-xs space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center font-medium">
-                  <Shield className="w-3.5 h-3.5 mr-1 text-teal-600" />
+                  <Shield className="w-3.5 h-3.5 mr-1 text-rose-700" />
                   Agent ID (Mainnet):
                 </span>
                 <span className="font-mono text-slate-800 font-semibold truncate max-w-[200px]" title={WALRUS_MAINNET_AGENT_INFO.agentId}>
@@ -78,7 +78,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center font-medium">
-                  <Lock className="w-3.5 h-3.5 mr-1 text-rose-500" />
+                  <Lock className="w-3.5 h-3.5 mr-1 text-slate-500" />
                   Privacy Protocol:
                 </span>
                 <span className="text-slate-700 font-medium">
@@ -86,8 +86,8 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-medium">Blobs for {patient.name}:</span>
-                <span className="font-mono font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                <span className="text-slate-500 font-medium">Records for {patient.name}:</span>
+                <span className="font-mono font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
                   {patient.memories.length} Blobs Verified
                 </span>
               </div>
@@ -127,7 +127,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({
                     {/* Blob Header */}
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono font-bold text-teal-800 bg-teal-100/70 px-2 py-0.5 rounded text-[11px]">
+                        <span className="font-bold text-rose-800 bg-rose-100/70 px-2 py-0.5 rounded text-[11px]">
                           Week {mem.gestationalWeek}
                         </span>
                         <span className="text-slate-400 text-[11px]">
@@ -175,7 +175,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({
                       </span>
                       <button
                         onClick={() => handleCopy(mem.blobId, mem.id)}
-                        className="inline-flex items-center text-teal-700 hover:text-teal-900 font-sans font-medium"
+                        className="inline-flex items-center text-rose-800 hover:text-rose-950 font-sans font-medium"
                       >
                         {isCopied ? (
                           <>
