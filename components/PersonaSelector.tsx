@@ -16,16 +16,16 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
 }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div>
-          <h2 className="text-sm font-bold text-slate-900 tracking-tight">
+          <h2 className="text-base font-bold text-slate-900 tracking-tight">
             Select a Mother&apos;s Profile
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 mt-1 leading-relaxed tracking-tight">
             Test how the journal preserves her history across different stages of pregnancy.
           </p>
         </div>
-        <div className="text-xs text-slate-400 font-medium">
+        <div className="text-xs text-slate-400 font-semibold tracking-tight">
           3 verified longitudinal profiles
         </div>
       </div>

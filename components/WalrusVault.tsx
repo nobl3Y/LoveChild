@@ -46,13 +46,13 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-slate-900 flex items-center">
+                  <h2 className="text-base font-bold text-slate-900 flex items-center tracking-tight">
                     Walrus Memory Records
-                    <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">
+                    <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200 tracking-tight">
                       Decentralized
                     </span>
                   </h2>
-                  <p className="text-xs text-slate-500 font-mono">
+                  <p className="text-xs text-slate-500 font-mono tracking-tight mt-0.5">
                     Namespace: {patient.walrusNamespace}
                   </p>
                 </div>

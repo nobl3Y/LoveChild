@@ -59,19 +59,19 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({
           {/* Header & Hospital Scribe Banner */}
           <div className="border-b-2 border-slate-900 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <span className="text-[11px] font-bold tracking-widest uppercase text-rose-600">
-                SOVEREIGN CLINICAL INCIDENT REPORT
+              <span className="text-[11px] font-bold tracking-wide uppercase text-rose-700">
+                Clinical Incident Report
               </span>
-              <h1 className="text-xl font-extrabold text-slate-900">
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight">
                 NatalRecall Antenatal Briefing
               </h1>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Complete Longitudinal Health Summary • Giving the doctor the full picture so nothing gets missed
+              <p className="text-xs text-slate-500 mt-1 tracking-tight leading-relaxed">
+                Complete Health Summary • Giving the doctor the full picture so nothing gets missed
               </p>
             </div>
             <div className="text-right font-mono text-xs text-slate-500">
               <div>Date: <span className="text-slate-800 font-semibold">{report.generatedAt}</span></div>
-              <div>Source: <span className="text-teal-700 font-bold">{report.totalBlobsAnalyzed} Verified Blobs</span></div>
+              <div>Source: <span className="text-rose-900 font-bold">{report.totalBlobsAnalyzed} Verified Records</span></div>
             </div>
           </div>
 

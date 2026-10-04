@@ -154,17 +154,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs flex flex-col h-[640px] overflow-hidden">
       
       {/* Chat Sub-Header: Mode Toggle */}
-      <div className="p-4 border-b border-slate-200/80 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="p-4 sm:p-5 border-b border-slate-200/80 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center space-x-2.5">
           <span className="w-2.5 h-2.5 rounded-full bg-rose-700"></span>
-          <span className="text-xs font-bold text-slate-800">
+          <span className="text-xs font-bold text-slate-800 tracking-tight">
             Active Mother: <span className="text-rose-900">{patient.name}</span> (Week {patient.gestationalWeek})
           </span>
         </div>
 
         {/* Clean Mode Toggle */}
-        <div className="flex items-center space-x-2.5 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs">
-          <span className={`text-xs font-medium ${withMemory ? 'text-slate-400' : 'text-slate-900 font-bold'}`}>
+        <div className="flex items-center space-x-2.5 bg-white px-3.5 py-1.5 rounded-full border border-slate-200/80 shadow-2xs">
+          <span className={`text-xs font-medium tracking-tight ${withMemory ? 'text-slate-400' : 'text-slate-900 font-bold'}`}>
             Memory Off (Forgetful)
           </span>
           <button
@@ -178,14 +178,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               <ToggleLeft className="w-6 h-6 text-slate-400" />
             )}
           </button>
-          <span className={`text-xs font-bold ${withMemory ? 'text-rose-900' : 'text-slate-400'}`}>
+          <span className={`text-xs font-bold tracking-tight ${withMemory ? 'text-rose-900' : 'text-slate-400'}`}>
             Memory On (Holds Details)
           </span>
         </div>
       </div>
 
       {/* Messages Stream */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/30">
+      <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4 bg-slate-50/30">
         {messages.map((msg) => {
           const isUser = msg.sender === 'user';
           return (
@@ -194,7 +194,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
             >
               <div
-                className={`max-w-[85%] sm:max-w-[78%] rounded-2xl p-4 text-xs sm:text-sm leading-relaxed ${
+                className={`max-w-[85%] sm:max-w-[78%] rounded-2xl p-4 sm:p-5 text-xs sm:text-sm leading-relaxed sm:leading-[1.75] tracking-tight ${
                   isUser
                     ? 'bg-rose-900 text-white rounded-br-xs shadow-xs'
                     : 'bg-white text-slate-800 rounded-bl-xs border border-slate-200/80 shadow-xs'
@@ -264,26 +264,26 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {/* Input Form */}
-      <div className="p-4 border-t border-slate-200/90 bg-white">
+      <div className="p-4 sm:p-5 border-t border-slate-200/90 bg-white">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSendMessage();
           }}
-          className="flex items-center space-x-2.5"
+          className="flex items-center space-x-3"
         >
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={`Tell me about any problem you're facing, big or small (Week ${patient.gestationalWeek})...`}
-            className="flex-1 px-4 py-3 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-700/20 focus:border-rose-700 bg-slate-50/50"
+            className="flex-1 px-4 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-700/20 focus:border-rose-700 bg-slate-50/50 tracking-tight"
             disabled={isTyping}
           />
           <button
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="px-5 py-3 bg-rose-800 hover:bg-rose-900 disabled:opacity-50 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center space-x-1.5 shadow-xs transition-colors"
+            className="px-5 sm:px-6 py-3 sm:py-3.5 bg-rose-900 hover:bg-rose-950 disabled:opacity-50 text-white rounded-full text-xs sm:text-sm font-semibold flex items-center space-x-1.5 shadow-sm transition-all tracking-tight"
           >
             <span>Send</span>
             <Send className="w-3.5 h-3.5" />
