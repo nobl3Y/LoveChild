@@ -6,17 +6,17 @@ Copy and paste this text to X (Twitter), tagging `@WalrusProtocol` and including
 
 ### Tweet Copy:
 
-Most pregnancy chatbots forget you the moment you close the tab.
+NatalRecall 🤰🏾🩺: A maternal care chatbot for women.
 
-In antenatal care, amnesia can be fatal. A forgotten headache or ankle swelling is the #1 warning sign of Pre-Eclampsia.
+She simply tells it about any problem she's facing, big or small, and it keeps a record of every detail she shares over time.
 
-Introducing NatalRecall 🤰🏾🩺: An Objective Maternal Clinical Scribe powered by @WalrusProtocol on @SuiNetwork.
+Before her doctor's visit, it turns everything into a clear report, so she can give the doctor the full picture instead of forgetting the small things that often turn out to matter.
 
-Across 40 weeks, NatalRecall encrypts maternal symptoms into decentralized Walrus Memory. When visiting the clinic, a 1-click OB-GYN Briefing gives doctors high-signal clinical intelligence in 30 seconds.
+The result? Appointments where nothing gets missed, and women who feel prepared and heard.
 
+Powered by @WalrusProtocol on @SuiNetwork.
 ✅ 33 Blobs written to Walrus Mainnet across 3 real patient personas
-✅ Built with Google Gemini 1.5 Flash (Beyond the Big Two track)
-✅ Zero unlicensed prescribing, 100% maternal safety
+✅ Built with Google Gemini (Beyond the Big Two track)
 
 Read our full build story on Medium: [INSERT_YOUR_ARTICLE_LINK]
 Try the live demo: [INSERT_YOUR_VERCEL_LINK]

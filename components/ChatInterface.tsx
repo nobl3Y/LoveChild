@@ -26,9 +26,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   useEffect(() => {
     let initialGreeting = '';
     if (withMemory) {
-      initialGreeting = `Hello ${patient.name}. I am your in-the-moment antenatal incident logbook. Whenever something feels uncomfortable, painful, or unusual, tell me what happened once. I preserve the exact timing, context, and receipts across your 40 weeks on Walrus Memory—so when you see the doctor, you have the exact specifics ready.`;
+      initialGreeting = `Hello ${patient.name}. I am your maternal care companion. Tell me about any problem you're facing, big or small. I keep a record of every detail you share over time, so before your doctor's visit, we can turn everything into a clear report and make sure nothing gets missed.`;
     } else {
-      initialGreeting = `Hello! I am a standard pregnancy assistant. How can I help you today? (Note: Stateless mode active. In-the-moment memory is disabled.)`;
+      initialGreeting = `Hello! I am a standard pregnancy chatbot. How can I help you today? (Note: Stateless mode active. Memory is disabled.)`;
     }
 
     setMessages([
@@ -277,7 +277,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={`Log symptoms, vitals, or questions for Week ${patient.gestationalWeek}...`}
+            placeholder={`Tell me about any problem you're facing, big or small (Week ${patient.gestationalWeek})...`}
             className="flex-1 px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-slate-50/50"
             disabled={isTyping}
           />

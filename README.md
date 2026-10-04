@@ -1,5 +1,5 @@
 # NatalRecall 🤰🏾🩺
-### Sovereign Antenatal Clinical Memory Scribe powered by Walrus Protocol on Sui
+### A Maternal Care Chatbot for Women • Powered by Walrus Protocol on Sui
 
 [![Walrus Memory](https://img.shields.io/badge/Walrus-Mainnet%20Verified-0d9488?style=flat-square)](https://walrus.xyz)
 [![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini%201.5-f43f5e?style=flat-square)](https://deepmind.google/technologies/gemini/)
@@ -8,20 +8,11 @@
 
 ---
 
-## 🌟 Executive Summary & Problem Statement
+## 🌟 Executive Summary
 
-Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits her clinic once every 4 weeks. When something feels uncomfortable, painful, or unusual, she complains in the moment.
+> **"This service is a maternal care chatbot for women. She simply tells it about any problem she's facing, big or small, and it keeps a record of every detail she shares over time. Before her doctor's visit, it turns everything into a clear report, so she can give the doctor the full picture instead of forgetting the small things that often turn out to matter. The result is appointments where nothing gets missed, and women who feel prepared and heard."**
 
-Weeks later at her 10-minute prenatal checkup, **she naturally remembers the broad headline ("I had headaches and swollen ankles last month")—but her doctor needs the exact receipts**:
-- Did the headache start *before* or *after* the swelling?
-- Exactly what time did it hit, and how many hours did it last?
-- What was the progression over the last 3 weeks?
-
-Without the exact timeline, life-threatening complications like **Pre-Eclampsia** (gestational hypertension) get dismissed as general pregnancy fatigue until an emergency occurs.
-
-Standard chatbots have **amnesia**—they wipe their memory the second you close the tab.
-
-**NatalRecall** fixes this by serving as an **In-The-Moment Antenatal Incident & Detail Logbook**. Powered by **Walrus Memory (`MemWal`)**, NatalRecall encrypts and stores maternal health events into decentralized Walrus blobs across all 40 weeks. When the mother visits her clinic, NatalRecall synthesizes her longitudinal history into a 1-page **OB-GYN Clinical Briefing (SOAP Format)** with the exact chronological receipts her physician needs.
+Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits her clinic once every 4 weeks. When something feels uncomfortable, painful, or unusual, she complains in the moment. Weeks later at her 10-minute prenatal checkup, she shouldn't have to reconstruct weeks of fuzzy memories. **NatalRecall** preserves every detail on decentralized Walrus Memory so her physician receives the full clinical picture.
 
 ---
 

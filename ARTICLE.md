@@ -21,7 +21,9 @@ We built **NatalRecall** to permanently capture the in-the-moment truth.
 
 ### What NatalRecall Does
 
-NatalRecall is an **In-The-Moment Antenatal Incident & Detail Logbook**. It is not an unlicensed doctor; it does not hand out random prescription drugs. Instead, it allows expectant mothers to report their issues once, naturally, the moment they occur.
+> **This service is a maternal care chatbot for women. She simply tells it about any problem she's facing, big or small, and it keeps a record of every detail she shares over time. Before her doctor's visit, it turns everything into a clear report, so she can give the doctor the full picture instead of forgetting the small things that often turn out to matter. The result is appointments where nothing gets missed, and women who feel prepared and heard.**
+
+NatalRecall is not an unlicensed doctor; it does not hand out random prescription drugs. Instead, it allows expectant mothers to report their issues once, naturally, the moment they occur.
 
 Whenever a mother logs a symptom, cramp, or bodily change, NatalRecall encrypts the granular context using SEAL and archives it onto the **Walrus decentralized storage network**. When clinic day arrives, she doesn't have to reconstruct weeks of fuzzy details from memory. A single tap generates a comprehensive, chronological **OB-GYN Clinical Briefing (SOAP Format)** that gives the physician the exact receipts in thirty seconds.
 

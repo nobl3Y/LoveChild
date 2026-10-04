@@ -60,10 +60,10 @@ export default function Home() {
               Walrus Session 8 Submission • "Chatbots That Remember"
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-              You remember what happened. NatalRecall preserves the exact details your doctor needs.
+              A Maternal Care Chatbot for Women.
             </h1>
-            <p className="mt-2 text-rose-100 text-xs sm:text-base leading-relaxed">
-              When you feel sick or notice something unusual during pregnancy, you complain in the moment. Weeks later, you remember the general headline—but your doctor needs the <span className="underline decoration-amber-300 decoration-2 font-bold text-white">exact timeline, triggers, and specifics</span>. <span className="font-bold text-white">NatalRecall</span> logs every problem into decentralized Walrus Memory, so your OB-GYN gets the whole truth, not guesswork.
+            <p className="mt-3 text-rose-100 text-sm sm:text-base leading-relaxed font-normal">
+              She simply tells it about any problem she&apos;s facing, big or small, and it keeps a record of every detail she shares over time. Before her doctor&apos;s visit, it turns everything into a clear report, so she can give the doctor the full picture instead of forgetting the small things that often turn out to matter. <span className="font-semibold text-white underline decoration-amber-300 decoration-2">The result is appointments where nothing gets missed, and women who feel prepared and heard.</span>
             </p>
 
             {/* Quick Proof Badges */}
@@ -104,10 +104,10 @@ export default function Home() {
               1
             </div>
             <h3 className="font-bold text-slate-900 text-sm mb-1">
-              The Headline vs. The Receipts
+              Tell It Anything, Big or Small
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              You know you felt bad last month. But your doctor needs to know: did the headache start before or after the swelling? Did it last 20 minutes or 4 hours? NatalRecall logs the exact receipts in the moment.
+              Whenever you feel discomfort, swelling, nausea, or unusual pain, simply share it naturally. You don&apos;t have to fill out complex forms—just talk like you would to a trusted friend.
             </p>
           </div>
 
@@ -116,10 +116,10 @@ export default function Home() {
               2
             </div>
             <h3 className="font-bold text-slate-900 text-sm mb-1">
-              Log Your Issues Once
+              Every Detail Kept Over Time
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Whenever you feel unusual pain, dizziness, or bodily changes, mention it naturally. NatalRecall archives the exact specifics permanently on Walrus Memory so nothing gets lost over 40 weeks.
+              NatalRecall securely logs every symptom and context onto decentralized Walrus Memory across all 40 weeks. The subtle changes that human memory compresses over months are permanently preserved.
             </p>
           </div>
 
@@ -128,10 +128,10 @@ export default function Home() {
               3
             </div>
             <h3 className="font-bold text-slate-900 text-sm mb-1">
-              The Complete Clinic Hand-Off
+              Appointments Where Nothing Gets Missed
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Doctors only have 8 minutes per appointment. Instead of trying to reconstruct past weeks from memory, tap one button to hand over a chronological, detailed briefing of every issue you experienced.
+              Before stepping into the clinic, one tap converts your history into a clear, structured report for your doctor. You walk into your appointment prepared, confident, and heard.
             </p>
           </div>
         </div>

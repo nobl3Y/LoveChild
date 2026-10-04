@@ -36,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </div>
               <p className="text-xs text-slate-500 hidden sm:block">
-                In-The-Moment Incident & Detail Logbook
+                Maternal Care Chatbot • Appointments Where Nothing Gets Missed
               </p>
             </div>
           </div>
