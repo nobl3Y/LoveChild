@@ -90,34 +90,45 @@ export default function Home() {
         </section>
 
         {/* Quick Testing Guide for Evaluators */}
-        <section className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 text-xs text-slate-700 shadow-2xs">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div className="flex items-center space-x-2 text-rose-950 font-bold tracking-tight">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-700"></span>
-              <span className="text-xs sm:text-sm">How to test in 30 seconds:</span>
+        <section className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs">
+          <div className="flex items-center space-x-2 text-rose-950 font-bold tracking-tight mb-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-700"></span>
+            <span className="text-xs sm:text-sm">How to Test LoveChild in 30 Seconds:</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+              <span className="font-bold text-slate-900 block mb-0.5 tracking-tight">1. Pick Mother</span>
+              <span className="text-slate-500 text-[11px] leading-tight block tracking-tight">Select a profile above</span>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-slate-600 font-medium">
-              <span className="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 tracking-tight">
-                <strong className="text-slate-900">1.</strong> Choose a mother above
-              </span>
-              <span className="text-slate-300">→</span>
-              <span className="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 tracking-tight">
-                <strong className="text-slate-900">2.</strong> Click a quick prompt below
-              </span>
-              <span className="text-slate-300">→</span>
-              <span className="bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 tracking-tight">
-                <strong className="text-slate-900">3.</strong> Toggle Memory Off vs On
-              </span>
-              <span className="text-slate-300">→</span>
-              <span className="bg-rose-50 text-rose-900 px-2.5 py-1 rounded-lg border border-rose-200 font-semibold tracking-tight">
-                <strong className="text-rose-950">4.</strong> Check Doctor&apos;s Report (top right)
-              </span>
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+              <span className="font-bold text-slate-900 block mb-0.5 tracking-tight">2. Tap a Prompt</span>
+              <span className="text-slate-500 text-[11px] leading-tight block tracking-tight">Use quick test buttons below</span>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+              <span className="font-bold text-slate-900 block mb-0.5 tracking-tight">3. Compare Memory</span>
+              <span className="text-slate-500 text-[11px] leading-tight block tracking-tight">Toggle Memory Off vs On</span>
+            </div>
+            <div className="bg-rose-50 p-3 rounded-xl border border-rose-200">
+              <span className="font-bold text-rose-950 block mb-0.5 tracking-tight">4. Doctor&apos;s Report</span>
+              <span className="text-rose-900/80 text-[11px] leading-tight block tracking-tight">Click Doctor&apos;s Report at top</span>
             </div>
           </div>
         </section>
 
         {/* Live Chat Experience */}
-        <section>
+        <section className="space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 px-1">
+            <div className="flex items-center space-x-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-700"></span>
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+                Maternal Care Journal &amp; Chat
+              </h2>
+            </div>
+            <p className="text-xs text-slate-500 tracking-tight">
+              Active Profile: <strong className="text-slate-800">{currentPatient.name}</strong> • Week {currentPatient.gestationalWeek}
+            </p>
+          </div>
+
           <ChatInterface
             patient={currentPatient}
             onMemoryAdded={handleMemoryAdded}

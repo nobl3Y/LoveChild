@@ -38,39 +38,29 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
             <button
               key={p.id}
               onClick={() => onSelectPatient(p)}
-              className={`flex items-start p-3.5 rounded-xl border text-left transition-all ${
+              className={`p-4 rounded-xl border text-left transition-all ${
                 isSelected
                   ? 'border-rose-700 bg-rose-50/50 shadow-xs ring-1 ring-rose-700/20'
                   : 'border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/60 bg-white'
               }`}
             >
-              {/* Initials Avatar */}
-              <div
-                className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs mr-3 shrink-0 transition-colors ${
-                  isSelected
-                    ? 'bg-rose-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600'
-                }`}
-              >
-                {p.avatar}
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 truncate">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center space-x-2 min-w-0">
+                  <span className={`w-2 h-2 rounded-full shrink-0 ${isSelected ? 'bg-rose-700' : 'bg-slate-300'}`}></span>
+                  <h3 className="text-sm font-bold text-slate-900 truncate tracking-tight">
                     {p.name}
                   </h3>
-                  <span className="text-[11px] font-semibold text-rose-800 bg-rose-100/70 px-2 py-0.5 rounded-md">
-                    {p.memories.length} notes
-                  </span>
                 </div>
-                <p className="text-xs text-slate-500 font-medium mt-0.5">
-                  Week {p.gestationalWeek} • {p.trimester}
-                </p>
-                <p className="text-xs text-slate-600 line-clamp-1 mt-1">
-                  {p.coreWatchArea.split('(')[0]}
-                </p>
+                <span className="text-[11px] font-semibold text-rose-800 bg-rose-100/70 px-2 py-0.5 rounded-full shrink-0 tracking-tight">
+                  {p.memories.length} notes
+                </span>
               </div>
+              <p className="text-xs text-slate-500 font-medium mt-1.5 tracking-tight">
+                Week {p.gestationalWeek} • {p.trimester}
+              </p>
+              <p className="text-xs text-slate-600 line-clamp-1 mt-1 tracking-tight">
+                {p.coreWatchArea.split('(')[0]}
+              </p>
             </button>
           );
         })}
