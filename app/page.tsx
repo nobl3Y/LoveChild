@@ -159,7 +159,7 @@ export default function Home() {
       <footer className="border-t border-slate-200/80 bg-white py-8 mt-16 text-xs text-slate-500">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <span className="font-bold text-slate-800">NatalRecall</span>
+            <span className="font-bold text-slate-800">LoveChild</span>
             <span className="text-slate-400 ml-2">A maternal care service powered by Walrus Protocol</span>
           </div>
           <div className="text-slate-500">

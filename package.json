@@ -1,7 +1,7 @@
 {
-  "name": "natalrecall",
+  "name": "lovechild",
   "version": "1.0.0",
-  "description": "Sovereign Antenatal Clinical Memory Scribe powered by Walrus Protocol",
+  "description": "Maternal care chatbot powered by Walrus Memory",
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",

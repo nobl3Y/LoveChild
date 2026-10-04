@@ -13,7 +13,7 @@ export const PATIENTS: PatientPersona[] = [
     avatar: 'AB',
     shortBio: 'First-time mom in Lagos. Active office accountant, monitoring third-trimester swelling and headaches.',
     coreWatchArea: 'Pre-Eclampsia Surveillance (Sudden Edema + Persistent Cephalea)',
-    walrusNamespace: 'natalrecall:user:amina-bello:mainnet',
+    walrusNamespace: 'lovechild:user:amina-bello:mainnet',
     memories: [
       {
         id: 'mem-am-01',
@@ -161,7 +161,7 @@ export const PATIENTS: PatientPersona[] = [
     avatar: 'BO',
     shortBio: 'High school teacher in Calabar. Struggling with severe early nausea (Hyperemesis Gravidarum) and dehydration.',
     coreWatchArea: 'Hydration, Weight Loss Prevention & Electrolyte Surveillance',
-    walrusNamespace: 'natalrecall:user:blessing-okon:mainnet',
+    walrusNamespace: 'lovechild:user:blessing-okon:mainnet',
     memories: [
       {
         id: 'mem-bl-01',
@@ -291,7 +291,7 @@ export const PATIENTS: PatientPersona[] = [
     avatar: 'CE',
     shortBio: 'Experienced mother in Abuja reaching full term (37 weeks). Monitoring labor signs, pelvic drops, and contraction timing.',
     coreWatchArea: 'Labor Triage & False vs. Active Contraction Differentiation',
-    walrusNamespace: 'natalrecall:user:chiamaka-eze:mainnet',
+    walrusNamespace: 'lovechild:user:chiamaka-eze:mainnet',
     memories: [
       {
         id: 'mem-ch-01',

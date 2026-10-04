@@ -1,6 +1,6 @@
 # How We Solved the 40-Week Amnesia: Building an Antenatal Clinical Memory Scribe with Walrus Memory
 
-*By the NatalRecall Team — Submission for Walrus Session 8: Chatbots That Remember*
+*By the LoveChild Team — Submission for Walrus Session 8: Chatbots That Remember*
 
 ---
 
@@ -15,17 +15,17 @@ Doctors cannot make safe clinical triage decisions based on vague headlines. Tra
 
 Standard AI chatbots fail here because they suffer from catastrophic amnesia: close the tab, and the bot completely forgets every detail you ever told it.
 
-We built **NatalRecall** to permanently capture the in-the-moment truth.
+We built **LoveChild** to permanently capture the in-the-moment truth.
 
 ---
 
-### What NatalRecall Does
+### What LoveChild Does
 
 > **This service is a maternal care chatbot for women. She simply tells it about any problem she's facing, big or small, and it keeps a record of every detail she shares over time. Before her doctor's visit, it turns everything into a clear report, so she can give the doctor the full picture instead of forgetting the small things that often turn out to matter. The result is appointments where nothing gets missed, and women who feel prepared and heard.**
 
-NatalRecall is not an unlicensed doctor; it does not hand out random prescription drugs. Instead, it allows expectant mothers to report their issues once, naturally, the moment they occur.
+LoveChild is not an unlicensed doctor; it does not hand out random prescription drugs. Instead, it allows expectant mothers to report their issues once, naturally, the moment they occur.
 
-Whenever a mother logs a symptom, cramp, or bodily change, NatalRecall encrypts the granular context using SEAL and archives it onto the **Walrus decentralized storage network**. When clinic day arrives, she doesn't have to reconstruct weeks of fuzzy details from memory. A single tap generates a comprehensive, chronological **OB-GYN Clinical Briefing (SOAP Format)** that gives the physician the exact receipts in thirty seconds.
+Whenever a mother logs a symptom, cramp, or bodily change, LoveChild encrypts the granular context using SEAL and archives it onto the **Walrus decentralized storage network**. When clinic day arrives, she doesn't have to reconstruct weeks of fuzzy details from memory. A single tap generates a comprehensive, chronological **OB-GYN Clinical Briefing (SOAP Format)** that gives the physician the exact receipts in thirty seconds.
 
 ---
 
@@ -50,9 +50,9 @@ Here is the exact difference Walrus Memory makes in a real-world scenario with o
 
 The bot completely forgot Amina. It offered trivial comfort while missing a fatal complication.
 
-#### ✅ The Bot WITH Walrus Memory (NatalRecall Active Mode):
+#### ✅ The Bot WITH Walrus Memory (LoveChild Active Mode):
 > **Amina (Week 30):** *"My ankles are really puffy today and I’ve had a dull headache since yesterday."*  
-> **NatalRecall:**  
+> **LoveChild:**  
 > *`[Recalled Walrus Blobs: #0x5d81 (Week 24 BP 118/78) & #0x1c4d (Week 29 Edema)]`*  
 > *"Logged to your private Walrus Vault as Blob 0x891a... (Week 30).*  
 >  
@@ -79,9 +79,9 @@ Working with the Walrus Memory relayer provided valuable technical learnings:
 
 ### Real-World Proof & Next Steps
 
-NatalRecall was tested across **3 distinct clinical patient profiles (Amina, Blessing, and Chiamaka)**, successfully writing **33 verified memory blobs on Walrus Mainnet** (`Agent ID: 0x4f8a92e10c739b62a159e8471203b584d3910c2e`). 
+LoveChild was tested across **3 distinct clinical patient profiles (Amina, Blessing, and Chiamaka)**, successfully writing **33 verified memory blobs on Walrus Mainnet** (`Agent ID: 0x4f8a92e10c739b62a159e8471203b584d3910c2e`). 
 
 Mothers deserve sovereign ownership of their health data. By anchoring patient memory onto Walrus, we ensure that an expectant mother’s medical journey is private, permanent, and always ready to protect two lives at once.
 
-*Live Web App:* [https://natalrecall.vercel.app](https://natalrecall.vercel.app)  
-*GitHub Repository:* [https://github.com/your-username/natalrecall](https://github.com/your-username/natalrecall)
+*Live Web App:* [https://lovechild.vercel.app](https://lovechild.vercel.app)  
+*GitHub Repository:* [https://github.com/your-username/lovechild](https://github.com/your-username/lovechild)

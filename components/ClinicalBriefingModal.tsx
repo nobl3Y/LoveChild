@@ -63,7 +63,7 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({
                 Clinical Incident Report
               </span>
               <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-                NatalRecall Antenatal Briefing
+                LoveChild Antenatal Briefing
               </h1>
               <p className="text-xs text-slate-500 mt-1 tracking-tight leading-relaxed">
                 Complete Health Summary • Giving the doctor the full picture so nothing gets missed

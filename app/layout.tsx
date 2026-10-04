@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'NatalRecall | Maternal Care Journal & Clinic Summary',
+  title: 'LoveChild | Maternal Care Journal & Clinic Summary',
   description: 'A maternal care chatbot for women that keeps a record of every detail you share over time, turning it into a clear report for doctor visits so nothing gets missed.',
 };
 

@@ -1,4 +1,4 @@
-# NatalRecall 🤰🏾🩺
+# LoveChild
 ### A Maternal Care Chatbot for Women • Powered by Walrus Protocol on Sui
 
 [![Walrus Memory](https://img.shields.io/badge/Walrus-Mainnet%20Verified-0d9488?style=flat-square)](https://walrus.xyz)
@@ -8,17 +8,17 @@
 
 ---
 
-## 🌟 Executive Summary
+## Executive Summary
 
 > **"This service is a maternal care chatbot for women. She simply tells it about any problem she's facing, big or small, and it keeps a record of every detail she shares over time. Before her doctor's visit, it turns everything into a clear report, so she can give the doctor the full picture instead of forgetting the small things that often turn out to matter. The result is appointments where nothing gets missed, and women who feel prepared and heard."**
 
-Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits her clinic once every 4 weeks. When something feels uncomfortable, painful, or unusual, she complains in the moment. Weeks later at her 10-minute prenatal checkup, she shouldn't have to reconstruct weeks of fuzzy memories. **NatalRecall** preserves every detail on decentralized Walrus Memory so her physician receives the full clinical picture.
+Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits her clinic once every 4 weeks. When something feels uncomfortable, painful, or unusual, she complains in the moment. Weeks later at her 10-minute prenatal checkup, she shouldn't have to reconstruct weeks of fuzzy memories. **LoveChild** preserves every detail on decentralized Walrus Memory so her physician receives the full clinical picture.
 
 ---
 
-## 🚀 Key Innovations & Hackathon Compliance
+## Key Innovations & Hackathon Compliance
 
-| Hackathon Requirement | NatalRecall Implementation |
+| Hackathon Requirement | LoveChild Implementation |
 | :--- | :--- |
 | **Walrus Protocol Integration** | Stored on Walrus Mainnet using SEAL-encrypted memory chunks. |
 | **Agent ID & Blobs on Mainnet** | **Agent ID:** `0x4f8a92e10c739b62a159e8471203b584d3910c2e`<br>**Total Mainnet Blobs:** 33 Blobs across 3 verified patient personas. |
@@ -29,11 +29,11 @@ Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits 
 
 ---
 
-## 🏗️ Architecture Diagram
+## Architecture Diagram
 
 ```
    ┌─────────────────────────────────────────────────────────────┐
-   │                    NatalRecall Web Client                   │
+   │                     LoveChild Web Client                    │
    │            (Next.js 14 + Tailwind CSS + Lucide)             │
    └───────────────┬─────────────────────────────┬───────────────┘
                    │                             │
@@ -75,8 +75,8 @@ Pregnancy is inherently **longitudinal (40 weeks)**. An expectant mother visits 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/natalrecall.git
-cd natalrecall
+git clone https://github.com/your-username/lovechild.git
+cd lovechild
 ```
 
 ### 2. Install Dependencies

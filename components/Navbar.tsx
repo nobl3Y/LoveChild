@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <div className="font-bold text-lg sm:text-xl tracking-tight text-slate-900 leading-none">
-                NatalRecall
+                LoveChild
               </div>
               <p className="text-[11px] font-medium text-slate-400 tracking-normal mt-1 hidden sm:block">
                 Maternal Care &amp; Clinical Journal
