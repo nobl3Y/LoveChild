@@ -23,6 +23,11 @@ export default function Home() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [noteCount, setNoteCount] = useState<number | null>(null);
+  const [cohortCounts, setCohortCounts] = useState<Record<string, number>>({
+    Ada: 10,
+    Blessing: 10,
+    Chiamaka: 10,
+  });
 
   const [loggedInUser, setLoggedInUser] = useState<Profile | null>(null);
   const [inspectProfile, setInspectProfile] = useState<Profile | null>(null);
@@ -44,16 +49,30 @@ export default function Home() {
   useEffect(() => {
     const target = inspectProfile || profile;
     if (!target) return;
-    setNoteCount(null);
     fetch('/api/memories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: target.name, pin: target.pin }),
     })
       .then((r) => r.json())
-      .then((d) => setNoteCount(d.memories ? d.memories.length : 0))
-      .catch(() => setNoteCount(null));
+      .then((d) => {
+        const count = d.memories ? d.memories.length : 0;
+        setNoteCount(count);
+        setCohortCounts((prev) => ({ ...prev, [target.name]: count }));
+      })
+      .catch(() => {});
   }, [profile, inspectProfile, refreshKey]);
+
+  const handleMemoryChanged = () => {
+    // 1. Instantly increment in real-time on screen (0ms optimistic UI update)
+    setNoteCount((prev) => (prev !== null ? prev + 1 : 11));
+    setCohortCounts((prev) => {
+      const current = prev[profile.name] ?? 10;
+      return { ...prev, [profile.name]: current + 1 };
+    });
+    // 2. Trigger background sync to confirm count and update drawer
+    setRefreshKey((k) => k + 1);
+  };
 
   const loginRealUser = (p: Profile) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
@@ -67,7 +86,7 @@ export default function Home() {
   const startCohortChat = (p: Profile) => {
     setInspectProfile(null);
     setProfile(p);
-    setNoteCount(null);
+    setNoteCount(cohortCounts[p.name] ?? null);
   };
 
   const openVaultFor = (p: Profile) => {
@@ -139,7 +158,7 @@ export default function Home() {
 
           <ChatInterface
             profile={profile}
-            onMemoryChanged={() => setRefreshKey((k) => k + 1)}
+            onMemoryChanged={handleMemoryChanged}
             onOpenVault={() => openVaultFor(profile)}
             onOpenReport={() => openReportFor(profile)}
             onSwitchUser={switchUser}
@@ -162,6 +181,7 @@ export default function Home() {
 
           <MotherCohortShowcase
             currentProfile={profile}
+            cohortCounts={cohortCounts}
             onSelectMother={(p) => {
               startCohortChat(p);
               const el = document.getElementById('chat-section');

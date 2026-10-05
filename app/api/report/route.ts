@@ -24,6 +24,14 @@ export async function POST(req: NextRequest) {
     // Instant zero-latency return for verified demo cohort mothers
     const cohort = getCohortData(name);
     if (cohort) {
+      if (cohort.records.length > 10) {
+        const liveRecords = cohort.records.slice(10);
+        const liveBullets = liveRecords
+          .map((r) => `- ${r.createdAt ? r.createdAt.slice(0, 10) + ': ' : ''}${r.text}`)
+          .join('\n');
+        const updatedReport = `${cohort.report}\n\nWHAT SHE JUST LOGGED TODAY (Live Walrus Check-ins):\n${liveBullets}`;
+        return NextResponse.json({ memories: cohort.records, report: updatedReport });
+      }
       return NextResponse.json({ memories: cohort.records, report: cohort.report });
     }
 

@@ -32,6 +32,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [justUpdated, setJustUpdated] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   // Match against cohort data for rich clinical context
@@ -137,6 +138,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         },
       ]);
       if (data.recorded?.status === 'saved' || data.recorded?.status === 'pending') {
+        setJustUpdated(true);
+        setTimeout(() => setJustUpdated(false), 3500);
         onMemoryChanged();
       }
     } catch (e: any) {
@@ -269,13 +272,24 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <button
             type="button"
             onClick={onOpenVault}
-            className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-800 text-xs font-semibold border border-slate-200 transition-colors shadow-2xs whitespace-nowrap shrink-0"
+            className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-300 shadow-2xs whitespace-nowrap shrink-0 ${
+              justUpdated
+                ? 'bg-emerald-50 text-emerald-950 border-emerald-300 ring-2 ring-emerald-500/40 scale-105'
+                : 'bg-slate-100 hover:bg-slate-200/80 text-slate-800 border-slate-200'
+            }`}
           >
-            <Database className="w-3.5 h-3.5 text-rose-700 shrink-0" />
+            <Database className={`w-3.5 h-3.5 shrink-0 ${justUpdated ? 'text-emerald-600 animate-pulse' : 'text-rose-700'}`} />
             <span>Walrus Vault</span>
             {blobCount !== null && blobCount !== undefined && blobCount > 0 && (
-              <span className="ml-1 text-[10px] bg-rose-900 text-white font-bold px-1.5 py-0.2 rounded-full">
+              <span className={`ml-1 text-[10px] font-bold px-1.5 py-0.2 rounded-full transition-all ${
+                justUpdated ? 'bg-emerald-600 text-white animate-bounce' : 'bg-rose-900 text-white'
+              }`}>
                 {blobCount}
+              </span>
+            )}
+            {justUpdated && (
+              <span className="text-[10px] font-bold text-emerald-700 animate-pulse ml-0.5">
+                +1 Saved
               </span>
             )}
           </button>

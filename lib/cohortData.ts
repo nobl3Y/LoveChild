@@ -228,11 +228,49 @@ WORTH ASKING THE DOCTOR
   },
 };
 
+declare global {
+  var __cohortAdditions: Record<string, MemoryItem[]> | undefined;
+}
+
+if (!globalThis.__cohortAdditions) {
+  globalThis.__cohortAdditions = { ada: [], blessing: [], chiamaka: [] };
+}
+
 export function getCohortData(name: string): CohortMotherData | null {
   if (!name) return null;
   const n = name.trim().toLowerCase();
-  if (n.includes('ada')) return COHORT_DATA.ada;
-  if (n.includes('bless')) return COHORT_DATA.blessing;
-  if (n.includes('chiamaka')) return COHORT_DATA.chiamaka;
-  return null;
+  let base: CohortMotherData | null = null;
+  let key = '';
+  if (n.includes('ada')) { base = COHORT_DATA.ada; key = 'ada'; }
+  else if (n.includes('bless')) { base = COHORT_DATA.blessing; key = 'blessing'; }
+  else if (n.includes('chiamaka')) { base = COHORT_DATA.chiamaka; key = 'chiamaka'; }
+  if (!base) return null;
+
+  const extra = (globalThis.__cohortAdditions && globalThis.__cohortAdditions[key]) || [];
+  return {
+    records: [...base.records, ...extra],
+    report: base.report,
+  };
 }
+
+export function addCohortRecord(name: string, record: MemoryItem) {
+  const n = name.trim().toLowerCase();
+  let key = '';
+  if (n.includes('ada')) key = 'ada';
+  else if (n.includes('bless')) key = 'blessing';
+  else if (n.includes('chiamaka')) key = 'chiamaka';
+  if (!key) return;
+
+  if (!globalThis.__cohortAdditions) {
+    globalThis.__cohortAdditions = { ada: [], blessing: [], chiamaka: [] };
+  }
+  if (!globalThis.__cohortAdditions[key]) {
+    globalThis.__cohortAdditions[key] = [];
+  }
+  const list = globalThis.__cohortAdditions[key];
+  const exists = list.some((r) => r.text === record.text || (record.blobId && r.blobId === record.blobId));
+  if (!exists) {
+    list.push(record);
+  }
+}
+

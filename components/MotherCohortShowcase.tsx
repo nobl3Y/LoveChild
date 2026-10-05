@@ -7,6 +7,7 @@ import { FEATURED_MOTHERS } from '@/lib/cohort';
 
 interface MotherCohortShowcaseProps {
   currentProfile: Profile | null;
+  cohortCounts?: Record<string, number>;
   onSelectMother: (profile: Profile) => void;
   onOpenVaultFor: (profile: Profile) => void;
   onOpenReportFor: (profile: Profile) => void;
@@ -14,6 +15,7 @@ interface MotherCohortShowcaseProps {
 
 export const MotherCohortShowcase: React.FC<MotherCohortShowcaseProps> = ({
   currentProfile,
+  cohortCounts,
   onSelectMother,
   onOpenVaultFor,
   onOpenReportFor,
@@ -121,6 +123,13 @@ export const MotherCohortShowcase: React.FC<MotherCohortShowcaseProps> = ({
                   >
                     <Database className="w-3 h-3 text-rose-700 shrink-0" />
                     <span>Walrus Vault</span>
+                    <span className={`ml-0.5 text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
+                      isSelected && (cohortCounts?.[m.profile.name] ?? 10) > 10
+                        ? 'bg-rose-900 text-white'
+                        : 'bg-slate-200 text-slate-700'
+                    }`}>
+                      {cohortCounts?.[m.profile.name] ?? 10}
+                    </span>
                   </button>
 
                   <button
