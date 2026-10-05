@@ -113,7 +113,7 @@ export default function Home() {
               Appointments where nothing gets missed.
             </h1>
             <p className="mt-3.5 text-rose-100/90 text-sm sm:text-base leading-relaxed">
-              Between antenatal visits, small symptoms often get forgotten before you reach the clinic. LoveChild helps pregnant mothers record anything they feel is worth noting, quietly logging everything into decentralized Walrus Memory. When you visit the hospital, that memory informs your doctor of even the minor details that happened along the way, flagging recurring patterns in a concise briefing that saves doctors 10–15 minutes per visit.
+              Between antenatal visits, small symptoms get forgotten. LoveChild lets mothers log anything worth noting, stored quietly in decentralized Walrus Memory. At the hospital, it gives your doctor a short briefing of every detail, with recurring patterns flagged, saving 10-15 minutes per visit.
             </p>
           </div>
         </section>
