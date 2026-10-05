@@ -43,6 +43,13 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   // Context-specific clinical starter prompts
   const starterPrompts = useMemo(() => {
+    if (!withMemory) {
+      return [
+        'I\'m feeling a bit dizzy after walking outside.',
+        'What were the things that I had before?',
+        'Can I drink ginger tea for nausea?',
+      ];
+    }
     const n = profile.name.toLowerCase();
     if (n === 'ada') {
       return [
@@ -70,7 +77,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       'Checking my symptom history from Walrus.',
       'Compile a clinical briefing for my OB-GYN.',
     ];
-  }, [profile.name]);
+  }, [profile.name, withMemory]);
 
   // Initialize introductory message when patient or memory mode changes
   useEffect(() => {

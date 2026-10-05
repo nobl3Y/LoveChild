@@ -91,12 +91,12 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
             return (
               <div
                 key={i}
-                className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-5 shadow-2xs space-y-2.5"
+                className="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-5 shadow-2xs space-y-2.5 print:bg-white print:border-slate-300 print:shadow-none print-avoid-break"
               >
                 {title && (
                   <div className="flex items-center gap-2">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${badgeStyle}`}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${badgeStyle} print:border-slate-300`}
                     >
                       {icon}
                       <span>{title}</span>
@@ -122,12 +122,13 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
 
   return (
     <div
+      id="clinical-briefing-modal"
       onClick={onClose}
-      className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 print:p-0 print:bg-white animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 print:p-0 print:bg-white print:static print:overflow-visible print:z-auto print:m-0 print:block animate-in fade-in duration-200"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[88vh] flex flex-col border border-slate-200 overflow-hidden my-auto print:border-none print:shadow-none print:max-w-none print:max-h-none"
+        className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[88vh] flex flex-col border border-slate-200 overflow-hidden my-auto print:border-none print:shadow-none print:max-w-none print:max-h-none print:overflow-visible print:my-0 print:rounded-none"
       >
         {/* Sticky Header */}
         <div className="p-4 sm:p-5 border-b border-slate-200 bg-slate-50/90 flex items-center justify-between shrink-0 print:hidden">
@@ -159,14 +160,20 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
           </div>
         </div>
 
-        {/* Scrollable Body */}
-        <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-8 space-y-6 text-slate-800 custom-scrollbar">
-          <div className="border-b-2 border-slate-900 pb-3.5">
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">LoveChild Clinical Briefing</h1>
-            <p className="text-xs text-slate-500 mt-1">
-              Patient: <strong className="text-slate-700">{profile.name}</strong>
-              {profile.week ? ` • Week ${profile.week}` : ''} • Prepared {new Date().toLocaleDateString()}
-            </p>
+        {/* Scrollable Body on screen, natural flowing on print */}
+        <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-8 space-y-6 text-slate-800 custom-scrollbar print:overflow-visible print:max-h-none print:h-auto print:p-0 print:space-y-4">
+          <div className="border-b-2 border-slate-900 pb-3.5 flex items-start justify-between">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">LoveChild Clinical Briefing</h1>
+              <p className="text-xs text-slate-500 mt-1">
+                Patient: <strong className="text-slate-800 font-semibold">{profile.name}</strong>
+                {profile.week ? ` • Week ${profile.week}` : ''} • Prepared {new Date().toLocaleDateString(undefined, { dateStyle: 'medium' })}
+              </p>
+            </div>
+            <div className="text-right hidden print:block text-[11px] text-slate-500">
+              <span className="font-semibold text-slate-700">Walrus Memory Decentralized Snapshot</span>
+              <p className="font-mono text-[9px] text-slate-400">Encrypted • Patient-Owned</p>
+            </div>
           </div>
 
           {loading && (
@@ -185,14 +192,14 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
             <>
               {renderFormattedReport(report)}
 
-              <div className="pt-5 border-t border-slate-200">
+              <div className="pt-5 border-t border-slate-200 print-avoid-break">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3 flex items-center justify-between">
                   <span>Underlying Walrus Records ({memories.length})</span>
                   <span className="text-[10px] font-mono text-slate-400 font-normal">Decentralized Blobs</span>
                 </h4>
                 <ol className="space-y-2.5 text-xs text-slate-700 list-decimal pl-4">
                   {memories.map((m) => (
-                    <li key={m.blobId} className="leading-relaxed bg-white p-3 rounded-xl border border-slate-200/80 shadow-2xs">
+                    <li key={m.blobId} className="leading-relaxed bg-white p-3 rounded-xl border border-slate-200/80 shadow-2xs print:border-slate-300 print:shadow-none print-avoid-break">
                       <span className="text-slate-800">{m.text}</span>
                       <span className="block font-mono text-[10px] text-slate-400 mt-1 break-all">
                         Walrus Blob: {m.blobId}
@@ -202,7 +209,7 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
                 </ol>
               </div>
 
-              <div className="p-3.5 bg-amber-50/70 border border-amber-200/80 rounded-xl text-xs text-amber-900 leading-relaxed">
+              <div className="p-3.5 bg-amber-50/70 border border-amber-200/80 rounded-xl text-xs text-amber-900 leading-relaxed print:bg-slate-50 print:border-slate-300 print-avoid-break">
                 <strong>Clinical Note:</strong> This summary is an automated clinical briefing compiled from decentralized notes entered between antenatal visits. It is designed to save 10–15 minutes per consultation and does not replace clinician judgment.
               </div>
             </>
