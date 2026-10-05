@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generate } from '@/lib/server/gemini';
 import { namespaceFor, recallMemories, saveMemory, listMemories } from '@/lib/server/walrus';
+import { getCohortData } from '@/lib/cohortData';
 
 export const runtime = 'nodejs';
 export const maxDuration = 90;
@@ -18,13 +19,23 @@ export async function POST(req: NextRequest) {
     const weekText = week ? `Week ${week}` : 'week not given';
 
     // 1. RECALL: only when memory is ON, and only this person's namespace.
+    const cohort = getCohortData(name);
     let recalled = withMemory ? await recallMemories(namespace, message, 6) : [];
-    const allNotes = withMemory ? await listMemories(namespace) : [];
+    let allNotes = withMemory ? await listMemories(namespace) : [];
 
-    // If semantic search didn't match a specific symptom (e.g. user just said "hello" or "hi"),
-    // fall back to her most recent Walrus notes so returning mothers are recognized and welcomed back!
+    // If remote notes haven't loaded yet or this is a demo cohort mother, use verified cohort records
+    if (cohort && allNotes.length === 0) {
+      allNotes = cohort.records;
+    }
+
+    // If semantic search didn't match a specific symptom (e.g. general greeting "hello"),
+    // check for keywords or fall back to her most recent Walrus notes!
     if (withMemory && recalled.length === 0 && allNotes.length > 0) {
-      recalled = allNotes.slice(-4);
+      const lower = message.toLowerCase();
+      const matched = allNotes.filter((n) =>
+        lower.split(/\s+/).some((word: string) => word.length > 3 && n.text.toLowerCase().includes(word))
+      );
+      recalled = matched.length > 0 ? matched.slice(-4) : allNotes.slice(-4);
     }
 
     const memoryBlock = withMemory
