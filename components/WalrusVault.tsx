@@ -94,9 +94,9 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
           </div>
 
           {/* Scrollable Notes List */}
-          <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-3">
+          <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-3 custom-scrollbar">
             {loading && (
-              <div className="flex items-center text-slate-500 text-sm py-12 justify-center">
+              <div className="flex items-center text-slate-500 text-sm py-16 justify-center">
                 <Loader2 className="w-4 h-4 animate-spin mr-2 text-rose-700" /> Querying Walrus decentralized storage…
               </div>
             )}
@@ -114,7 +114,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
                 <p className="text-slate-800 text-sm leading-relaxed">{m.text}</p>
                 <div className="mt-2.5 pt-2 border-t border-slate-100 font-mono text-[10px] text-slate-400 break-all flex items-center justify-between">
                   <span>blob: {m.blobId}</span>
-                  <span className="text-[9px] uppercase tracking-wider text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded font-sans font-semibold">Walrus</span>
+                  <span className="text-[9px] uppercase tracking-wider text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded font-sans font-semibold whitespace-nowrap">Walrus</span>
                 </div>
               </div>
             ))}
@@ -122,10 +122,10 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
 
           {/* Sticky Dismiss Footer */}
           <div className="p-3 sm:p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between shrink-0 text-xs text-slate-500">
-            <span>{items.length} decentralized notes on Walrus</span>
+            <span className="font-medium">{items.length} decentralized notes on Walrus</span>
             <button
               onClick={onClose}
-              className="px-4 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold transition-colors"
+              className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold transition-colors whitespace-nowrap shrink-0"
             >
               Close Vault
             </button>

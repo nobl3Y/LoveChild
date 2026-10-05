@@ -102,14 +102,14 @@ export const MotherCohortShowcase: React.FC<MotherCohortShowcaseProps> = ({
                 <button
                   type="button"
                   onClick={() => onSelectMother(m.profile)}
-                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
                     isSelected
                       ? 'bg-rose-900 text-white shadow-sm hover:bg-rose-950'
                       : 'bg-rose-50 text-rose-900 hover:bg-rose-100'
                   }`}
                 >
-                  {isSelected ? `Chatting as ${m.profile.name}` : `Switch to ${m.profile.name}`}
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>{isSelected ? `Chatting as ${m.profile.name}` : `Switch to ${m.profile.name}`}</span>
+                  <ArrowRight className="w-3.5 h-3.5 shrink-0" />
                 </button>
 
                 {/* Stored Records & Doctor Report specific to this mother */}
@@ -117,18 +117,18 @@ export const MotherCohortShowcase: React.FC<MotherCohortShowcaseProps> = ({
                   <button
                     type="button"
                     onClick={() => onOpenVaultFor(m.profile)}
-                    className="py-2 px-2.5 rounded-lg border border-slate-200 hover:border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-all"
+                    className="py-2.5 px-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-700 text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap"
                   >
-                    <Database className="w-3 h-3 text-rose-700" />
+                    <Database className="w-3 h-3 text-rose-700 shrink-0" />
                     <span>Walrus Vault</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => onOpenReportFor(m.profile)}
-                    className="py-2 px-2.5 rounded-lg border border-rose-200 hover:border-rose-300 bg-white hover:bg-rose-50/50 text-rose-900 text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs"
+                    className="py-2.5 px-2.5 rounded-xl border border-rose-200 hover:border-rose-300 bg-white hover:bg-rose-50/50 text-rose-900 text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs whitespace-nowrap"
                   >
-                    <FileText className="w-3 h-3 text-rose-700" />
+                    <FileText className="w-3 h-3 text-rose-700 shrink-0" />
                     <span>Doctor&apos;s Report</span>
                   </button>
                 </div>

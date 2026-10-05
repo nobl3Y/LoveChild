@@ -28,14 +28,23 @@ export function namespaceFor(name: string, pin: string): string {
 export async function recallMemories(
   namespace: string,
   query: string,
-  limit = 5
+  limit = 5,
+  timeoutMs = 3500
 ): Promise<MemoryItem[]> {
-  const res = await getMemWal().recall({ query, limit, namespace });
-  return (res.results || []).map((r: any) => ({
-    blobId: r.blob_id,
-    text: r.text,
-    createdAt: r.created_at,
-  }));
+  try {
+    const res: any = await Promise.race([
+      getMemWal().recall({ query, limit, namespace }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('recall timeout')), timeoutMs)),
+    ]);
+    return (res?.results || []).map((r: any) => ({
+      blobId: r.blob_id,
+      text: r.text,
+      createdAt: r.created_at,
+    }));
+  } catch (err: any) {
+    console.warn('recallMemories notice:', err.message);
+    return [];
+  }
 }
 
 /** Everything stored for this person, oldest first. */
@@ -44,7 +53,8 @@ export async function listMemories(namespace: string): Promise<MemoryItem[]> {
     const items = await recallMemories(
       namespace,
       'pregnancy symptoms vitals notes',
-      20
+      20,
+      6000
     );
     return items.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
   } catch (err: any) {
@@ -53,11 +63,14 @@ export async function listMemories(namespace: string): Promise<MemoryItem[]> {
   }
 }
 
-/** Writes one memory and waits (up to timeoutMs) for the real Walrus blob id. */
+/** 
+ * Writes one memory to Walrus. Returns immediately or within ~1.2s so the user chat is blazing fast.
+ * The Walrus relayer continues processing and committing to Sui in the background.
+ */
 export async function saveMemory(
   namespace: string,
   text: string,
-  timeoutMs = 45000
+  timeoutMs = 1500
 ): Promise<{ status: 'saved' | 'pending'; blobId?: string; jobId: string }> {
   const memwal = getMemWal();
   const job = await memwal.remember(text, namespace);
@@ -69,6 +82,7 @@ export async function saveMemory(
     ]);
     return { status: 'saved', blobId: result?.blob_id, jobId };
   } catch {
+    // If not confirmed within 1.5s, the job is still active on Walrus and will confirm in the background
     return { status: 'pending', jobId };
   }
 }

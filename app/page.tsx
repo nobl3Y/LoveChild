@@ -97,9 +97,9 @@ export default function Home() {
         blobCount={noteCount ?? 0}
       />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-16">
         {/* Section 1: Hero Banner (Always on Top) */}
-        <section className="bg-gradient-to-br from-rose-950 via-red-950 to-stone-950 rounded-3xl p-6 sm:p-8 md:p-10 text-white shadow-lg border border-rose-900/40">
+        <section className="bg-gradient-to-br from-rose-950 via-red-950 to-stone-950 rounded-3xl p-7 sm:p-9 md:p-11 text-white shadow-lg border border-rose-900/40">
           <div className="max-w-3xl">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-300 block mb-3">
               Maternal Health Companion • Walrus Memory
@@ -107,16 +107,16 @@ export default function Home() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-snug">
               Appointments where nothing gets missed.
             </h1>
-            <p className="mt-3 text-rose-100/90 text-sm sm:text-base leading-relaxed">
-              Between antenatal visits, small symptoms like mild headaches or swelling often get forgotten before they escalate. LoveChild preserves every check-in on <strong className="text-white">Walrus Memory</strong> and flags recurring patterns in a concise briefing that saves doctors 10–15 minutes per visit.
+            <p className="mt-3.5 text-rose-100/90 text-sm sm:text-base leading-relaxed">
+              Between antenatal visits, small symptoms like mild headaches or swelling often get forgotten before they escalate. LoveChild preserves every note on <strong className="text-white">Walrus Memory</strong> and flags recurring patterns in a concise briefing that saves doctors 10–15 minutes per visit.
             </p>
           </div>
         </section>
 
         {/* Section 2: Live Consultation Journal (Chat immediately accessible) */}
-        <section id="chat-section" className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
-            <div>
+        <section id="chat-section" className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
+            <div className="space-y-1">
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 Live Consultation Journal
               </h2>
@@ -127,8 +127,8 @@ export default function Home() {
               </p>
             </div>
             <div className="text-xs text-slate-500 flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="font-medium text-slate-700">Walrus Mainnet Connected</span>
+              <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="font-semibold text-slate-700 whitespace-nowrap">Walrus Mainnet Connected</span>
             </div>
           </div>
 
