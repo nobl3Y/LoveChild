@@ -229,6 +229,10 @@ WORTH ASKING THE DOCTOR
 };
 
 export function getCohortData(name: string): CohortMotherData | null {
-  const key = name.trim().toLowerCase();
-  return COHORT_DATA[key] || null;
+  if (!name) return null;
+  const n = name.trim().toLowerCase();
+  if (n.includes('ada')) return COHORT_DATA.ada;
+  if (n.includes('bless')) return COHORT_DATA.blessing;
+  if (n.includes('chiamaka')) return COHORT_DATA.chiamaka;
+  return null;
 }

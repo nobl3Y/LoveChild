@@ -20,22 +20,28 @@ export async function POST(req: NextRequest) {
 
     // 1. RECALL: only when memory is ON, and only this person's namespace.
     const cohort = getCohortData(name);
-    let recalled = withMemory ? await recallMemories(namespace, message, 6) : [];
-    let allNotes = withMemory ? await listMemories(namespace) : [];
+    let recalled: any[] = [];
+    let allNotes: any[] = [];
 
-    // If remote notes haven't loaded yet or this is a demo cohort mother, use verified cohort records
-    if (cohort && allNotes.length === 0) {
-      allNotes = cohort.records;
-    }
-
-    // If semantic search didn't match a specific symptom (e.g. general greeting "hello"),
-    // check for keywords or fall back to her most recent Walrus notes!
-    if (withMemory && recalled.length === 0 && allNotes.length > 0) {
-      const lower = message.toLowerCase();
-      const matched = allNotes.filter((n) =>
-        lower.split(/\s+/).some((word: string) => word.length > 3 && n.text.toLowerCase().includes(word))
-      );
-      recalled = matched.length > 0 ? matched.slice(-4) : allNotes.slice(-4);
+    if (withMemory) {
+      if (cohort) {
+        allNotes = cohort.records;
+        const lower = message.toLowerCase();
+        const matched = allNotes.filter((n) =>
+          lower.split(/\s+/).some((word: string) => word.length > 3 && n.text.toLowerCase().includes(word))
+        );
+        recalled = matched.length > 0 ? matched.slice(-4) : allNotes.slice(-4);
+      } else {
+        recalled = await recallMemories(namespace, message, 6);
+        allNotes = await listMemories(namespace);
+        if (recalled.length === 0 && allNotes.length > 0) {
+          const lower = message.toLowerCase();
+          const matched = allNotes.filter((n) =>
+            lower.split(/\s+/).some((word: string) => word.length > 3 && n.text.toLowerCase().includes(word))
+          );
+          recalled = matched.length > 0 ? matched.slice(-4) : allNotes.slice(-4);
+        }
+      }
     }
 
     const memoryBlock = withMemory
