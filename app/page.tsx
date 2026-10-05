@@ -2,19 +2,20 @@
 
 import React, { useEffect, useState } from 'react';
 import { Navbar } from '@/components/Navbar';
-import { ProfileGate } from '@/components/ProfileGate';
 import { ChatInterface } from '@/components/ChatInterface';
 import { WalrusVault } from '@/components/WalrusVault';
 import { ClinicalBriefingModal } from '@/components/ClinicalBriefingModal';
 import { ProfileModal } from '@/components/ProfileModal';
 import { Profile } from '@/lib/types';
+import { FEATURED_MOTHERS } from '@/lib/cohort';
 import { MotherCohortShowcase } from '@/components/MotherCohortShowcase';
 import { MessageSquare, Clock, FileCheck } from 'lucide-react';
 
 const STORAGE_KEY = 'lovechild-profile';
 
 export default function Home() {
-  const [profile, setProfile] = useState<Profile | null>(null);
+  // Default to Ada Bello (first cohort patient) so chat is ready immediately on load
+  const [profile, setProfile] = useState<Profile>(FEATURED_MOTHERS[0].profile);
   const [saved, setSaved] = useState<Profile | null>(null);
   const [ready, setReady] = useState(false);
   const [isVaultOpen, setIsVaultOpen] = useState(false);
@@ -39,9 +40,9 @@ export default function Home() {
     setReady(true);
   }, []);
 
-  // Load how many notes this person already has on Walrus.
+  // Fetch how many notes this patient already has stored on Walrus
   useEffect(() => {
-    const target = loggedInUser || profile;
+    const target = inspectProfile || loggedInUser || profile;
     if (!target) return;
     setNoteCount(null);
     fetch('/api/memories', {
@@ -50,9 +51,9 @@ export default function Home() {
       body: JSON.stringify({ name: target.name, pin: target.pin }),
     })
       .then((r) => r.json())
-      .then((d) => setNoteCount(d.memories ? d.memories.length : null))
+      .then((d) => setNoteCount(d.memories ? d.memories.length : 0))
       .catch(() => setNoteCount(null));
-  }, [loggedInUser, profile, refreshKey]);
+  }, [loggedInUser, profile, inspectProfile, refreshKey]);
 
   const loginRealUser = (p: Profile) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
@@ -63,7 +64,6 @@ export default function Home() {
   };
 
   const startCohortChat = (p: Profile) => {
-    // Allows testing chat as this cohort subject in the chat interface
     setProfile(p);
   };
 
@@ -81,9 +81,9 @@ export default function Home() {
     localStorage.removeItem(STORAGE_KEY);
     setSaved(null);
     setLoggedInUser(null);
-    setProfile(null);
+    setProfile(FEATURED_MOTHERS[0].profile);
     setInspectProfile(null);
-    setNoteCount(null);
+    setRefreshKey((k) => k + 1);
   };
 
   return (
@@ -91,14 +91,14 @@ export default function Home() {
       <Navbar
         currentProfile={loggedInUser}
         onOpenProfileModal={() => setIsProfileModalOpen(true)}
-        onOpenVault={() => (inspectProfile || loggedInUser || profile) && setIsVaultOpen(true)}
-        onOpenReport={() => (inspectProfile || loggedInUser || profile) && setIsReportOpen(true)}
+        onOpenVault={() => openVaultFor(inspectProfile || loggedInUser || profile)}
+        onOpenReport={() => openReportFor(inspectProfile || loggedInUser || profile)}
         onSignOut={switchUser}
         blobCount={noteCount ?? 0}
       />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {/* Hero */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+        {/* Section 1: Hero Banner (Always on Top) */}
         <section className="bg-gradient-to-br from-rose-950 via-red-950 to-stone-950 rounded-3xl p-6 sm:p-8 md:p-10 text-white shadow-lg border border-rose-900/40">
           <div className="max-w-3xl">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-300 block mb-3">
@@ -113,53 +113,62 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Segment 2: Featured Cohort Showcase */}
-        <section className="pt-12 border-t border-slate-200/80">
+        {/* Section 2: Live Consultation Journal (Chat immediately accessible) */}
+        <section id="chat-section" className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Live Consultation Journal
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600">
+                {noteCount === null
+                  ? 'Querying Walrus decentralized storage…'
+                  : `${noteCount} note${noteCount !== 1 ? 's' : ''} stored on Walrus for ${profile.name}.`}
+              </p>
+            </div>
+            <div className="text-xs text-slate-500 flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="font-medium text-slate-700">Walrus Mainnet Connected</span>
+            </div>
+          </div>
+
+          <ChatInterface
+            profile={profile}
+            onMemoryChanged={() => setRefreshKey((k) => k + 1)}
+            onOpenVault={() => openVaultFor(profile)}
+            onOpenReport={() => openReportFor(profile)}
+            onSwitchUser={switchUser}
+            onSelectMother={startCohortChat}
+            onOpenCustomModal={() => setIsProfileModalOpen(true)}
+            blobCount={noteCount}
+          />
+        </section>
+
+        {/* Section 3: Featured Clinical Cohorts (Detailed Patient Profiles) */}
+        <section className="pt-10 border-t border-slate-200/80">
+          <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+              Featured Clinical Cohorts
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-[1.85]">
+              Real longitudinal maternal records persisted on Walrus decentralized storage. Switch patient to chat, view their encrypted vault, or generate an OB-GYN briefing.
+            </p>
+          </div>
+
           <MotherCohortShowcase
             currentProfile={profile}
-            onSelectMother={startCohortChat}
+            onSelectMother={(p) => {
+              startCohortChat(p);
+              const el = document.getElementById('chat-section');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
             onOpenVaultFor={openVaultFor}
             onOpenReportFor={openReportFor}
           />
         </section>
 
-        {/* Segment 3: Live Consultation Journal / Access */}
-        <section className="pt-12 border-t border-slate-200/80 space-y-6">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-              {profile ? `Live Consultation Journal • ${profile.name}` : 'Access Your Consultation Journal'}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 leading-[1.85]">
-              {profile
-                ? 'Chat naturally with LoveChild. Every symptom or observation is committed directly to your decentralized Walrus Memory vault.'
-                : 'Enter your name and PIN below to access your private decentralized session.'}
-            </p>
-          </div>
-
-          {!ready ? null : !profile ? (
-            <ProfileGate initial={saved} onStart={loginRealUser} />
-          ) : (
-            <div className="space-y-4">
-              <p className="text-xs text-slate-500 text-center px-1">
-                {noteCount === null
-                  ? 'Checking Walrus for your saved notes…'
-                  : noteCount === 0
-                  ? 'No saved notes yet. This is your first conversation.'
-                  : `${noteCount} note${noteCount > 1 ? 's' : ''} already saved on Walrus for ${profile.name}.`}
-              </p>
-              <ChatInterface
-                profile={profile}
-                onMemoryChanged={() => setRefreshKey((k) => k + 1)}
-                onOpenVault={() => setIsVaultOpen(true)}
-                onOpenReport={() => setIsReportOpen(true)}
-                onSwitchUser={switchUser}
-              />
-            </div>
-          )}
-        </section>
-
-        {/* Segment 4: How it works & Clinical Rationale */}
-        <section className="pt-12 border-t border-slate-200/80">
+        {/* Section 4: How LoveChild Works */}
+        <section className="pt-10 border-t border-slate-200/80">
           <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               How LoveChild Works
@@ -200,23 +209,29 @@ export default function Home() {
         </section>
       </main>
 
-      {(inspectProfile || profile) && (
-        <>
-          <WalrusVault
-            isOpen={isVaultOpen}
-            onClose={() => setIsVaultOpen(false)}
-            profile={inspectProfile || profile!}
-            refreshKey={refreshKey}
-            onLoaded={setNoteCount}
-          />
-          <ClinicalBriefingModal
-            isOpen={isReportOpen}
-            onClose={() => setIsReportOpen(false)}
-            profile={inspectProfile || profile!}
-          />
-        </>
-      )}
+      {/* Slide-Over Walrus Vault Drawer */}
+      <WalrusVault
+        isOpen={isVaultOpen}
+        onClose={() => {
+          setIsVaultOpen(false);
+          setInspectProfile(null);
+        }}
+        profile={inspectProfile || profile}
+        refreshKey={refreshKey}
+        onLoaded={(count) => setNoteCount(count)}
+      />
 
+      {/* Clinical Briefing / Doctor's Report Modal */}
+      <ClinicalBriefingModal
+        isOpen={isReportOpen}
+        onClose={() => {
+          setIsReportOpen(false);
+          setInspectProfile(null);
+        }}
+        profile={inspectProfile || profile}
+      />
+
+      {/* Custom Patient PIN Modal */}
       <ProfileModal
         isOpen={isProfileModalOpen}
         onClose={() => setIsProfileModalOpen(false)}
