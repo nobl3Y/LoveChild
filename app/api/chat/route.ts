@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generate } from '@/lib/server/gemini';
-import { namespaceFor, recallMemories, saveMemory } from '@/lib/server/walrus';
+import { namespaceFor, recallMemories, saveMemory, listMemories } from '@/lib/server/walrus';
 
 export const runtime = 'nodejs';
 export const maxDuration = 90;
@@ -18,14 +18,21 @@ export async function POST(req: NextRequest) {
     const weekText = week ? `Week ${week}` : 'week not given';
 
     // 1. RECALL: only when memory is ON, and only this person's namespace.
-    const recalled = withMemory ? await recallMemories(namespace, message, 6) : [];
+    let recalled = withMemory ? await recallMemories(namespace, message, 6) : [];
+    const allNotes = withMemory ? await listMemories(namespace) : [];
+
+    // If semantic search didn't match a specific symptom (e.g. user just said "hello" or "hi"),
+    // fall back to her most recent Walrus notes so returning mothers are recognized and welcomed back!
+    if (withMemory && recalled.length === 0 && allNotes.length > 0) {
+      recalled = allNotes.slice(-4);
+    }
 
     const memoryBlock = withMemory
-      ? recalled.length
+      ? allNotes.length > 0
         ? `NOTES SHE HAS ALREADY TOLD YOU (from Walrus Memory):\n${recalled
             .map((m) => `- ${m.createdAt ? m.createdAt.slice(0, 10) + ': ' : ''}${m.text}`)
-            .join('\n')}`
-        : 'You have no earlier notes from her yet. This looks like her first conversation.'
+            .join('\n')}\n(She is a returning mother with ${allNotes.length} notes on Walrus. Welcome her back warmly as an ongoing companion.)`
+        : 'You have no earlier notes from her yet on Walrus. This is her very first conversation.'
       : 'MEMORY IS OFF. You know nothing about her beyond this one message. Do not guess at her history.';
 
     const prompt = `You are LoveChild, a warm maternal care companion. You help a pregnant woman keep track of how she feels so she can give her doctor the full picture.
