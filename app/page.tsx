@@ -42,7 +42,7 @@ export default function Home() {
 
   // Fetch how many notes this patient already has stored on Walrus
   useEffect(() => {
-    const target = inspectProfile || loggedInUser || profile;
+    const target = inspectProfile || profile;
     if (!target) return;
     setNoteCount(null);
     fetch('/api/memories', {
@@ -53,26 +53,31 @@ export default function Home() {
       .then((r) => r.json())
       .then((d) => setNoteCount(d.memories ? d.memories.length : 0))
       .catch(() => setNoteCount(null));
-  }, [loggedInUser, profile, inspectProfile, refreshKey]);
+  }, [profile, inspectProfile, refreshKey]);
 
   const loginRealUser = (p: Profile) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
     setSaved(p);
     setLoggedInUser(p);
     setProfile(p);
+    setInspectProfile(null);
     setIsProfileModalOpen(false);
   };
 
   const startCohortChat = (p: Profile) => {
+    setInspectProfile(null);
     setProfile(p);
+    setNoteCount(null);
   };
 
   const openVaultFor = (p: Profile) => {
+    setProfile(p);
     setInspectProfile(p);
     setIsVaultOpen(true);
   };
 
   const openReportFor = (p: Profile) => {
+    setProfile(p);
     setInspectProfile(p);
     setIsReportOpen(true);
   };
@@ -91,8 +96,8 @@ export default function Home() {
       <Navbar
         currentProfile={loggedInUser}
         onOpenProfileModal={() => setIsProfileModalOpen(true)}
-        onOpenVault={() => openVaultFor(inspectProfile || loggedInUser || profile)}
-        onOpenReport={() => openReportFor(inspectProfile || loggedInUser || profile)}
+        onOpenVault={() => openVaultFor(profile)}
+        onOpenReport={() => openReportFor(profile)}
         onSignOut={switchUser}
         blobCount={noteCount ?? 0}
       />
@@ -108,7 +113,7 @@ export default function Home() {
               Appointments where nothing gets missed.
             </h1>
             <p className="mt-3.5 text-rose-100/90 text-sm sm:text-base leading-relaxed">
-              Between antenatal visits, small symptoms like mild headaches or swelling often get forgotten before they escalate. LoveChild preserves every note on <strong className="text-white">Walrus Memory</strong> and flags recurring patterns in a concise briefing that saves doctors 10–15 minutes per visit.
+              Between antenatal visits, small symptoms often get forgotten before you reach the clinic. LoveChild helps pregnant mothers record anything they feel is worth noting, quietly logging everything into decentralized Walrus Memory. When you visit the hospital, that memory informs your doctor of even the minor details that happened along the way, flagging recurring patterns in a concise briefing that saves doctors 10–15 minutes per visit.
             </p>
           </div>
         </section>

@@ -22,6 +22,7 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
     setLoading(true);
     setError('');
     setReport('');
+    setMemories([]);
     fetch('/api/report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

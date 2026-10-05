@@ -20,6 +20,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
   useEffect(() => {
     if (!isOpen) return;
     let cancelled = false;
+    setItems([]);
     setLoading(true);
     setError('');
     fetch('/api/memories', {

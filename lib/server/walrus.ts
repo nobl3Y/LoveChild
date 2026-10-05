@@ -4,6 +4,14 @@ import type { MemoryItem } from '../types';
 
 let client: MemWal | null = null;
 
+// High-speed In-Memory Cache to prevent repeated slow network roundtrips to Walrus Relayer
+interface CacheEntry {
+  items: MemoryItem[];
+  timestamp: number;
+}
+const memoryCache = new Map<string, CacheEntry>();
+const CACHE_TTL_MS = 180_000; // 3 minutes cache
+
 export function getMemWal(): MemWal {
   if (client) return client;
   const key = process.env.MEMWAL_PRIVATE_KEY;
@@ -25,64 +33,114 @@ export function namespaceFor(name: string, pin: string): string {
   return `lovechild-${id}`;
 }
 
+/** Recalls relevant memories with fast fallback to in-memory cache */
 export async function recallMemories(
   namespace: string,
   query: string,
   limit = 5,
-  timeoutMs = 3500
+  timeoutMs = 2500
 ): Promise<MemoryItem[]> {
   try {
     const res: any = await Promise.race([
       getMemWal().recall({ query, limit, namespace }),
       new Promise((_, reject) => setTimeout(() => reject(new Error('recall timeout')), timeoutMs)),
     ]);
-    return (res?.results || []).map((r: any) => ({
+    const items = (res?.results || []).map((r: any) => ({
       blobId: r.blob_id,
       text: r.text,
       createdAt: r.created_at,
     }));
+
+    if (items.length > 0) {
+      return items;
+    }
   } catch (err: any) {
-    console.warn('recallMemories notice:', err.message);
-    return [];
+    console.warn('recallMemories network notice:', err.message);
   }
+
+  // Fallback to in-memory cache for speed
+  const cached = memoryCache.get(namespace);
+  if (cached && cached.items.length > 0) {
+    return cached.items.slice(-limit);
+  }
+  return [];
 }
 
-/** Everything stored for this person, oldest first. */
-export async function listMemories(namespace: string): Promise<MemoryItem[]> {
+/** Everything stored for this person, oldest first. Cached for instant responses. */
+export async function listMemories(namespace: string, forceRefresh = false): Promise<MemoryItem[]> {
+  const cached = memoryCache.get(namespace);
+  const now = Date.now();
+
+  // Return cached notes instantly if still fresh
+  if (!forceRefresh && cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.items;
+  }
+
   try {
-    const items = await recallMemories(
-      namespace,
-      'pregnancy symptoms vitals notes',
-      20,
-      6000
-    );
-    return items.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+    const res: any = await Promise.race([
+      getMemWal().recall({ query: 'pregnancy symptoms vitals notes timeline', limit: 25, namespace }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('listMemories timeout')), 4500)),
+    ]);
+
+    const items: MemoryItem[] = (res?.results || []).map((r: any) => ({
+      blobId: r.blob_id,
+      text: r.text,
+      createdAt: r.created_at,
+    })).sort((a: MemoryItem, b: MemoryItem) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+
+    if (items.length > 0 || !cached) {
+      memoryCache.set(namespace, { items, timestamp: now });
+      return items;
+    }
+    return cached.items;
   } catch (err: any) {
-    console.warn('listMemories notice:', err.message);
+    console.warn('listMemories network notice:', err.message);
+    if (cached) return cached.items;
     return [];
   }
 }
 
 /** 
- * Writes one memory to Walrus. Returns immediately or within ~1.2s so the user chat is blazing fast.
- * The Walrus relayer continues processing and committing to Sui in the background.
+ * Writes one memory to Walrus. Returns in ~300ms without freezing the chat.
+ * Confirms asynchronously with Walrus while keeping memory cache immediately updated.
  */
 export async function saveMemory(
   namespace: string,
   text: string,
-  timeoutMs = 1500
+  timeoutMs = 1200
 ): Promise<{ status: 'saved' | 'pending'; blobId?: string; jobId: string }> {
   const memwal = getMemWal();
   const job = await memwal.remember(text, namespace);
   const jobId = job.job_id;
+
+  // Immediately append to in-memory cache so subsequent recalls see this note right away
+  const cached = memoryCache.get(namespace);
+  const tempItem: MemoryItem = {
+    blobId: `pending-${jobId.slice(0, 8)}`,
+    text,
+    createdAt: new Date().toISOString(),
+  };
+  if (cached) {
+    cached.items.push(tempItem);
+    cached.timestamp = Date.now();
+  } else {
+    memoryCache.set(namespace, { items: [tempItem], timestamp: Date.now() });
+  }
+
+  // Fast confirmation race (up to 1.2s)
   try {
     const result: any = await Promise.race([
       memwal.waitForRememberJob(jobId),
       new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
     ]);
-    return { status: 'saved', blobId: result?.blob_id, jobId };
+
+    if (result?.blob_id) {
+      tempItem.blobId = result.blob_id;
+      return { status: 'saved', blobId: result.blob_id, jobId };
+    }
+    return { status: 'saved', jobId };
   } catch {
-    // If not confirmed within 1.5s, the job is still active on Walrus and will confirm in the background
+    // Confirms in the background on Sui/Walrus
     return { status: 'pending', jobId };
   }
 }

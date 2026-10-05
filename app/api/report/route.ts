@@ -5,6 +5,14 @@ import { listMemories, namespaceFor } from '@/lib/server/walrus';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
+// In-Memory Report Cache (keyed by namespace + noteCount)
+interface CachedReport {
+  report: string;
+  noteCount: number;
+  timestamp: number;
+}
+const reportCache = new Map<string, CachedReport>();
+
 export async function POST(req: NextRequest) {
   try {
     const { name, pin, week } = await req.json();
@@ -12,9 +20,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Name and PIN are required.' }, { status: 400 });
     }
 
-    const memories = await listMemories(namespaceFor(name, pin));
+    const namespace = namespaceFor(name, pin);
+    const memories = await listMemories(namespace);
     if (memories.length === 0) {
       return NextResponse.json({ memories, report: '' });
+    }
+
+    // Check if report is already cached for this exact note set
+    const cached = reportCache.get(namespace);
+    if (cached && cached.noteCount === memories.length) {
+      return NextResponse.json({ memories, report: cached.report });
     }
 
     const notes = memories
@@ -38,8 +53,15 @@ WORTH ASKING THE DOCTOR
 (2 to 4 questions based only on the notes)
 
 Do not diagnose. Keep it under 250 words.`,
-      1500
+      1200
     );
+
+    // Cache the synthesized report
+    reportCache.set(namespace, {
+      report,
+      noteCount: memories.length,
+      timestamp: Date.now(),
+    });
 
     return NextResponse.json({ memories, report });
   } catch (error: any) {
