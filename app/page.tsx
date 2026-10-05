@@ -113,38 +113,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How it works */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-7 rounded-2xl border border-slate-200/90">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center mb-5">
-              <MessageSquare className="w-5 h-5 text-rose-700" />
-            </div>
-            <h3 className="font-bold text-slate-900 text-base mb-2">1. Check-in any time</h3>
-            <p className="text-sm text-slate-600 leading-[1.85]">
-              Morning sickness, swollen ankles, or worries about fetal movement. Share concerns whenever they occur, day or night.
-            </p>
-          </div>
-          <div className="bg-white p-7 rounded-2xl border border-slate-200/90">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center mb-5">
-              <Clock className="w-5 h-5 text-rose-700" />
-            </div>
-            <h3 className="font-bold text-slate-900 text-base mb-2">2. Uncovers subtle patterns</h3>
-            <p className="text-sm text-slate-600 leading-[1.85]">
-              LoveChild securely saves every note to Walrus Memory, linking recurring symptoms across weeks before they escalate into urgent complications.
-            </p>
-          </div>
-          <div className="bg-white p-7 rounded-2xl border border-slate-200/90">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center mb-5">
-              <FileCheck className="w-5 h-5 text-rose-700" />
-            </div>
-            <h3 className="font-bold text-slate-900 text-base mb-2">3. Doctor visits go smoother</h3>
-            <p className="text-sm text-slate-600 leading-[1.85]">
-              Before your visit, one tap compiles an OB-GYN clinical summary. Your doctor reads it in 60 seconds, saving 10–15 minutes per consultation.
-            </p>
-          </div>
-        </section>
-
-        {/* Segment 3: Featured Cohort Showcase */}
+        {/* Segment 2: Featured Cohort Showcase */}
         <section className="pt-12 border-t border-slate-200/80">
           <MotherCohortShowcase
             currentProfile={profile}
@@ -154,7 +123,7 @@ export default function Home() {
           />
         </section>
 
-        {/* Segment 4: Live Consultation Journal / Access */}
+        {/* Segment 3: Live Consultation Journal / Access */}
         <section className="pt-12 border-t border-slate-200/80 space-y-6">
           <div className="text-center max-w-xl mx-auto space-y-2">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -187,6 +156,47 @@ export default function Home() {
               />
             </div>
           )}
+        </section>
+
+        {/* Segment 4: How it works & Clinical Rationale */}
+        <section className="pt-12 border-t border-slate-200/80">
+          <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+              How LoveChild Works
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-[1.85]">
+              Designed to preserve longitudinal context across every stage of pregnancy.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white p-7 rounded-2xl border border-slate-200/90 shadow-2xs">
+              <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center mb-5">
+                <MessageSquare className="w-5 h-5 text-rose-700" />
+              </div>
+              <h3 className="font-bold text-slate-900 text-base mb-2">1. Check-in any time</h3>
+              <p className="text-sm text-slate-600 leading-[1.85]">
+                Morning sickness, swollen ankles, or worries about fetal movement. Share concerns whenever they occur, day or night.
+              </p>
+            </div>
+            <div className="bg-white p-7 rounded-2xl border border-slate-200/90 shadow-2xs">
+              <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center mb-5">
+                <Clock className="w-5 h-5 text-rose-700" />
+              </div>
+              <h3 className="font-bold text-slate-900 text-base mb-2">2. Uncovers subtle patterns</h3>
+              <p className="text-sm text-slate-600 leading-[1.85]">
+                LoveChild securely saves every note to Walrus Memory, linking recurring symptoms across weeks before they escalate into urgent complications.
+              </p>
+            </div>
+            <div className="bg-white p-7 rounded-2xl border border-slate-200/90 shadow-2xs">
+              <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center mb-5">
+                <FileCheck className="w-5 h-5 text-rose-700" />
+              </div>
+              <h3 className="font-bold text-slate-900 text-base mb-2">3. Doctor visits go smoother</h3>
+              <p className="text-sm text-slate-600 leading-[1.85]">
+                Before your visit, one tap compiles an OB-GYN clinical summary. Your doctor reads it in 60 seconds, saving 10–15 minutes per consultation.
+              </p>
+            </div>
+          </div>
         </section>
       </main>
 
