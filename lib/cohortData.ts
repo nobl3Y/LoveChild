@@ -282,3 +282,21 @@ export function addCohortRecord(name: string, record: MemoryItem) {
   }
 }
 
+export function updateCohortRecordBlobId(name: string, oldBlobId: string, newBlobId: string) {
+  if (!name || !oldBlobId || !newBlobId) return;
+  const n = name.trim().toLowerCase();
+  let key = n;
+  if (n.includes('ada')) key = 'ada';
+  else if (n.includes('bless')) key = 'blessing';
+  else if (n.includes('chiamaka')) key = 'chiamaka';
+
+  const list = globalThis.__cohortAdditions?.[key];
+  if (list) {
+    for (const r of list) {
+      if (r.blobId === oldBlobId) {
+        r.blobId = newBlobId;
+      }
+    }
+  }
+}
+

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { X, Database, Loader2, Lock, ExternalLink, ShieldCheck } from 'lucide-react';
 import { MemoryItem, Profile } from '@/lib/types';
-import { getLocalVaultRecords } from '@/lib/localVault';
+import { getLocalVaultRecords, updateLocalVaultRecordBlobId } from '@/lib/localVault';
 
 interface WalrusVaultProps {
   isOpen: boolean;
@@ -62,6 +62,51 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, refreshKey, profile.name, profile.pin]);
+
+  // Active polling to resolve pending Walrus jobs to finalized on-chain blob IDs
+  const pendingBlobIds = items
+    .map((m) => m.blobId)
+    .filter((id) => id && (id.startsWith('job-') || id.startsWith('pending-')))
+    .join(',');
+
+  useEffect(() => {
+    if (!isOpen || !pendingBlobIds) return;
+
+    let cancelled = false;
+    const ids = pendingBlobIds.split(',').filter(Boolean);
+
+    const resolvePending = async () => {
+      try {
+        const res = await fetch('/api/memories/resolve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jobIds: ids, name: profile.name }),
+        });
+        const data = await res.json();
+        if (cancelled || !data?.results) return;
+
+        setItems((prev) =>
+          prev.map((item) => {
+            const resInfo = data.results[item.blobId];
+            if (resInfo && resInfo.status === 'done' && resInfo.blobId) {
+              updateLocalVaultRecordBlobId(profile.name, item.blobId, resInfo.blobId);
+              return { ...item, blobId: resInfo.blobId };
+            }
+            return item;
+          })
+        );
+      } catch {}
+    };
+
+    // Run resolution check immediately and then periodically every 2.8s
+    resolvePending();
+    const interval = setInterval(resolvePending, 2800);
+
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [isOpen, pendingBlobIds, profile.name]);
 
   // Close on Escape key
   useEffect(() => {
@@ -132,48 +177,55 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
                   <div className="text-slate-400 text-[11px] mb-1.5 font-medium">{new Date(m.createdAt).toLocaleString()}</div>
                 )}
                 <p className="text-slate-800 text-sm leading-relaxed">{m.text}</p>
-                <div className="mt-2.5 pt-2 border-t border-slate-100 text-[10px] space-y-1.5">
-                  <div className="font-mono text-slate-500 break-all flex items-center justify-between gap-2">
-                    <span className="truncate">blob: {m.blobId.startsWith('pending-') ? 'relayer.memory.walrus.xyz (committing)' : m.blobId}</span>
-                    <button
-                      type="button"
-                      onClick={() => setExpandedBlobId(expandedBlobId === m.blobId ? null : m.blobId)}
-                      className="text-rose-800 hover:text-rose-950 inline-flex items-center gap-1 shrink-0 font-sans text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer"
-                    >
-                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                      <span>{expandedBlobId === m.blobId ? 'Hide Proof' : 'Verify Proof'}</span>
-                    </button>
-                  </div>
+                {(() => {
+                  const isPending = m.blobId.startsWith('pending-') || m.blobId.startsWith('job-');
+                  return (
+                    <div className="mt-2.5 pt-2 border-t border-slate-100 text-[10px] space-y-1.5">
+                      <div className="font-mono text-slate-500 break-all flex items-center justify-between gap-2">
+                        <span className="truncate">blob: {isPending ? 'relayer.memory.walrus.xyz (syncing…)' : m.blobId}</span>
+                        <button
+                          type="button"
+                          onClick={() => setExpandedBlobId(expandedBlobId === m.blobId ? null : m.blobId)}
+                          className="text-rose-800 hover:text-rose-950 inline-flex items-center gap-1 shrink-0 font-sans text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer"
+                        >
+                          <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                          <span>{expandedBlobId === m.blobId ? 'Hide Proof' : 'Verify Proof'}</span>
+                        </button>
+                      </div>
 
-                  {expandedBlobId === m.blobId && (
-                    <div className="p-2.5 bg-slate-50 border border-rose-200/70 rounded-xl text-[10px] text-slate-600 space-y-1.5 animate-in fade-in duration-150">
-                      <div className="flex items-center justify-between font-semibold text-slate-700">
-                        <span className="text-emerald-700 flex items-center gap-1 font-sans">
-                          ● {m.blobId.startsWith('pending-') ? 'Submitted to Walrus Relayer (Syncing)' : 'Cryptographically Verified on Walrus'}
-                        </span>
-                        <span className="font-mono text-[9px] text-slate-400">@mysten-incubation/memwal</span>
-                      </div>
-                      <p className="leading-relaxed text-slate-600 font-sans">
-                        Committed as an erasure-coded Merkle root via <code className="text-[9px] bg-white px-1 py-0.5 rounded text-slate-700 border border-slate-200">relayer.memory.walrus.xyz</code>. For patient confidentiality, raw clinical notes are private to {profile.name} &amp; her doctor and never exposed in plain text on public web explorers.
-                      </p>
-                      <div className="pt-1 border-t border-slate-200/70 flex items-center justify-between text-[9px]">
-                        <span className="text-slate-400 font-sans">Zero-Knowledge Patient Privacy</span>
-                        {!m.blobId.startsWith('pending-') ? (
-                          <a
-                            href={`https://walruscan.com/testnet/blob/${m.blobId}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
-                          >
-                            Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
-                          </a>
-                        ) : (
-                          <span className="text-amber-700 font-sans font-medium">Indexing on Sui testnet</span>
-                        )}
-                      </div>
+                      {expandedBlobId === m.blobId && (
+                        <div className="p-2.5 bg-slate-50 border border-rose-200/70 rounded-xl text-[10px] text-slate-600 space-y-1.5 animate-in fade-in duration-150">
+                          <div className="flex items-center justify-between font-semibold text-slate-700">
+                            <span className="text-emerald-700 flex items-center gap-1 font-sans">
+                              ● {isPending ? 'Submitted to Walrus Relayer (Confirming on Sui)' : 'Cryptographically Verified on Walrus'}
+                            </span>
+                            <span className="font-mono text-[9px] text-slate-400">@mysten-incubation/memwal</span>
+                          </div>
+                          <p className="leading-relaxed text-slate-600 font-sans">
+                            Committed as an erasure-coded Merkle root via <code className="text-[9px] bg-white px-1 py-0.5 rounded text-slate-700 border border-slate-200">relayer.memory.walrus.xyz</code>. For patient confidentiality, raw clinical notes are private to {profile.name} &amp; her doctor and never exposed in plain text on public web explorers.
+                          </p>
+                          <div className="pt-1 border-t border-slate-200/70 flex items-center justify-between text-[9px]">
+                            <span className="text-slate-400 font-sans">Zero-Knowledge Patient Privacy</span>
+                            {!isPending ? (
+                              <a
+                                href={`https://walruscan.com/testnet/blob/${m.blobId}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
+                              >
+                                Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
+                              </a>
+                            ) : (
+                              <span className="text-amber-700 font-sans font-medium flex items-center gap-1">
+                                <Loader2 className="w-2.5 h-2.5 animate-spin" /> Finalizing on Sui testnet
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  );
+                })()}
               </div>
             ))}
           </div>

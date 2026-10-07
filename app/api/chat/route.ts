@@ -120,6 +120,7 @@ NOTE:
     let recorded: {
       note: string;
       blobId?: string;
+      jobId?: string;
       status: 'saved' | 'pending' | 'skipped' | 'failed';
       error?: string;
     } = { note: '', status: 'skipped' };
@@ -128,9 +129,9 @@ NOTE:
       const memoryText = `${today} (${weekText}) — ${note} She said: "${message.trim()}"`;
       try {
         const saved = await saveMemory(namespace, memoryText);
-        recorded = { note: memoryText, status: saved.status, blobId: saved.blobId };
+        recorded = { note: memoryText, status: saved.status, blobId: saved.blobId, jobId: saved.jobId };
         addCohortRecord(name, {
-          blobId: saved.blobId || `walrus_live_${Date.now()}`,
+          blobId: saved.blobId || `job-${saved.jobId}`,
           text: memoryText,
           createdAt: new Date().toISOString(),
         });

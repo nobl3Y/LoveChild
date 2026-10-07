@@ -17,6 +17,7 @@ export interface RecordedNote {
   note: string;
   /** Real Walrus blob id once the write has finished. */
   blobId?: string;
+  jobId?: string;
   status: 'saved' | 'pending' | 'skipped' | 'failed';
   error?: string;
 }

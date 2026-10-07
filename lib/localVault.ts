@@ -30,17 +30,36 @@ export function saveLocalVaultRecord(name: string, item: MemoryItem): void {
   } catch {}
 }
 
-/** Clears all buffered patient records across patients on reset */
+/** Updates an item's temporary job identifier to its final confirmed on-chain blob ID */
+export function updateLocalVaultRecordBlobId(name: string, oldBlobId: string, newBlobId: string): void {
+  if (typeof window === 'undefined' || !name || !oldBlobId || !newBlobId) return;
+  try {
+    const key = `${VAULT_STORAGE_KEY_PREFIX}${name.trim().toLowerCase()}`;
+    const existing = getLocalVaultRecords(name);
+    let updated = false;
+    for (const item of existing) {
+      if (item.blobId === oldBlobId) {
+        item.blobId = newBlobId;
+        updated = true;
+      }
+    }
+    if (updated) {
+      localStorage.setItem(key, JSON.stringify(existing));
+    }
+  } catch {}
+}
+
+/** Clears all locally buffered notes across all patients */
 export function clearLocalVaultRecords(): void {
   if (typeof window === 'undefined') return;
   try {
-    const toRemove: string[] = [];
+    const keysToRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k && k.startsWith(VAULT_STORAGE_KEY_PREFIX)) {
-        toRemove.push(k);
+      const key = localStorage.key(i);
+      if (key && key.startsWith(VAULT_STORAGE_KEY_PREFIX)) {
+        keysToRemove.push(key);
       }
     }
-    toRemove.forEach((k) => localStorage.removeItem(k));
+    keysToRemove.forEach((k) => localStorage.removeItem(k));
   } catch {}
 }

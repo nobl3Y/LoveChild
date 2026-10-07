@@ -5,7 +5,7 @@ import { Send, Database, FileText, Loader2, CheckCircle2, Clock, AlertCircle, Sp
 import { ChatMessage, MemoryItem, Profile } from '@/lib/types';
 import { FEATURED_MOTHERS } from '@/lib/cohort';
 import { RecalledMemoriesModal } from '@/components/RecalledMemoriesModal';
-import { saveLocalVaultRecord } from '@/lib/localVault';
+import { saveLocalVaultRecord, updateLocalVaultRecordBlobId } from '@/lib/localVault';
 
 interface ChatInterfaceProps {
   profile: Profile;
@@ -147,13 +147,22 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Request failed');
 
+      const effectiveBlobId =
+        data.recorded?.blobId ||
+        (data.recorded?.jobId ? `job-${data.recorded.jobId}` : undefined);
+
       const assistantMsg: ChatMessage = {
         id: `a-${Date.now()}`,
         sender: 'assistant',
         content: data.reply,
         timestamp: now(),
         recalled: data.recalled,
-        recorded: data.recorded,
+        recorded: data.recorded
+          ? {
+              ...data.recorded,
+              blobId: effectiveBlobId,
+            }
+          : undefined,
       };
 
       setConversations((prev) => {
@@ -162,8 +171,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       });
 
       if (data.recorded?.status === 'saved' || data.recorded?.status === 'pending') {
+        const finalBlobId = effectiveBlobId || `pending-walrus-${Date.now()}`;
         saveLocalVaultRecord(profile.name, {
-          blobId: data.recorded.blobId || `pending-walrus-${Date.now()}`,
+          blobId: finalBlobId,
           text: data.recorded.note,
           createdAt: new Date().toISOString(),
         });
@@ -187,6 +197,66 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       setIsTyping(false);
     }
   };
+
+  // Auto-resolve pending recorded notes in active conversations
+  useEffect(() => {
+    const activeMessages = conversations[currentKey] || [];
+    const pendingMsg = activeMessages.find(
+      (m) =>
+        m.recorded?.blobId &&
+        (m.recorded.blobId.startsWith('job-') || m.recorded.blobId.startsWith('pending-'))
+    );
+    if (!pendingMsg || !pendingMsg.recorded?.blobId) return;
+
+    let cancelled = false;
+    const rawId = pendingMsg.recorded.blobId;
+
+    const resolvePendingChat = async () => {
+      try {
+        const res = await fetch('/api/memories/resolve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jobIds: [rawId], name: profile.name }),
+        });
+        const data = await res.json();
+        if (cancelled || !data?.results) return;
+
+        const info = data.results[rawId];
+        if (info && info.status === 'done' && info.blobId) {
+          updateLocalVaultRecordBlobId(profile.name, rawId, info.blobId);
+          setConversations((prev) => {
+            const list = prev[currentKey];
+            if (!list) return prev;
+            return {
+              ...prev,
+              [currentKey]: list.map((m) => {
+                if (m.recorded?.blobId === rawId) {
+                  return {
+                    ...m,
+                    recorded: {
+                      ...m.recorded,
+                      status: 'saved',
+                      blobId: info.blobId,
+                    },
+                  };
+                }
+                return m;
+              }),
+            };
+          });
+          onMemoryChanged();
+        }
+      } catch {}
+    };
+
+    const interval = setInterval(resolvePendingChat, 2800);
+    resolvePendingChat();
+
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [conversations, currentKey, profile.name, onMemoryChanged]);
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md flex flex-col h-[670px] sm:h-[730px] overflow-hidden">
@@ -378,72 +448,87 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 )}
 
                 {/* Recorded to Walrus */}
-                {!isUser && msg.recorded && msg.recorded.status !== 'skipped' && (
-                  <div className="mt-3.5 pt-3 border-t border-slate-100 text-xs">
-                    <div
-                      className={`flex items-center font-semibold ${
-                        msg.recorded.status === 'saved'
-                          ? 'text-emerald-700'
-                          : msg.recorded.status === 'pending'
-                          ? 'text-amber-700'
-                          : 'text-rose-700'
-                      }`}
-                    >
-                      {msg.recorded.status === 'saved' && <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 shrink-0" />}
-                      {msg.recorded.status === 'pending' && <Clock className="w-3.5 h-3.5 mr-1.5 shrink-0" />}
-                      {msg.recorded.status === 'failed' && <AlertCircle className="w-3.5 h-3.5 mr-1.5 shrink-0" />}
-                      {msg.recorded.status === 'saved' && 'Saved to Walrus'}
-                      {msg.recorded.status === 'pending' && 'Saving to Walrus (confirmed in background)'}
-                      {msg.recorded.status === 'failed' && `Not saved: ${msg.recorded.error}`}
-                    </div>
-                    <div className="mt-1.5 text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl p-3 leading-relaxed">
-                      {msg.recorded.note}
-                    </div>
-                    {msg.recorded.blobId && (
-                      <div className="pt-1.5 border-t border-slate-200/60 text-[10px] space-y-1.5">
-                        <div className="font-mono text-slate-500 break-all flex items-center justify-between gap-2">
-                          <span className="truncate">Walrus blob: {msg.recorded.blobId}</span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const bId = msg.recorded?.blobId;
-                              if (bId) setActiveProofBlobId(activeProofBlobId === bId ? null : bId);
-                            }}
-                            className="text-rose-800 hover:text-rose-950 inline-flex items-center gap-1 shrink-0 font-sans text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer"
-                          >
-                            <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                            <span>{activeProofBlobId === msg.recorded.blobId ? 'Hide Proof' : 'Verify Proof'}</span>
-                          </button>
-                        </div>
-
-                        {activeProofBlobId === msg.recorded.blobId && (
-                          <div className="p-2.5 bg-slate-50 border border-rose-200/70 rounded-xl text-[10px] text-slate-600 space-y-1.5 animate-in fade-in duration-150">
-                            <div className="flex items-center justify-between font-semibold text-slate-700">
-                              <span className="text-emerald-700 flex items-center gap-1 font-sans">
-                                ● Cryptographically Verified on Walrus
-                              </span>
-                              <span className="font-mono text-[9px] text-slate-400">@mysten-incubation/memwal</span>
-                            </div>
-                            <p className="leading-relaxed text-slate-600 font-sans">
-                              Committed as an erasure-coded Merkle root via <code className="text-[9px] bg-white px-1 py-0.5 rounded text-slate-700 border border-slate-200">relayer.memory.walrus.xyz</code>. For patient confidentiality, raw clinical notes are private to {profile.name} &amp; her doctor and never exposed in plain text on public web explorers.
-                            </p>
-                            <div className="pt-1 border-t border-slate-200/70 flex items-center justify-between text-[9px]">
-                              <span className="text-slate-400 font-sans">Zero-Knowledge Patient Privacy</span>
-                              <a
-                                href={`https://walruscan.com/testnet/blob/${msg.recorded.blobId}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
-                              >
-                                Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
-                              </a>
-                            </div>
-                          </div>
-                        )}
+                {!isUser && msg.recorded && msg.recorded.status !== 'skipped' && (() => {
+                  const isPending =
+                    msg.recorded.status === 'pending' ||
+                    (!!msg.recorded.blobId &&
+                      (msg.recorded.blobId.startsWith('job-') ||
+                        msg.recorded.blobId.startsWith('pending-')));
+                  return (
+                    <div className="mt-3.5 pt-3 border-t border-slate-100 text-xs">
+                      <div
+                        className={`flex items-center font-semibold ${
+                          !isPending && msg.recorded.status === 'saved'
+                            ? 'text-emerald-700'
+                            : isPending
+                            ? 'text-amber-700'
+                            : 'text-rose-700'
+                        }`}
+                      >
+                        {!isPending && msg.recorded.status === 'saved' && <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 shrink-0" />}
+                        {isPending && <Clock className="w-3.5 h-3.5 mr-1.5 shrink-0" />}
+                        {msg.recorded.status === 'failed' && <AlertCircle className="w-3.5 h-3.5 mr-1.5 shrink-0" />}
+                        {!isPending && msg.recorded.status === 'saved' && 'Saved to Walrus'}
+                        {isPending && 'Saving to Walrus (confirmed in background)'}
+                        {msg.recorded.status === 'failed' && `Not saved: ${msg.recorded.error}`}
                       </div>
-                    )}
-                  </div>
-                )}
+                      <div className="mt-1.5 text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl p-3 leading-relaxed">
+                        {msg.recorded.note}
+                      </div>
+                      {msg.recorded.blobId && (
+                        <div className="pt-1.5 border-t border-slate-200/60 text-[10px] space-y-1.5">
+                          <div className="font-mono text-slate-500 break-all flex items-center justify-between gap-2">
+                            <span className="truncate">
+                              Walrus blob: {isPending ? 'relayer.memory.walrus.xyz (syncing…)' : msg.recorded.blobId}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const bId = msg.recorded?.blobId;
+                                if (bId) setActiveProofBlobId(activeProofBlobId === bId ? null : bId);
+                              }}
+                              className="text-rose-800 hover:text-rose-950 inline-flex items-center gap-1 shrink-0 font-sans text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer"
+                            >
+                              <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                              <span>{activeProofBlobId === msg.recorded.blobId ? 'Hide Proof' : 'Verify Proof'}</span>
+                            </button>
+                          </div>
+
+                          {activeProofBlobId === msg.recorded.blobId && (
+                            <div className="p-2.5 bg-slate-50 border border-rose-200/70 rounded-xl text-[10px] text-slate-600 space-y-1.5 animate-in fade-in duration-150">
+                              <div className="flex items-center justify-between font-semibold text-slate-700">
+                                <span className="text-emerald-700 flex items-center gap-1 font-sans">
+                                  ● {isPending ? 'Submitted to Walrus Relayer (Confirming on Sui)' : 'Cryptographically Verified on Walrus'}
+                                </span>
+                                <span className="font-mono text-[9px] text-slate-400">@mysten-incubation/memwal</span>
+                              </div>
+                              <p className="leading-relaxed text-slate-600 font-sans">
+                                Committed as an erasure-coded Merkle root via <code className="text-[9px] bg-white px-1 py-0.5 rounded text-slate-700 border border-slate-200">relayer.memory.walrus.xyz</code>. For patient confidentiality, raw clinical notes are private to {profile.name} &amp; her doctor and never exposed in plain text on public web explorers.
+                              </p>
+                              <div className="pt-1 border-t border-slate-200/70 flex items-center justify-between text-[9px]">
+                                <span className="text-slate-400 font-sans">Zero-Knowledge Patient Privacy</span>
+                                {!isPending ? (
+                                  <a
+                                    href={`https://walruscan.com/testnet/blob/${msg.recorded.blobId}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
+                                  >
+                                    Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
+                                  </a>
+                                ) : (
+                                  <span className="text-amber-700 font-sans font-medium flex items-center gap-1">
+                                    <Loader2 className="w-2.5 h-2.5 animate-spin" /> Finalizing on Sui testnet
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
               <span suppressHydrationWarning className="text-[10px] text-slate-400 mt-1 px-2">{msg.timestamp}</span>
             </div>

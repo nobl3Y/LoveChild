@@ -107,7 +107,7 @@ export async function listMemories(namespace: string, forceRefresh = false): Pro
 export async function saveMemory(
   namespace: string,
   text: string,
-  timeoutMs = 1200
+  timeoutMs = 3800
 ): Promise<{ status: 'saved' | 'pending'; blobId?: string; jobId: string }> {
   const memwal = getMemWal();
   const job = await memwal.remember(text, namespace);
@@ -116,7 +116,7 @@ export async function saveMemory(
   // Immediately append to in-memory cache so subsequent recalls see this note right away
   const cached = memoryCache.get(namespace);
   const tempItem: MemoryItem = {
-    blobId: `pending-${jobId.slice(0, 8)}`,
+    blobId: `job-${jobId}`,
     text,
     createdAt: new Date().toISOString(),
   };
@@ -127,7 +127,7 @@ export async function saveMemory(
     memoryCache.set(namespace, { items: [tempItem], timestamp: Date.now() });
   }
 
-  // Fast confirmation race (up to 1.2s)
+  // Fast confirmation race (up to 3.8s)
   try {
     const result: any = await Promise.race([
       memwal.waitForRememberJob(jobId),
@@ -142,5 +142,19 @@ export async function saveMemory(
   } catch {
     // Confirms in the background on Sui/Walrus
     return { status: 'pending', jobId };
+  }
+}
+
+/** Check status of an asynchronous Walrus remember job */
+export async function checkJobStatus(jobId: string): Promise<{ status: string; blobId?: string }> {
+  try {
+    const memwal = getMemWal();
+    const res = await memwal.getRememberStatus(jobId);
+    return {
+      status: res.status,
+      blobId: res.blob_id,
+    };
+  } catch {
+    return { status: 'pending' };
   }
 }
