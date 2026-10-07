@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { X, Printer, FileText, Loader2, Calendar, AlertTriangle, HelpCircle } from 'lucide-react';
+import { X, Printer, FileText, Loader2, Calendar, AlertTriangle, HelpCircle, Clock } from 'lucide-react';
 import { MemoryItem, Profile } from '@/lib/types';
 
 interface ClinicalBriefingModalProps {
@@ -57,7 +57,7 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
 
   // Render structured clinical sections cleanly
   const renderFormattedReport = (raw: string) => {
-    const sections = raw.split(/(?=WHAT SHE HAS REPORTED|WHAT KEEPS COMING BACK|WORTH ASKING THE DOCTOR)/i);
+    const sections = raw.split(/(?=WHAT SHE HAS REPORTED|WHAT KEEPS COMING BACK|WORTH ASKING THE DOCTOR|WHAT SHE JUST LOGGED TODAY)/i);
 
     if (sections.length > 1) {
       return (
@@ -86,6 +86,11 @@ export const ClinicalBriefingModal: React.FC<ClinicalBriefingModalProps> = ({ is
               body = trimmed.replace(/^WORTH ASKING THE DOCTOR\s*/i, '').trim();
               icon = <HelpCircle className="w-3.5 h-3.5 text-emerald-700" />;
               badgeStyle = 'text-emerald-950 bg-emerald-50 border-emerald-200';
+            } else if (/^WHAT SHE JUST LOGGED TODAY/i.test(trimmed)) {
+              title = 'Logged Today (Live Walrus Check-ins)';
+              body = trimmed.replace(/^WHAT SHE JUST LOGGED TODAY\s*(\(Live Walrus Check-ins\):)?\s*/i, '').trim();
+              icon = <Clock className="w-3.5 h-3.5 text-rose-700" />;
+              badgeStyle = 'text-rose-950 bg-rose-100 border-rose-300';
             }
 
             return (

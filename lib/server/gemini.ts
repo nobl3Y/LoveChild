@@ -1,6 +1,10 @@
 const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
-export async function generate(prompt: string, maxOutputTokens = 1200): Promise<string> {
+export async function generate(
+  prompt: string,
+  maxOutputTokens = 1200,
+  temperature = 0.65
+): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY is not set.');
 
@@ -12,7 +16,7 @@ export async function generate(prompt: string, maxOutputTokens = 1200): Promise<
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.3,
+          temperature,
           maxOutputTokens,
         },
       }),

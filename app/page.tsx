@@ -6,6 +6,7 @@ import { ChatInterface } from '@/components/ChatInterface';
 import { WalrusVault } from '@/components/WalrusVault';
 import { ClinicalBriefingModal } from '@/components/ClinicalBriefingModal';
 import { ProfileModal } from '@/components/ProfileModal';
+import { ResetModal } from '@/components/ResetModal';
 import { Profile } from '@/lib/types';
 import { FEATURED_MOTHERS } from '@/lib/cohort';
 import { MotherCohortShowcase } from '@/components/MotherCohortShowcase';
@@ -21,7 +22,10 @@ export default function Home() {
   const [isVaultOpen, setIsVaultOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
   const [noteCount, setNoteCount] = useState<number | null>(null);
   const [cohortCounts, setCohortCounts] = useState<Record<string, number>>({
     Ada: 10,
@@ -74,6 +78,22 @@ export default function Home() {
     setRefreshKey((k) => k + 1);
   };
 
+  const handleConfirmReset = async () => {
+    setIsResetting(true);
+    try {
+      await fetch('/api/reset', { method: 'POST' });
+      setCohortCounts({ Ada: 10, Blessing: 10, Chiamaka: 10 });
+      setNoteCount(10);
+      setRefreshKey((k) => k + 1);
+      setResetKey((k) => k + 1);
+      setIsResetModalOpen(false);
+    } catch (e) {
+      console.error('Reset failed:', e);
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
   const loginRealUser = (p: Profile) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
     setSaved(p);
@@ -108,6 +128,7 @@ export default function Home() {
     setProfile(FEATURED_MOTHERS[0].profile);
     setInspectProfile(null);
     setRefreshKey((k) => k + 1);
+    setResetKey((k) => k + 1);
   };
 
   return (
@@ -129,10 +150,10 @@ export default function Home() {
               Maternal Health Companion • Walrus Memory
             </span>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-snug">
-              Appointments where nothing gets missed.
+              Small symptoms slip your mind, then turn into big problems.
             </h1>
             <p className="mt-3.5 text-rose-100/90 text-sm sm:text-base leading-relaxed">
-              Between antenatal visits, small symptoms get forgotten. LoveChild lets mothers log anything worth noting, stored quietly in decentralized Walrus Memory. At the hospital, it gives your doctor a short briefing of every detail, with recurring patterns flagged, saving 10-15 minutes per visit.
+              Before every antenatal visit, small symptoms might get forgotten, then become big problems. LoveChild lets mothers log anything worth noting in decentralized <strong className="font-bold text-white">Walrus Memory</strong> and makes a note for your doctor, so you don't forget during the visits or whenever.
             </p>
           </div>
         </section>
@@ -164,7 +185,9 @@ export default function Home() {
             onSwitchUser={switchUser}
             onSelectMother={startCohortChat}
             onOpenCustomModal={() => setIsProfileModalOpen(true)}
+            onOpenResetModal={() => setIsResetModalOpen(true)}
             blobCount={noteCount}
+            resetKey={resetKey}
           />
         </section>
 
@@ -262,6 +285,14 @@ export default function Home() {
         onClose={() => setIsProfileModalOpen(false)}
         onStart={loginRealUser}
         initial={saved}
+      />
+
+      {/* Session Reset Confirmation Modal */}
+      <ResetModal
+        isOpen={isResetModalOpen}
+        onClose={() => setIsResetModalOpen(false)}
+        onConfirmReset={handleConfirmReset}
+        isResetting={isResetting}
       />
 
       <footer className="border-t border-slate-200/80 bg-white py-8 mt-16 text-xs text-slate-500">

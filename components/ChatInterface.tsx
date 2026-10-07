@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { Send, Database, FileText, Loader2, CheckCircle2, Clock, AlertCircle, Sparkles, User, Activity } from 'lucide-react';
-import { ChatMessage, Profile } from '@/lib/types';
+import { Send, Database, FileText, Loader2, CheckCircle2, Clock, AlertCircle, Sparkles, User, Activity, RotateCcw, ExternalLink, ShieldCheck } from 'lucide-react';
+import { ChatMessage, MemoryItem, Profile } from '@/lib/types';
 import { FEATURED_MOTHERS } from '@/lib/cohort';
+import { RecalledMemoriesModal } from '@/components/RecalledMemoriesModal';
 
 interface ChatInterfaceProps {
   profile: Profile;
@@ -13,7 +14,9 @@ interface ChatInterfaceProps {
   onSwitchUser: () => void;
   onSelectMother?: (profile: Profile) => void;
   onOpenCustomModal?: () => void;
+  onOpenResetModal?: () => void;
   blobCount?: number | null;
+  resetKey?: number;
 }
 
 const now = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -26,13 +29,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onSwitchUser,
   onSelectMother,
   onOpenCustomModal,
+  onOpenResetModal,
   blobCount,
+  resetKey,
 }) => {
   const [withMemory, setWithMemory] = useState(true);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [conversations, setConversations] = useState<Record<string, ChatMessage[]>>({});
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [justUpdated, setJustUpdated] = useState(false);
+  const [selectedRecalledMemories, setSelectedRecalledMemories] = useState<MemoryItem[] | null>(null);
+  const [activeProofBlobId, setActiveProofBlobId] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   // Match against cohort data for rich clinical context
@@ -80,30 +87,39 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     ];
   }, [profile.name, withMemory]);
 
-  // Initialize introductory message when patient or memory mode changes
-  useEffect(() => {
-    let intro = `Hello ${profile.name}. Tell me about anything you're feeling or wondering about, big or small. Every note is encrypted and preserved on Walrus Memory.`;
-    if (withMemory) {
-      if (profile.name.toLowerCase() === 'ada') {
+  // Helper to generate introductory greeting for each patient
+  const getIntroMessage = (name: string, mem: boolean): ChatMessage => {
+    let intro = `Hello ${name}. Tell me about anything you're feeling or wondering about, big or small. Every note is encrypted and preserved on Walrus Memory.`;
+    if (mem) {
+      const lower = name.toLowerCase();
+      if (lower === 'ada') {
         intro = `Hello Ada. I have your longitudinal records loaded from Walrus. You've been monitoring foot swelling, blood pressure patterns, and morning headaches for Week 30. How are you feeling today?`;
-      } else if (profile.name.toLowerCase() === 'blessing') {
+      } else if (lower === 'blessing') {
         intro = `Hello Blessing. I'm connected to your Walrus Memory space. You've been managing persistent nausea, tracking fluid intake, and iron supplement adherence for Week 18. How are you feeling today?`;
-      } else if (profile.name.toLowerCase() === 'chiamaka') {
+      } else if (lower === 'chiamaka') {
         intro = `Hello Chiamaka. Your Walrus records are active. We've been tracking fetal kick counts and Braxton-Hicks contractions for Week 38. How is the baby moving today?`;
       }
     } else {
-      intro = `Hello ${profile.name}. Memory is OFF, so I won't recall or save anything. Each message is treated as if we've never spoken.`;
+      intro = `Hello ${name}. Memory is OFF, so I won't recall or save anything. Each message is treated as if we've never spoken.`;
     }
+    return {
+      id: `intro-${name}-${mem ? 'mem' : 'nomem'}`,
+      sender: 'assistant',
+      timestamp: now(),
+      content: intro,
+    };
+  };
 
-    setMessages([
-      {
-        id: `intro-${profile.name}-${withMemory ? 'mem' : 'nomem'}`,
-        sender: 'assistant',
-        timestamp: now(),
-        content: intro,
-      },
-    ]);
-  }, [profile.name, withMemory]);
+  // Reset conversation history across patients ONLY when user explicitly triggers reset
+  useEffect(() => {
+    if (resetKey !== undefined && resetKey > 0) {
+      setConversations({});
+    }
+  }, [resetKey]);
+
+  // Current session key and active messages for the selected mother
+  const currentKey = `${profile.name.toLowerCase()}-${withMemory ? 'mem' : 'nomem'}`;
+  const messages = conversations[currentKey] || [getIntroMessage(profile.name, withMemory)];
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -113,7 +129,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     const text = (textToSend || input).trim();
     if (!text || isTyping) return;
 
-    setMessages((p) => [...p, { id: `u-${Date.now()}`, sender: 'user', content: text, timestamp: now() }]);
+    const userMsg: ChatMessage = { id: `u-${Date.now()}`, sender: 'user', content: text, timestamp: now() };
+    setConversations((prev) => {
+      const list = prev[currentKey] || [getIntroMessage(profile.name, withMemory)];
+      return { ...prev, [currentKey]: [...list, userMsg] };
+    });
     setInput('');
     setIsTyping(true);
 
@@ -126,33 +146,37 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Request failed');
 
-      setMessages((p) => [
-        ...p,
-        {
-          id: `a-${Date.now()}`,
-          sender: 'assistant',
-          content: data.reply,
-          timestamp: now(),
-          recalled: data.recalled,
-          recorded: data.recorded,
-        },
-      ]);
+      const assistantMsg: ChatMessage = {
+        id: `a-${Date.now()}`,
+        sender: 'assistant',
+        content: data.reply,
+        timestamp: now(),
+        recalled: data.recalled,
+        recorded: data.recorded,
+      };
+
+      setConversations((prev) => {
+        const list = prev[currentKey] || [getIntroMessage(profile.name, withMemory)];
+        return { ...prev, [currentKey]: [...list, assistantMsg] };
+      });
+
       if (data.recorded?.status === 'saved' || data.recorded?.status === 'pending') {
         setJustUpdated(true);
         setTimeout(() => setJustUpdated(false), 3500);
         onMemoryChanged();
       }
     } catch (e: any) {
-      setMessages((p) => [
-        ...p,
-        {
-          id: `e-${Date.now()}`,
-          sender: 'assistant',
-          content: `Sorry, something went wrong: ${e.message}`,
-          timestamp: now(),
-          isError: true,
-        },
-      ]);
+      const errorMsg: ChatMessage = {
+        id: `e-${Date.now()}`,
+        sender: 'assistant',
+        content: `Sorry, something went wrong: ${e.message}`,
+        timestamp: now(),
+        isError: true,
+      };
+      setConversations((prev) => {
+        const list = prev[currentKey] || [getIntroMessage(profile.name, withMemory)];
+        return { ...prev, [currentKey]: [...list, errorMsg] };
+      });
     } finally {
       setIsTyping(false);
     }
@@ -201,17 +225,22 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }`}
           >
             <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span>+ Custom Patient</span>
+            <span>{!currentCohort ? `${profile.name} (Custom)` : '+ Custom Patient'}</span>
           </button>
         </div>
 
-        {/* Reset / Sign Out */}
-        <button
-          onClick={onSwitchUser}
-          className="text-xs text-slate-500 hover:text-slate-800 underline shrink-0 hidden md:block whitespace-nowrap"
-        >
-          Reset Session
-        </button>
+        {/* Reset Session Modal Trigger */}
+        {onOpenResetModal && (
+          <button
+            type="button"
+            onClick={onOpenResetModal}
+            className="text-xs font-semibold text-slate-600 hover:text-rose-900 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-all shadow-2xs whitespace-nowrap shrink-0"
+            title="Reset session records to baseline"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
+            <span>Reset Data</span>
+          </button>
+        )}
       </div>
 
       {/* 2. Sub-Header: Clinical Focus & Actions */}
@@ -326,24 +355,20 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
               >
                 <div className="whitespace-pre-line">{msg.content}</div>
 
-                {/* Recalled Walrus Memories */}
+                {/* Recalled Walrus Memories Modal Trigger */}
                 {!isUser && msg.recalled && msg.recalled.length > 0 && (
-                  <details className="mt-3.5 pt-3 border-t border-slate-100 text-xs text-slate-600">
-                    <summary className="cursor-pointer flex items-center text-rose-800 font-semibold hover:text-rose-950 transition-colors">
-                      <Database className="w-3.5 h-3.5 mr-1.5 shrink-0" />
-                      Remembered {msg.recalled.length} earlier note{msg.recalled.length > 1 ? 's' : ''} from Walrus
-                    </summary>
-                    <ul className="mt-2.5 space-y-2">
-                      {msg.recalled.map((m) => (
-                        <li key={m.blobId} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3">
-                          <div className="text-slate-800 font-normal leading-relaxed">{m.text}</div>
-                          <div className="font-mono text-[10px] text-slate-400 mt-1 break-all">
-                            Walrus blob: {m.blobId}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
+                  <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRecalledMemories(msg.recalled!)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50/90 hover:bg-rose-100/90 text-rose-900 border border-rose-200/90 text-xs font-semibold transition-all shadow-2xs group cursor-pointer"
+                      title="View exact memories pulled from Walrus for this reply"
+                    >
+                      <Database className="w-3.5 h-3.5 text-rose-700 shrink-0 group-hover:scale-110 transition-transform" />
+                      <span>Remembered {msg.recalled.length} earlier note{msg.recalled.length > 1 ? 's' : ''} from Walrus</span>
+                      <span className="text-[10px] text-rose-600 font-bold ml-0.5">↗</span>
+                    </button>
+                  </div>
                 )}
 
                 {/* Recorded to Walrus */}
@@ -369,8 +394,43 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                       {msg.recorded.note}
                     </div>
                     {msg.recorded.blobId && (
-                      <div className="font-mono text-[10px] text-slate-400 mt-1 break-all">
-                        Walrus blob: {msg.recorded.blobId}
+                      <div className="pt-1.5 border-t border-slate-200/60 text-[10px] space-y-1.5">
+                        <div className="font-mono text-slate-500 break-all flex items-center justify-between gap-2">
+                          <span className="truncate">Walrus blob: {msg.recorded.blobId}</span>
+                          <button
+                            type="button"
+                            onClick={() => setActiveProofBlobId(activeProofBlobId === msg.recorded!.blobId ? null : msg.recorded!.blobId)}
+                            className="text-rose-800 hover:text-rose-950 inline-flex items-center gap-1 shrink-0 font-sans text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer"
+                          >
+                            <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                            <span>{activeProofBlobId === msg.recorded.blobId ? 'Hide Proof' : 'Verify Proof'}</span>
+                          </button>
+                        </div>
+
+                        {activeProofBlobId === msg.recorded.blobId && (
+                          <div className="p-2.5 bg-slate-50 border border-rose-200/70 rounded-xl text-[10px] text-slate-600 space-y-1.5 animate-in fade-in duration-150">
+                            <div className="flex items-center justify-between font-semibold text-slate-700">
+                              <span className="text-emerald-700 flex items-center gap-1 font-sans">
+                                ● Cryptographically Verified on Walrus
+                              </span>
+                              <span className="font-mono text-[9px] text-slate-400">@mysten-incubation/memwal</span>
+                            </div>
+                            <p className="leading-relaxed text-slate-600 font-sans">
+                              Committed as an erasure-coded Merkle root via <code className="text-[9px] bg-white px-1 py-0.5 rounded text-slate-700 border border-slate-200">relayer.memory.walrus.xyz</code>. For patient confidentiality, raw clinical notes are private to {profile.name} &amp; her doctor and never exposed in plain text on public web explorers.
+                            </p>
+                            <div className="pt-1 border-t border-slate-200/70 flex items-center justify-between text-[9px]">
+                              <span className="text-slate-400 font-sans">Zero-Knowledge Patient Privacy</span>
+                              <a
+                                href={`https://walruscan.com/testnet/blob/${msg.recorded.blobId}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
+                              >
+                                Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
+                              </a>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -428,13 +488,21 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <button
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="px-6 py-3 bg-rose-900 hover:bg-rose-950 disabled:opacity-50 text-white rounded-full text-xs sm:text-sm font-bold flex items-center space-x-2 shrink-0 transition-all shadow-xs whitespace-nowrap"
+            className="px-6 py-3 bg-rose-900 hover:bg-rose-950 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-white rounded-full text-xs sm:text-sm font-bold flex items-center space-x-2 shrink-0 transition-all shadow-xs whitespace-nowrap"
           >
             <span>Send</span>
             <Send className="w-3.5 h-3.5" />
           </button>
         </form>
       </div>
+
+      {/* Dedicated Recalled Walrus Memories Modal */}
+      <RecalledMemoriesModal
+        isOpen={!!selectedRecalledMemories}
+        onClose={() => setSelectedRecalledMemories(null)}
+        patientName={profile.name}
+        memories={selectedRecalledMemories || []}
+      />
     </div>
   );
 };

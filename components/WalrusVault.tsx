@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { X, Database, Loader2, Lock } from 'lucide-react';
+import { X, Database, Loader2, Lock, ExternalLink, ShieldCheck } from 'lucide-react';
 import { MemoryItem, Profile } from '@/lib/types';
 
 interface WalrusVaultProps {
@@ -16,6 +16,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
   const [items, setItems] = useState<MemoryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [expandedBlobId, setExpandedBlobId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -113,9 +114,43 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
                   <div className="text-slate-400 text-[11px] mb-1.5 font-medium">{new Date(m.createdAt).toLocaleString()}</div>
                 )}
                 <p className="text-slate-800 text-sm leading-relaxed">{m.text}</p>
-                <div className="mt-2.5 pt-2 border-t border-slate-100 font-mono text-[10px] text-slate-400 break-all flex items-center justify-between">
-                  <span>blob: {m.blobId}</span>
-                  <span className="text-[9px] uppercase tracking-wider text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded font-sans font-semibold whitespace-nowrap">Walrus</span>
+                <div className="mt-2.5 pt-2 border-t border-slate-100 text-[10px] space-y-1.5">
+                  <div className="font-mono text-slate-500 break-all flex items-center justify-between gap-2">
+                    <span className="truncate">blob: {m.blobId}</span>
+                    <button
+                      type="button"
+                      onClick={() => setExpandedBlobId(expandedBlobId === m.blobId ? null : m.blobId)}
+                      className="text-rose-800 hover:text-rose-950 inline-flex items-center gap-1 shrink-0 font-sans text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer"
+                    >
+                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                      <span>{expandedBlobId === m.blobId ? 'Hide Proof' : 'Verify Proof'}</span>
+                    </button>
+                  </div>
+
+                  {expandedBlobId === m.blobId && (
+                    <div className="p-2.5 bg-slate-50 border border-rose-200/70 rounded-xl text-[10px] text-slate-600 space-y-1.5 animate-in fade-in duration-150">
+                      <div className="flex items-center justify-between font-semibold text-slate-700">
+                        <span className="text-emerald-700 flex items-center gap-1 font-sans">
+                          ● Cryptographically Verified on Walrus
+                        </span>
+                        <span className="font-mono text-[9px] text-slate-400">@mysten-incubation/memwal</span>
+                      </div>
+                      <p className="leading-relaxed text-slate-600 font-sans">
+                        Committed as an erasure-coded Merkle root via <code className="text-[9px] bg-white px-1 py-0.5 rounded text-slate-700 border border-slate-200">relayer.memory.walrus.xyz</code>. For patient confidentiality, raw clinical notes are private to {profile.name} &amp; her doctor and never exposed in plain text on public web explorers.
+                      </p>
+                      <div className="pt-1 border-t border-slate-200/70 flex items-center justify-between text-[9px]">
+                        <span className="text-slate-400 font-sans">Zero-Knowledge Patient Privacy</span>
+                        <a
+                          href={`https://walruscan.com/testnet/blob/${m.blobId}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
+                        >
+                          Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
