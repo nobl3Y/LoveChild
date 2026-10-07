@@ -240,29 +240,37 @@ export function getCohortData(name: string): CohortMotherData | null {
   if (!name) return null;
   const n = name.trim().toLowerCase();
   let base: CohortMotherData | null = null;
-  let key = '';
+  let key = n;
   if (n.includes('ada')) { base = COHORT_DATA.ada; key = 'ada'; }
   else if (n.includes('bless')) { base = COHORT_DATA.blessing; key = 'blessing'; }
   else if (n.includes('chiamaka')) { base = COHORT_DATA.chiamaka; key = 'chiamaka'; }
-  if (!base) return null;
 
   const extra = (globalThis.__cohortAdditions && globalThis.__cohortAdditions[key]) || [];
-  return {
-    records: [...base.records, ...extra],
-    report: base.report,
-  };
+  if (base) {
+    return {
+      records: [...base.records, ...extra],
+      report: base.report,
+    };
+  }
+  if (extra.length > 0) {
+    return {
+      records: extra,
+      report: '',
+    };
+  }
+  return null;
 }
 
 export function addCohortRecord(name: string, record: MemoryItem) {
+  if (!name) return;
   const n = name.trim().toLowerCase();
-  let key = '';
+  let key = n;
   if (n.includes('ada')) key = 'ada';
   else if (n.includes('bless')) key = 'blessing';
   else if (n.includes('chiamaka')) key = 'chiamaka';
-  if (!key) return;
 
   if (!globalThis.__cohortAdditions) {
-    globalThis.__cohortAdditions = { ada: [], blessing: [], chiamaka: [] };
+    globalThis.__cohortAdditions = {};
   }
   if (!globalThis.__cohortAdditions[key]) {
     globalThis.__cohortAdditions[key] = [];

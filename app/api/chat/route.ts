@@ -129,13 +129,11 @@ NOTE:
       try {
         const saved = await saveMemory(namespace, memoryText);
         recorded = { note: memoryText, status: saved.status, blobId: saved.blobId };
-        if (cohort) {
-          addCohortRecord(name, {
-            blobId: saved.blobId || `walrus_live_${Date.now()}`,
-            text: memoryText,
-            createdAt: new Date().toISOString(),
-          });
-        }
+        addCohortRecord(name, {
+          blobId: saved.blobId || `walrus_live_${Date.now()}`,
+          text: memoryText,
+          createdAt: new Date().toISOString(),
+        });
       } catch (e: any) {
         recorded = { note: memoryText, status: 'failed', error: e?.message || 'Could not save to Walrus.' };
       }

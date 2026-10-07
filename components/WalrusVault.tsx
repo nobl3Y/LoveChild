@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { X, Database, Loader2, Lock, ExternalLink, ShieldCheck } from 'lucide-react';
 import { MemoryItem, Profile } from '@/lib/types';
+import { getLocalVaultRecords } from '@/lib/localVault';
 
 interface WalrusVaultProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
     setItems([]);
     setLoading(true);
     setError('');
+    const local = getLocalVaultRecords(profile.name);
     fetch('/api/memories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -33,11 +35,27 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
         const d = await r.json();
         if (!r.ok) throw new Error(d.error || 'Could not load');
         if (!cancelled) {
-          setItems(d.memories);
-          onLoaded(d.memories.length);
+          const serverNotes: MemoryItem[] = d.memories || [];
+          const merged = [...serverNotes];
+          for (const loc of local) {
+            if (!merged.some((m) => m.text === loc.text || (m.blobId && m.blobId === loc.blobId))) {
+              merged.push(loc);
+            }
+          }
+          setItems(merged);
+          onLoaded(merged.length);
         }
       })
-      .catch((e) => !cancelled && setError(e.message))
+      .catch((e) => {
+        if (!cancelled) {
+          if (local.length > 0) {
+            setItems(local);
+            onLoaded(local.length);
+          } else {
+            setError(e.message);
+          }
+        }
+      })
       .finally(() => !cancelled && setLoading(false));
     return () => {
       cancelled = true;
@@ -116,7 +134,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
                 <p className="text-slate-800 text-sm leading-relaxed">{m.text}</p>
                 <div className="mt-2.5 pt-2 border-t border-slate-100 text-[10px] space-y-1.5">
                   <div className="font-mono text-slate-500 break-all flex items-center justify-between gap-2">
-                    <span className="truncate">blob: {m.blobId}</span>
+                    <span className="truncate">blob: {m.blobId.startsWith('pending-') ? 'relayer.memory.walrus.xyz (committing)' : m.blobId}</span>
                     <button
                       type="button"
                       onClick={() => setExpandedBlobId(expandedBlobId === m.blobId ? null : m.blobId)}
@@ -131,7 +149,7 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
                     <div className="p-2.5 bg-slate-50 border border-rose-200/70 rounded-xl text-[10px] text-slate-600 space-y-1.5 animate-in fade-in duration-150">
                       <div className="flex items-center justify-between font-semibold text-slate-700">
                         <span className="text-emerald-700 flex items-center gap-1 font-sans">
-                          ● Cryptographically Verified on Walrus
+                          ● {m.blobId.startsWith('pending-') ? 'Submitted to Walrus Relayer (Syncing)' : 'Cryptographically Verified on Walrus'}
                         </span>
                         <span className="font-mono text-[9px] text-slate-400">@mysten-incubation/memwal</span>
                       </div>
@@ -140,14 +158,18 @@ export const WalrusVault: React.FC<WalrusVaultProps> = ({ isOpen, onClose, profi
                       </p>
                       <div className="pt-1 border-t border-slate-200/70 flex items-center justify-between text-[9px]">
                         <span className="text-slate-400 font-sans">Zero-Knowledge Patient Privacy</span>
-                        <a
-                          href={`https://walruscan.com/testnet/blob/${m.blobId}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
-                        >
-                          Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
-                        </a>
+                        {!m.blobId.startsWith('pending-') ? (
+                          <a
+                            href={`https://walruscan.com/testnet/blob/${m.blobId}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-rose-700 hover:text-rose-900 inline-flex items-center gap-0.5 font-sans font-semibold"
+                          >
+                            Raw Explorer on Walruscan <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
+                        ) : (
+                          <span className="text-amber-700 font-sans font-medium">Indexing on Sui testnet</span>
+                        )}
                       </div>
                     </div>
                   )}

@@ -7,9 +7,10 @@ import { WalrusVault } from '@/components/WalrusVault';
 import { ClinicalBriefingModal } from '@/components/ClinicalBriefingModal';
 import { ProfileModal } from '@/components/ProfileModal';
 import { ResetModal } from '@/components/ResetModal';
-import { Profile } from '@/lib/types';
+import { Profile, MemoryItem } from '@/lib/types';
 import { FEATURED_MOTHERS } from '@/lib/cohort';
 import { MotherCohortShowcase } from '@/components/MotherCohortShowcase';
+import { getLocalVaultRecords, clearLocalVaultRecords } from '@/lib/localVault';
 import { MessageSquare, Clock, FileCheck } from 'lucide-react';
 
 const STORAGE_KEY = 'lovechild-profile';
@@ -53,6 +54,7 @@ export default function Home() {
   useEffect(() => {
     const target = inspectProfile || profile;
     if (!target) return;
+    const local = getLocalVaultRecords(target.name);
     fetch('/api/memories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -60,21 +62,34 @@ export default function Home() {
     })
       .then((r) => r.json())
       .then((d) => {
-        const count = d.memories ? d.memories.length : 0;
-        setNoteCount(count);
-        setCohortCounts((prev) => ({ ...prev, [target.name]: count }));
+        const serverNotes: MemoryItem[] = d.memories || [];
+        const merged = [...serverNotes];
+        for (const loc of local) {
+          if (!merged.some((m) => m.text === loc.text || (m.blobId && m.blobId === loc.blobId))) {
+            merged.push(loc);
+          }
+        }
+        setNoteCount(merged.length);
+        setCohortCounts((prev) => ({ ...prev, [target.name]: merged.length }));
       })
-      .catch(() => {});
+      .catch(() => {
+        if (local.length > 0) {
+          setNoteCount(local.length);
+          setCohortCounts((prev) => ({ ...prev, [target.name]: local.length }));
+        }
+      });
   }, [profile, inspectProfile, refreshKey]);
 
   const handleMemoryChanged = () => {
-    // 1. Instantly increment in real-time on screen (0ms optimistic UI update)
-    setNoteCount((prev) => (prev !== null ? prev + 1 : 11));
+    const target = inspectProfile || profile;
+    const local = getLocalVaultRecords(target.name);
+    // Real-time optimistic update that never falls below local records
+    setNoteCount((prev) => Math.max(local.length, (prev !== null ? prev + 1 : 1)));
     setCohortCounts((prev) => {
-      const current = prev[profile.name] ?? 10;
-      return { ...prev, [profile.name]: current + 1 };
+      const current = prev[profile.name] ?? local.length;
+      return { ...prev, [profile.name]: Math.max(local.length, current + 1) };
     });
-    // 2. Trigger background sync to confirm count and update drawer
+    // Trigger background sync to confirm count and update drawer
     setRefreshKey((k) => k + 1);
   };
 
@@ -82,6 +97,7 @@ export default function Home() {
     setIsResetting(true);
     try {
       await fetch('/api/reset', { method: 'POST' });
+      clearLocalVaultRecords();
       setCohortCounts({ Ada: 10, Blessing: 10, Chiamaka: 10 });
       setNoteCount(10);
       setRefreshKey((k) => k + 1);
@@ -106,7 +122,9 @@ export default function Home() {
   const startCohortChat = (p: Profile) => {
     setInspectProfile(null);
     setProfile(p);
-    setNoteCount(cohortCounts[p.name] ?? null);
+    const local = getLocalVaultRecords(p.name);
+    const base = cohortCounts[p.name] ?? 0;
+    setNoteCount(Math.max(base, local.length));
   };
 
   const openVaultFor = (p: Profile) => {

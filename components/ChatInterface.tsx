@@ -5,6 +5,7 @@ import { Send, Database, FileText, Loader2, CheckCircle2, Clock, AlertCircle, Sp
 import { ChatMessage, MemoryItem, Profile } from '@/lib/types';
 import { FEATURED_MOTHERS } from '@/lib/cohort';
 import { RecalledMemoriesModal } from '@/components/RecalledMemoriesModal';
+import { saveLocalVaultRecord } from '@/lib/localVault';
 
 interface ChatInterfaceProps {
   profile: Profile;
@@ -161,6 +162,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       });
 
       if (data.recorded?.status === 'saved' || data.recorded?.status === 'pending') {
+        saveLocalVaultRecord(profile.name, {
+          blobId: data.recorded.blobId || `pending-walrus-${Date.now()}`,
+          text: data.recorded.note,
+          createdAt: new Date().toISOString(),
+        });
         setJustUpdated(true);
         setTimeout(() => setJustUpdated(false), 3500);
         onMemoryChanged();

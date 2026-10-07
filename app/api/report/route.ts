@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     // Instant zero-latency return for verified demo cohort mothers
     const cohort = getCohortData(name);
-    if (cohort) {
+    if (cohort && cohort.report) {
       if (cohort.records.length > 10) {
         const liveRecords = cohort.records.slice(10);
         const liveBullets = liveRecords
@@ -36,7 +36,10 @@ export async function POST(req: NextRequest) {
     }
 
     const namespace = namespaceFor(name, pin);
-    const memories = await listMemories(namespace);
+    let memories = await listMemories(namespace);
+    if (memories.length === 0 && cohort && cohort.records.length > 0) {
+      memories = cohort.records;
+    }
     if (memories.length === 0) {
       return NextResponse.json({ memories, report: '' });
     }
