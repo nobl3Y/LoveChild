@@ -105,7 +105,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     return {
       id: `intro-${name}-${mem ? 'mem' : 'nomem'}`,
       sender: 'assistant',
-      timestamp: now(),
+      timestamp: 'Just now',
       content: intro,
     };
   };
@@ -439,7 +439,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   </div>
                 )}
               </div>
-              <span className="text-[10px] text-slate-400 mt-1 px-2">{msg.timestamp}</span>
+              <span suppressHydrationWarning className="text-[10px] text-slate-400 mt-1 px-2">{msg.timestamp}</span>
             </div>
           );
         })}
