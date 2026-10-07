@@ -399,7 +399,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                           <span className="truncate">Walrus blob: {msg.recorded.blobId}</span>
                           <button
                             type="button"
-                            onClick={() => setActiveProofBlobId(activeProofBlobId === msg.recorded!.blobId ? null : msg.recorded!.blobId)}
+                            onClick={() => {
+                              const bId = msg.recorded?.blobId;
+                              if (bId) setActiveProofBlobId(activeProofBlobId === bId ? null : bId);
+                            }}
                             className="text-rose-800 hover:text-rose-950 inline-flex items-center gap-1 shrink-0 font-sans text-[10px] font-semibold px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 transition-colors cursor-pointer"
                           >
                             <ShieldCheck className="w-3 h-3 text-emerald-600" />
