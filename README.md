@@ -210,7 +210,7 @@ Create a `.env.local` file in the project root:
 ```env
 # Walrus Memory Configuration
 MEMWAL_PRIVATE_KEY=your_ed25519_delegate_private_key_hex
-MEMWAL_ACCOUNT_ID=0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8
+MEMWAL_ACCOUNT_ID=your_memwal_account_id_here
 MEMWAL_SERVER_URL=https://relayer.memory.walrus.xyz
 
 # Google Gemini API Key (Qualifies for Beyond the Big Two track)
