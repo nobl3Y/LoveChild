@@ -1,11 +1,8 @@
 # Walrus Memory Evidence: Verified On-Chain Blobs
 
 **Project:** LoveChild — Maternal Care Chatbot  
-**Hackathon:** Walrus Session 8: Chatbots That Remember  
-**Network:** Walrus Mainnet via Sui  
-**MemWalAccount Object:** [`0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8`](https://suiscan.xyz/mainnet/object/0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8)  
-**Agent ID (Delegate Public Key):** `91dbc368768df9776f4afd8f371c991c2a4efabf93aed421f3c3adb0950de418`  
-**Dedicated Session Wallet:** `0xa5f68e387dd7a0c9b50a5db9000386133c83396a9afcd009727e87c3152c6d75`  
+**Network:** Walrus Mainnet on Sui  
+**On-Chain Storage:** [Verified MemWalAccount on Suiscan Explorer](https://suiscan.xyz/mainnet/object/0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8)  
 **Total Verified Records:** 30 Blobs across 3 Patient Cohorts  
 
 ---

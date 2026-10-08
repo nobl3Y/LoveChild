@@ -12,16 +12,14 @@
 
 ## For Judges — 60-Second Verify
 
-| Resource | Link & Details |
+| Resource | Description & Link |
 |---|---|
-| **Live Web App** | [https://love-child.vercel.app](https://love-child.vercel.app) |
-| **On-Chain MemWalAccount** | [`0x763b3b...e4d8` on Suiscan](https://suiscan.xyz/mainnet/object/0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8) |
-| **Agent ID (Delegate Key)** | `91dbc368768df9776f4afd8f371c991c2a4efabf93aed421f3c3adb0950de418` |
-| **Dedicated Session Wallet** | `0xa5f68e387dd7a0c9b50a5db9000386133c83396a9afcd009727e87c3152c6d75` |
-| **Verified Mainnet Blobs** | **30 Blobs** across 3 patient cohorts — [Full List in evidence/blobs.md](evidence/blobs.md) |
-| **Build Article (Medium)** | [How LoveChild Uses Walrus to Give Maternal Care a Memory](https://medium.com/@arytajames/how-lovechild-uses-walrus-to-give-maternal-care-a-memory-ec5a8b82d64a) |
-| **Community Post on X** | [Announcement on X (@WalrusProtocol)](https://x.com/ogboNoble_001/status/2108083555049889795?s=20) |
-| **Eligible Prize Tracks** | Main Prize ($900) + **"Beyond the Big Two"** ($150 with Google Gemini 1.5 Flash) |
+| **Live Web App** | [Open LoveChild on Vercel](https://love-child.vercel.app) |
+| **On-Chain Storage** | [View Verified MemWalAccount on Suiscan Explorer](https://suiscan.xyz/mainnet/object/0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8) |
+| **Memory Evidence** | [30 Verified Mainnet Blobs in evidence/blobs.md](evidence/blobs.md) |
+| **Build Article** | [Read the Full Story on Medium](https://medium.com/@arytajames/how-lovechild-uses-walrus-to-give-maternal-care-a-memory-ec5a8b82d64a) |
+| **Community Post on X** | [View Announcement on X](https://x.com/ogboNoble_001/status/2108083555049889795?s=20) |
+| **Prize Track** | Main Prize + **"Beyond the Big Two"** (Google Gemini 1.5 Flash) |
 
 ---
 
