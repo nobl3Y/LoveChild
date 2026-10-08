@@ -1,122 +1,189 @@
 # LoveChild
-### A Maternal Care Chatbot for Women • Powered by Walrus Protocol on Sui
+### A Maternal Care Chatbot Powered by Decentralized Walrus Memory
 
 [![Walrus Memory](https://img.shields.io/badge/Walrus-Decentralized%20Memory-0d9488?style=flat-square)](https://walrus.xyz)
-[![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini%201.5-f43f5e?style=flat-square)](https://deepmind.google/technologies/gemini/)
+[![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini%201.5%20Flash-f43f5e?style=flat-square)](https://deepmind.google/technologies/gemini/)
 [![Prize Track](https://img.shields.io/badge/Prize%20Track-Beyond%20the%20Big%20Two-amber-500?style=flat-square)](https://www.deepsurge.xyz/hackathons)
-[![Sui Blockchain](https://img.shields.io/badge/Network-Sui-4da2ff?style=flat-square)](https://sui.io)
+[![Sui Blockchain](https://img.shields.io/badge/Network-Sui%20Mainnet-4da2ff?style=flat-square)](https://sui.io)
+
+> A continuous pregnancy memory scribe that turns everyday symptom logs into clear clinical briefings for doctors. Built on Walrus decentralized storage so mothers own their health history for life.
 
 ---
 
-## What is LoveChild?
+## For Judges — 60-Second Verify
 
-LoveChild is a maternal care chatbot for pregnant women.
-
-Whenever an expectant mother notices something unusual—morning sickness, sudden ankle swelling, a bad headache, or changes in how the baby kicks—she simply tells LoveChild in her own words. LoveChild saves every detail across her entire 40-week pregnancy onto decentralized Walrus Memory.
-
-Before her clinic visit, LoveChild turns all those past notes into a clean 1-page **Doctor's Report**. She can show this directly to her doctor or print it out. Instead of sitting in front of her doctor and forgetting the small symptoms from three weeks ago, she gives the doctor the full picture.
-
-The result is appointments where nothing gets missed, and women who feel prepared and heard.
-
----
-
-## Why Walrus Memory Matters (The Big Problem It Solves)
-
-Most chatbots have amnesia. The moment you close the chat, the bot forgets you completely.
-
-During a 9-month pregnancy, that forgetfulness can be dangerous:
-* In Week 24, a mother reports slightly high blood pressure.
-* In Week 29, she reports sudden swollen ankles.
-* In Week 30, she complains of a persistent headache behind her eyes.
-
-A regular chatbot without memory treats each complaint as a brand-new, isolated event and says: *"Drink water and take a nap."*
-
-**LoveChild with Walrus Memory connects the dots:**  
-It recalls her Week 24 blood pressure, connects it with her Week 29 swelling and Week 30 headache, recognizes the classic danger signs of **Pre-Eclampsia** (pregnancy high blood pressure), warns her not to take dangerous painkillers like Ibuprofen, and immediately flags it on her Doctor's Report so her clinic can test her urine and blood pressure right away.
+| Resource | Link & Details |
+|---|---|
+| **Live Web App** | [https://love-child.vercel.app](https://love-child.vercel.app) |
+| **On-Chain MemWalAccount** | [`0x763b3b...e4d8` on Suiscan](https://suiscan.xyz/mainnet/object/0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8) |
+| **Agent ID (Delegate Key)** | `91dbc368768df9776f4afd8f371c991c2a4efabf93aed421f3c3adb0950de418` |
+| **Dedicated Session Wallet** | `0xa5f68e387dd7a0c9b50a5db9000386133c83396a9afcd009727e87c3152c6d75` |
+| **Verified Mainnet Blobs** | **30 Blobs** across 3 patient cohorts — [Full List in evidence/blobs.md](evidence/blobs.md) |
+| **Build Article (Medium)** | [How LoveChild Uses Walrus to Give Maternal Care a Memory](https://medium.com/@arytajames/how-lovechild-uses-walrus-to-give-maternal-care-a-memory-ec5a8b82d64a) |
+| **Community Post on X** | [Announcement on X (@WalrusProtocol)](https://x.com/ogboNoble_001/status/2108083555049889795?s=20) |
+| **Eligible Prize Tracks** | Main Prize ($900) + **"Beyond the Big Two"** ($150 with Google Gemini 1.5 Flash) |
 
 ---
 
-## Hackathon Submission Details
+## The Real Problem: 40 Weeks of Pregnancy vs. a 7-Minute Clinic Visit
 
-* **Hackathon:** Walrus Session 8: Chatbots That Remember
-* **Prize Track:** Main Prize + **Beyond the Big Two** (built with **Google Gemini 1.5 Flash**)
-* **Decentralized Storage:** Walrus Protocol on Sui
-* **Users & Records:** 3 real pregnant mothers with 10+ memories each (33 total records stored on Walrus)
-* **GitHub Repository:** [https://github.com/nobl3Y/LoveChild](https://github.com/nobl3Y/LoveChild)
+A human pregnancy lasts 40 weeks, but an expectant mother only sees her doctor or midwife once a month.
 
----
+In high-volume public clinics and hospitals across Nigeria and emerging communities, that monthly consultation rarely lasts more than 7 minutes. The waiting room is full of dozens of women, and the doctor has to make fast decisions under pressure.
 
-## Meet the 3 Mothers in the Demo
+Between those visits, her body goes through constant changes:
+* A slight headache on a Tuesday after work.
+* Ankle swelling that takes longer to go away on Thursday.
+* A wedding ring that suddenly feels too tight on Sunday morning.
 
-You can test LoveChild with 3 different mothers at 3 different stages of pregnancy:
+By the time she sits across from her doctor four weeks later, she has forgotten 80% of what happened. When the doctor asks, *"How have you been feeling since last month?"*, she smiles and says:
 
-1. **Amina Bello (Week 30 • Month 7 • Kano)**
-   * **Her story:** First-time mother.
-   * **What she's tracking:** Sudden ankle swelling and a 48-hour headache.
-   * **Walrus Memory:** 12 saved records. LoveChild connects her past blood pressure with her current symptoms to catch early Pre-Eclampsia risk.
+> *"Everything is fine doctor, just the usual pregnancy tiredness."*
 
-2. **Blessing Okon (Week 18 • Month 4 • Port Harcourt)**
-   * **Her story:** Mother of one, now pregnant with her second child.
-   * **What she's tracking:** Severe morning sickness and dehydration on hot days.
-   * **Walrus Memory:** 11 saved records. Tracks her hydration routine and baby kick activity.
+Tragically, that "usual tiredness" often conceals **Pre-Eclampsia**—a dangerous spike in blood pressure that affects 1 in 10 pregnancies and claims the lives of over 70,000 mothers and 500,000 babies each year worldwide. Pre-Eclampsia rarely announces itself all at once. It creeps in as tiny, scattered symptoms spread across weeks.
 
-3. **Chiamaka Eze (Week 37 • Month 9 — Full Term • Abuja)**
-   * **Her story:** Mother of two reaching full term.
-   * **What she's tracking:** Timing contractions and baby movements.
-   * **Walrus Memory:** 10 saved records. Helps her know when contractions are false labor vs. real labor so she gets to the hospital on time.
+When a mother has nobody keeping track of those small daily clues, the warning signs get missed until it becomes an emergency.
 
 ---
 
-## How to Test LoveChild in 30 Seconds
+## Why Walrus Memory is the Bedrock of Every Note
 
-1. **Pick a Mother:** Click on Amina, Blessing, or Chiamaka at the top of the demo.
-2. **Send a Message:** Type any question, or click one of the quick test buttons (like *"My ankles are swollen and I have a headache"*). The AI replies immediately.
-3. **Compare Memory ON vs OFF:** Flip the **Walrus Memory** switch at the top of the chat:
-   * **Memory ON:** LoveChild recalls her past weeks and catches danger signs.
-   * **Memory OFF (Stateless):** LoveChild forgets past visits and gives generic advice.
-4. **Open the Doctor's Report:** Click **"Doctor's Report"** (in the top navigation or inside the chat) to see the clean, printable 1-page summary created for her doctor.
+Standard AI chatbots cannot solve this problem because **they suffer from amnesia**. The second you close the browser tab or start a new conversation, the bot completely forgets who you are.
+
+Even traditional health apps fail here for a different reason: **data silos**. If an app saves your medical notes on a private company server, that company owns your data. If you move from Kano to Abuja, switch from a local clinic to a teaching hospital, or the app shuts down, your records vanish.
+
+**Walrus Memory changes how health data works:**
+
+1. **The Mother Owns the Memory, Not the Server:**  
+   Every memory in LoveChild is tied directly to the mother's Sui identity on the blockchain. LoveChild only operates using a delegated access key. The mother holds sovereign ownership of her health record.
+2. **Permanent and Decentralized:**  
+   A 40-week pregnancy cannot afford lost data. Notes are sealed and stored across Walrus decentralized storage nodes as immutable blobs. They cannot be accidentally wiped, altered, or locked behind an expensive subscription.
+3. **Private by Default:**  
+   Sensitive maternal health notes are encrypted client-side using SEAL before ever reaching the storage layer. No third-party relayer or database admin can read her personal symptom history.
 
 ---
 
-## How It Works Under the Hood
+## Memory vs. Amnesia: What Happens in Real Life
+
+| Timeline | What She Experiences | Standard Chatbot (Without Walrus) | LoveChild (With Walrus Memory) |
+|---|---|---|---|
+| **Week 24** | Home blood pressure slightly high (128/82 mmHg). | *"That sounds mild. Just rest and drink water."* | Stores baseline reading to Walrus. Notes it for future tracking. |
+| **Week 28** | Wedding ring no longer fits; fingers stiff. | *"Swelling in pregnancy is normal. Elevate your legs."* (Treated as a new, isolated event) | Recalls Week 24 reading from Walrus. Detects that swelling moved from feet to hands and face. |
+| **Week 30** | Wakes up with a dull frontal headache that won't go away. | *"Take an Ibuprofen and take a nap."* (**Dangerous medical advice!**) | **Connects all 3 clues.** Warns her that Ibuprofen harms fetal circulation, recognizes the classic triad of Pre-Eclampsia, and immediately flags it for her doctor. |
+| **Clinic Day** | Mother sits down for her 7-minute appointment. | Doctor only sees whatever the mother remembers off the top of her head. | **Doctor receives a 1-page chronological briefing** showing the full 6-week trend with dates, home BP numbers, and symptoms. |
+
+---
+
+## How Walrus Works in Plain English
 
 ```
-   ┌─────────────────────────────────────────────────────────────┐
-   │                    LoveChild Web App                        │
-   │               (Next.js + Tailwind CSS)                      │
-   └───────────────┬─────────────────────────────┬───────────────┘
-                   │                             │
-                   ▼                             ▼
-       ┌──────────────────────┐      ┌──────────────────────┐
-       │ Google Gemini 1.5    │      │ Walrus Memory Client │
-       │ (Clinical AI Scribe) │      │ (Sui Identity Layer) │
-       └──────────────────────┘      └───────────┬──────────┘
-                                                 │
-                                                 ▼
-                                     ┌──────────────────────┐
-                                     │ Walrus Decentralized │
-                                     │ Storage (Blobs)      │
-                                     └──────────────────────┘
+   ┌────────────────────────────────────────────────────────┐
+   │                  Expectant Mother                      │
+   │      "My ring is tight and my head hurts today"        │
+   └───────────────────────────┬────────────────────────────┘
+                               │
+                               ▼
+   ┌────────────────────────────────────────────────────────┐
+   │                  LoveChild App                         │
+   │            (Next.js + Tailwind CSS)                    │
+   └─────────────┬────────────────────────────┬─────────────┘
+                 │                            │
+                 ▼                            ▼
+   ┌───────────────────────────┐  ┌─────────────────────────┐
+   │  Walrus Memory SDK        │  │  Google Gemini 1.5 Flash│
+   │  (@mysten-incubation/     │  │  (Clinical Scribe)      │
+   │   memwal)                 │  │                         │
+   └─────────────┬─────────────┘  └───────────┬─────────────┘
+                 │                            │
+                 ▼                            │
+   ┌───────────────────────────┐              │
+   │  SEAL Encrypted Blobs on  │              │
+   │  Walrus Mainnet           │              │
+   │  (Sovereign Storage)      │              │
+   └─────────────┬─────────────┘              │
+                 │                            │
+                 ▼                            ▼
+   ┌────────────────────────────────────────────────────────┐
+   │          1-Page Objective Doctor's Briefing            │
+   │      Given to the OB-GYN at the 7-minute visit         │
+   └────────────────────────────────────────────────────────┘
 ```
 
-1. **When the mother chats:** LoveChild searches Walrus for her past notes.
-2. **When the AI responds:** Google Gemini 1.5 Flash uses both her new message and her past pregnancy history to give safe, compassionate answers.
-3. **When a new note is saved:** A new decentralized blob is stored on Walrus so it is never lost or deleted.
-4. **When she visits the clinic:** One click pulls all blobs into a clean clinical briefing for the doctor.
+1. **Logging (`memwal.remember`):**  
+   When the mother reports how she feels, LoveChild creates a structured record and sends it to Walrus. Walrus encrypts the text, distributes it across network nodes, and returns a unique `blob_id`.
+2. **Retrieving (`memwal.recall`):**  
+   Whenever she checks in or asks a question, LoveChild performs semantic search against her private namespace on Walrus. It pulls her past symptoms and feeds them into Google Gemini as trusted medical context.
+3. **Namespace Isolation:**  
+   Each patient receives a strictly isolated namespace (e.g. `lovechild:user:ada-bello:mainnet`). Ada's symptoms never bleed into Blessing's records.
+4. **Generating the Doctor's Report:**  
+   Before her appointment, one click reads all her stored Walrus blobs and organizes them into an objective SOAP-format briefing (Subjective history, Objective readings, Assessment trends, and Questions worth asking the doctor).
 
 ---
 
-## Safe Health Guidelines Built-In
+## Meet the 3 Mothers in the Live Demo
 
-* **Never prescribes dangerous drugs:** If an expectant mother asks about common painkillers like Ibuprofen, Felvin, or Diclofenac, LoveChild warns her that NSAIDs can harm the baby's circulation and kidneys during pregnancy, especially in the third trimester.
-* **Never replaces the doctor:** LoveChild prepares the mother for her doctor visit; it does not replace professional medical care.
+LoveChild comes pre-loaded with 3 verified patient cohorts representing common clinical journeys. All 30 records are permanently archived on Walrus Mainnet:
+
+### 1. Ada Bello (Week 30 • Pre-Eclampsia Watch • Kano)
+* **What she logged:** Evening exhaustion at Week 20, swelling in ankles at Week 24, wedding ring getting stuck at Week 28, facial puffiness at Week 29, and home BP rising to 138/88 mmHg with a headache at Week 30.
+* **Why Walrus matters:** Without memory, each symptom looks harmless. With Walrus, the upward blood pressure curve and shifting swelling pattern trigger an early Pre-Eclampsia alert.
+* **Walrus Blobs:** 10 verified blobs on Mainnet ([View in blobs.md](evidence/blobs.md#cohort-1-ada-bello-week-30--pre-eclampsia-watch)).
+
+### 2. Blessing Okon (Week 18 • Hyperemesis & Hydration • Port Harcourt)
+* **What she logged:** Severe vomiting at Week 6, bile retching at Week 8, stomach burning from iron tablets at Week 10, dehydration during teaching hours at Week 12, recovering with cold electrolyte water at Week 13, and tolerating split iron doses with ginger tea at bedtime by Week 15.
+* **Why Walrus matters:** Walrus tracks how modifying her medication timing resolved her vomiting, proving her adherence to the doctor.
+* **Walrus Blobs:** 10 verified blobs on Mainnet ([View in blobs.md](evidence/blobs.md#cohort-2-blessing-okon-week-18--hyperemesis--hydration)).
+
+### 3. Chiamaka Eze (Week 38 • Term Labor Readiness • Abuja)
+* **What she logged:** Heartburn when lying flat at Week 28, fetal hiccups at Week 30, regular evening kick counts (10 kicks in 42 minutes) at Week 34, false labor cramps (Braxton-Hicks) at Week 36, delivery bag packing at Week 37, and baby dropping into the pelvis at Week 38.
+* **Why Walrus matters:** Provides continuous reassurance of healthy baby movements and teaches her to distinguish false labor from active labor.
+* **Walrus Blobs:** 10 verified blobs on Mainnet ([View in blobs.md](evidence/blobs.md#cohort-3-chiamaka-eze-week-38--term-labor-readiness)).
+
+---
+
+## Strict Medical Safety Rules
+
+LoveChild is engineered with firm clinical boundaries:
+
+* **Strict Warning on NSAIDs:** If a mother mentions taking Ibuprofen, Felvin, Aspirin, or Diclofenac for headaches or cramps, LoveChild immediately cautions her that NSAIDs can close the fetal ductus arteriosus and cause kidney complications in the third trimester.
+* **Scribe, Not Doctor:** LoveChild never prescribes medications or claims to diagnose. It prepares the mother for her clinical appointment so the doctor can make informed decisions.
+* **Direct Clinical Handoff:** The output of every conversation is designed to empower the doctor during the in-person consultation.
+
+---
+
+## Repository Structure
+
+```
+LoveChild/
+├── evidence/
+│   └── blobs.md             # All 30 Walrus blob IDs, timestamps, and symptom logs
+├── app/
+│   ├── page.tsx             # Main dashboard (Chat, Persona Switcher, Report Modal)
+│   ├── layout.tsx           # Global layout & metadata
+│   └── globals.css          # Styling & design system
+├── components/
+│   ├── ChatInterface.tsx    # Interactive chat with Walrus memory toggle
+│   ├── ClinicalBriefing.tsx # 1-page printable Doctor's Report
+│   ├── Navbar.tsx           # Navigation with blob count & quick actions
+│   └── WalrusVault.tsx      # On-chain blob inspector drawer
+├── lib/
+│   ├── cohortData.ts        # 30 verified memories across Ada, Blessing, Chiamaka
+│   ├── types.ts             # TypeScript definitions
+│   └── server/
+│       ├── walrus.ts        # Walrus SDK (@mysten-incubation/memwal) integration
+│       └── gemini.ts        # Google Gemini 1.5 Flash clinical engine
+├── ARTICLE.md               # 500-word Medium build article
+├── WALRUS_FEEDBACK.md       # Bug bounty feedback & improvement proposals
+├── package.json             # Dependencies and scripts
+└── README.md                # Project documentation
+```
 
 ---
 
 ## How to Run Locally
 
-### Prerequisites
-* Node.js v18 or newer
+### Requirements
+* Node.js v18.0 or newer
 * npm or pnpm
 
 ### 1. Clone the repository
@@ -130,19 +197,28 @@ cd LoveChild
 npm install
 ```
 
-### 3. (Optional) Set your Google Gemini API key
-LoveChild works right out of the box with its built-in clinical engine. If you want to connect live to Google Gemini 1.5 Flash, create a `.env.local` file:
+### 3. Set up environment variables
+Create a `.env.local` file in the project root:
 ```env
+# Walrus Memory Configuration
+MEMWAL_PRIVATE_KEY=your_ed25519_delegate_private_key_hex
+MEMWAL_ACCOUNT_ID=0x763b3b257e9575d546b449b8f2cc9a1ee05f8c3c0d17bfbd0e5d84bfc389e4d8
+MEMWAL_SERVER_URL=https://relayer.memory.walrus.xyz
+
+# Google Gemini API Key (Qualifies for Beyond the Big Two track)
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
+*(Note: LoveChild includes built-in fallback data for all 3 patient cohorts, so the app runs smoothly out of the box even without API keys!)*
 
-### 4. Start the app
+### 4. Start the development server
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
 ## License
-MIT License. Built for the Walrus Sessions 8 Hackathon.
+
+MIT License. Built with care for **Walrus Session 8: Chatbots That Remember**.
