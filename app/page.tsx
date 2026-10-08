@@ -171,7 +171,7 @@ export default function Home() {
               Small symptoms slip your mind, then turn into big problems.
             </h1>
             <p className="mt-3.5 text-rose-100/90 text-sm sm:text-base leading-relaxed">
-              Before every antenatal visit, small symptoms might get forgotten, then become big problems. LoveChild lets mothers log anything worth noting in decentralized <strong className="font-bold text-white">Walrus Memory</strong> and makes a note for your doctor, so you don't forget during the visits or whenever.
+              During antenatal visits, small symptoms might get forgotten, then become big problems. LoveChild lets mothers log anything worth noting in decentralized <strong className="font-bold text-white">Walrus Memory</strong> and makes a note for your doctor, so you don't forget during the visits or whenever.
             </p>
           </div>
         </section>
