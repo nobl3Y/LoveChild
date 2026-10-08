@@ -1,5 +1,5 @@
 # LoveChild
-### A Walrus memory powered pregnancy chatbot which remembers every symptom, flags warning signs like pre-eclampsia, and hands your doctor a clear briefing before every visit.
+### A Walrus memory powered pregnancy chatbot which remembers every symptom, flags warning signs like pre-eclampsia, and provides your doctor with a clear briefing during every visit.
 
 [![Walrus Memory](https://img.shields.io/badge/Walrus-Decentralized%20Memory-0d9488?style=flat-square)](https://walrus.xyz)
 [![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini%201.5%20Flash-f43f5e?style=flat-square)](https://deepmind.google/technologies/gemini/)
