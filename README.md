@@ -23,9 +23,9 @@
 
 ---
 
-## The Real Problem: 40 Weeks of Pregnancy vs. a 7-Minute Clinic Visit
+## The Real Problem: 4 Weeks of Pregnancy vs. a 7-Minute Clinic Visit
 
-A human pregnancy lasts 40 weeks, but an expectant mother only sees her doctor or midwife once a month.
+A human pregnancy lasts 4 weeks, but an expectant mother only sees her doctor or midwife once a month.
 
 In high-volume public clinics and hospitals across Nigeria and emerging communities, that monthly consultation rarely lasts more than 7 minutes. The waiting room is full of dozens of women, and the doctor has to make fast decisions under pressure.
 
@@ -55,7 +55,7 @@ Even traditional health apps fail here for a different reason: **data silos**. I
 1. **The Mother Owns the Memory, Not the Server:**  
    Every memory in LoveChild is tied directly to the mother's Sui identity on the blockchain. LoveChild only operates using a delegated access key. The mother holds sovereign ownership of her health record.
 2. **Permanent and Decentralized:**  
-   A 40-week pregnancy cannot afford lost data. Notes are sealed and stored across Walrus decentralized storage nodes as immutable blobs. They cannot be accidentally wiped, altered, or locked behind an expensive subscription.
+  Even a 40 week pregnancy cannot afford lost data. Notes are sealed and stored across Walrus decentralized storage nodes as immutable blobs. They cannot be accidentally wiped, altered, or locked behind an expensive subscription.
 3. **Private by Default:**  
    Sensitive maternal health notes are encrypted client-side using SEAL before ever reaching the storage layer. No third-party relayer or database admin can read her personal symptom history.
 
