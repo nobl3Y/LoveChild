@@ -6,7 +6,7 @@
 [![Prize Track](https://img.shields.io/badge/Prize%20Track-Beyond%20the%20Big%20Two-amber-500?style=flat-square)](https://www.deepsurge.xyz/hackathons)
 [![Sui Blockchain](https://img.shields.io/badge/Network-Sui%20Mainnet-4da2ff?style=flat-square)](https://sui.io)
 
-> A pregnancy chatbot that remembers every symptom and turns it into a clear briefing for your doctor. Built on Walrus decentralized storage, so mothers can always log how they fill whenever 
+
 
 ---
 
