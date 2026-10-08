@@ -1,5 +1,5 @@
 # LoveChild
-### A Maternal Care Chatbot Powered by Decentralized Walrus Memory
+### A Walrus Memory powered pregnancy chatbot that connects symptoms during the week(s), catches warning signs like pre-eclampsia, and gives you a summary during any medical visit.
 
 [![Walrus Memory](https://img.shields.io/badge/Walrus-Decentralized%20Memory-0d9488?style=flat-square)](https://walrus.xyz)
 [![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini%201.5%20Flash-f43f5e?style=flat-square)](https://deepmind.google/technologies/gemini/)
