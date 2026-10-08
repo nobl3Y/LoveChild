@@ -1,16 +1,14 @@
 # LoveChild
-### A Walrus Memory powered pregnancy chatbot that connects symptoms during the week(s), catches warning signs like pre-eclampsia, and gives you a summary during any medical visit.
+### A pregnancy chatbot you can talk to anytime. It remembers every symptom, flags warning signs like pre-eclampsia, and hands your doctor a clear briefing before every visit.
 
 [![Walrus Memory](https://img.shields.io/badge/Walrus-Decentralized%20Memory-0d9488?style=flat-square)](https://walrus.xyz)
 [![Google Gemini](https://img.shields.io/badge/LLM-Google%20Gemini%201.5%20Flash-f43f5e?style=flat-square)](https://deepmind.google/technologies/gemini/)
 [![Prize Track](https://img.shields.io/badge/Prize%20Track-Beyond%20the%20Big%20Two-amber-500?style=flat-square)](https://www.deepsurge.xyz/hackathons)
 [![Sui Blockchain](https://img.shields.io/badge/Network-Sui%20Mainnet-4da2ff?style=flat-square)](https://sui.io)
 
-
-
 ---
 
-## For Judges — 60-Second Verify
+## For Judges: 60-Second Verify
 
 | Resource | Description & Link |
 |---|---|
@@ -23,24 +21,36 @@
 
 ---
 
-## The Real Problem: 4 Weeks of Pregnancy vs. a 7-Minute Clinic Visit
+## What is LoveChild?
 
-A human pregnancy lasts 4 weeks, but an expectant mother only sees her doctor or midwife once a month.
+LoveChild is a maternal care chatbot for pregnant women.
 
-In high-volume public clinics and hospitals across Nigeria and emerging communities, that monthly consultation rarely lasts more than 7 minutes. The waiting room is full of dozens of women, and the doctor has to make fast decisions under pressure.
+Whenever an expectant mother notices something unusual, such as morning sickness, swollen ankles, a bad headache, or changes in how the baby kicks, she tells LoveChild in her own words, at any time of day. LoveChild saves every detail on decentralized Walrus Memory.
 
-Between those visits, her body goes through constant changes:
+Before any clinic visit, with one click LoveChild turns everything she has logged into a clear, one-page **Doctor's Briefing**. She can show it to her doctor or print it. Instead of trying to remember what happened weeks ago, she gives the doctor the full picture.
+
+The result: appointments where nothing gets missed, and women who feel prepared and heard.
+
+---
+
+## The Real Problem: The Weeks Between Visits
+
+An expectant mother sees her doctor or midwife about once a month, and more often near the end of her pregnancy. In busy public clinics and hospitals across Nigeria, each visit rarely lasts more than 7 minutes. The waiting room is full of women, and the doctor has to make fast decisions under pressure.
+
+The problem is not the visit itself. It is everything that happens between one visit and the next. Her body keeps changing:
 * A slight headache on a Tuesday after work.
 * Ankle swelling that takes longer to go away on Thursday.
 * A wedding ring that suddenly feels too tight on Sunday morning.
 
-By the time she sits across from her doctor four weeks later, she has forgotten 80% of what happened. When the doctor asks, *"How have you been feeling since last month?"*, she smiles and says:
+By the time she sits across from her doctor, weeks later, she has forgotten much of what happened since the last visit. When the doctor asks, *"How have you been feeling since last time?"*, she smiles and says:
 
 > *"Everything is fine doctor, just the usual pregnancy tiredness."*
 
-Tragically, that "usual tiredness" often conceals **Pre-Eclampsia**—a dangerous spike in blood pressure that affects 1 in 10 pregnancies and claims the lives of over 70,000 mothers and 500,000 babies each year worldwide. Pre-Eclampsia rarely announces itself all at once. It creeps in as tiny, scattered symptoms spread across weeks.
+That "usual tiredness" can hide **Pre-Eclampsia**, a dangerous rise in blood pressure that affects up to 8% of pregnancies. Pre-eclampsia and eclampsia are estimated to cause more than **50,000 maternal deaths worldwide every year** (some sources put it at 50,000 to 60,000). It rarely announces itself all at once. It shows up as small, scattered symptoms spread across weeks.
 
-When a mother has nobody keeping track of those small daily clues, the warning signs get missed until it becomes an emergency.
+When nobody is keeping track of those small clues between visits, the warning signs get missed until it becomes an emergency.
+
+**LoveChild fills that gap.** It remembers everything between visits, and it briefs the doctor at every visit.
 
 ---
 
@@ -52,11 +62,11 @@ Even traditional health apps fail here for a different reason: **data silos**. I
 
 **Walrus Memory changes how health data works:**
 
-1. **The Mother Owns the Memory, Not the Server:**  
-   Every memory in LoveChild is tied directly to the mother's Sui identity on the blockchain. LoveChild only operates using a delegated access key. The mother holds sovereign ownership of her health record.
-2. **Permanent and Decentralized:**  
-  Even a 40 week pregnancy cannot afford lost data. Notes are sealed and stored across Walrus decentralized storage nodes as immutable blobs. They cannot be accidentally wiped, altered, or locked behind an expensive subscription.
-3. **Private by Default:**  
+1. **The Mother Owns the Memory, Not the Server:**
+   Every memory in LoveChild is tied directly to the mother's Sui identity on the blockchain. LoveChild only operates using a delegated access key. The mother holds ownership of her health record.
+2. **Decentralized and Durable:**
+   A pregnancy cannot afford lost data. Every note she logs, from her first visit to her last, is sealed and stored across Walrus decentralized storage nodes as blobs. They cannot be accidentally wiped or locked behind an expensive subscription.
+3. **Private by Default:**
    Sensitive maternal health notes are encrypted client-side using SEAL before ever reaching the storage layer. No third-party relayer or database admin can read her personal symptom history.
 
 ---
@@ -65,10 +75,10 @@ Even traditional health apps fail here for a different reason: **data silos**. I
 
 | Timeline | What She Experiences | Standard Chatbot (Without Walrus) | LoveChild (With Walrus Memory) |
 |---|---|---|---|
-| **Week 24** | Home blood pressure slightly high (128/82 mmHg). | *"That sounds mild. Just rest and drink water."* | Stores baseline reading to Walrus. Notes it for future tracking. |
-| **Week 28** | Wedding ring no longer fits; fingers stiff. | *"Swelling in pregnancy is normal. Elevate your legs."* (Treated as a new, isolated event) | Recalls Week 24 reading from Walrus. Detects that swelling moved from feet to hands and face. |
-| **Week 30** | Wakes up with a dull frontal headache that won't go away. | *"Take an Ibuprofen and take a nap."* (**Dangerous medical advice!**) | **Connects all 3 clues.** Warns her that Ibuprofen harms fetal circulation, recognizes the classic triad of Pre-Eclampsia, and immediately flags it for her doctor. |
-| **Clinic Day** | Mother sits down for her 7-minute appointment. | Doctor only sees whatever the mother remembers off the top of her head. | **Doctor receives a 1-page chronological briefing** showing the full 6-week trend with dates, home BP numbers, and symptoms. |
+| **Week 24** | Home blood pressure slightly high (128/82 mmHg). | *"That sounds mild. Just rest and drink water."* | Stores the baseline reading to Walrus. Notes it for future tracking. |
+| **Week 28** | Wedding ring no longer fits; fingers stiff. | *"Swelling in pregnancy is normal. Elevate your legs."* (Treated as a new, isolated event) | Recalls the Week 24 reading from Walrus. Detects that swelling moved from feet to hands and face. |
+| **Week 30** | Wakes up with a dull frontal headache that won't go away. | *"Take an Ibuprofen and take a nap."* (**Dangerous medical advice!**) | **Connects all 3 clues.** Warns her that Ibuprofen can harm the baby, recognizes the classic warning signs of Pre-Eclampsia, and flags it for her doctor. |
+| **Clinic Day** | Mother sits down for her 7-minute appointment. | Doctor only sees whatever the mother remembers off the top of her head. | **Doctor receives a 1-page chronological briefing** of everything she has logged, with dates, home BP numbers, and symptoms. |
 
 ---
 
@@ -97,30 +107,30 @@ Even traditional health apps fail here for a different reason: **data silos**. I
    ┌───────────────────────────┐              │
    │  SEAL Encrypted Blobs on  │              │
    │  Walrus Mainnet           │              │
-   │  (Sovereign Storage)      │              │
+   │  (Mother-Owned Storage)   │              │
    └─────────────┬─────────────┘              │
                  │                            │
                  ▼                            ▼
    ┌────────────────────────────────────────────────────────┐
    │          1-Page Objective Doctor's Briefing            │
-   │      Given to the OB-GYN at the 7-minute visit         │
+   │          Handed to the doctor at the visit             │
    └────────────────────────────────────────────────────────┘
 ```
 
-1. **Logging (`memwal.remember`):**  
+1. **Logging (`memwal.remember`):**
    When the mother reports how she feels, LoveChild creates a structured record and sends it to Walrus. Walrus encrypts the text, distributes it across network nodes, and returns a unique `blob_id`.
-2. **Retrieving (`memwal.recall`):**  
-   Whenever she checks in or asks a question, LoveChild performs semantic search against her private namespace on Walrus. It pulls her past symptoms and feeds them into Google Gemini as trusted medical context.
-3. **Namespace Isolation:**  
+2. **Retrieving (`memwal.recall`):**
+   Whenever she checks in or asks a question, LoveChild performs a semantic search against her private namespace on Walrus. It pulls her past symptoms and feeds them into Google Gemini as trusted medical context.
+3. **Namespace Isolation:**
    Each patient receives a strictly isolated namespace (e.g. `lovechild:user:ada-bello:mainnet`). Ada's symptoms never bleed into Blessing's records.
-4. **Generating the Doctor's Report:**  
-   Before her appointment, one click reads all her stored Walrus blobs and organizes them into an objective SOAP-format briefing (Subjective history, Objective readings, Assessment trends, and Questions worth asking the doctor).
+4. **Generating the Doctor's Briefing:**
+   Before any appointment, one click reads her stored Walrus blobs and organizes them into an objective SOAP-format briefing (Subjective history, Objective readings, Assessment trends, and Questions worth asking the doctor).
 
 ---
 
 ## Meet the 3 Mothers in the Live Demo
 
-LoveChild comes pre-loaded with 3 verified patient cohorts representing common clinical journeys. All 30 records are permanently archived on Walrus Mainnet:
+LoveChild comes pre-loaded with 3 verified patient cohorts representing common clinical journeys. All 30 records are stored on Walrus Mainnet:
 
 ### 1. Ada Bello (Week 30 • Pre-Eclampsia Watch • Kano)
 * **What she logged:** Evening exhaustion at Week 20, swelling in ankles at Week 24, wedding ring getting stuck at Week 28, facial puffiness at Week 29, and home BP rising to 138/88 mmHg with a headache at Week 30.
@@ -129,12 +139,12 @@ LoveChild comes pre-loaded with 3 verified patient cohorts representing common c
 
 ### 2. Blessing Okon (Week 18 • Hyperemesis & Hydration • Port Harcourt)
 * **What she logged:** Severe vomiting at Week 6, bile retching at Week 8, stomach burning from iron tablets at Week 10, dehydration during teaching hours at Week 12, recovering with cold electrolyte water at Week 13, and tolerating split iron doses with ginger tea at bedtime by Week 15.
-* **Why Walrus matters:** Walrus tracks how modifying her medication timing resolved her vomiting, proving her adherence to the doctor.
+* **Why Walrus matters:** Walrus tracks how changing her medication timing resolved her vomiting, giving her doctor clear proof of what worked.
 * **Walrus Blobs:** 10 verified blobs on Mainnet ([View in blobs.md](evidence/blobs.md#cohort-2-blessing-okon-week-18--hyperemesis--hydration)).
 
 ### 3. Chiamaka Eze (Week 38 • Term Labor Readiness • Abuja)
 * **What she logged:** Heartburn when lying flat at Week 28, fetal hiccups at Week 30, regular evening kick counts (10 kicks in 42 minutes) at Week 34, false labor cramps (Braxton-Hicks) at Week 36, delivery bag packing at Week 37, and baby dropping into the pelvis at Week 38.
-* **Why Walrus matters:** Provides continuous reassurance of healthy baby movements and teaches her to distinguish false labor from active labor.
+* **Why Walrus matters:** Provides continuous reassurance of healthy baby movements and helps her tell false labor from active labor.
 * **Walrus Blobs:** 10 verified blobs on Mainnet ([View in blobs.md](evidence/blobs.md#cohort-3-chiamaka-eze-week-38--term-labor-readiness)).
 
 ---
@@ -143,9 +153,9 @@ LoveChild comes pre-loaded with 3 verified patient cohorts representing common c
 
 LoveChild is engineered with firm clinical boundaries:
 
-* **Strict Warning on NSAIDs:** If a mother mentions taking Ibuprofen, Felvin, Aspirin, or Diclofenac for headaches or cramps, LoveChild immediately cautions her that NSAIDs can close the fetal ductus arteriosus and cause kidney complications in the third trimester.
+* **Strict Warning on NSAIDs:** If a mother mentions taking Ibuprofen, Felvin, or Diclofenac for headaches or cramps, LoveChild immediately cautions her that NSAIDs can close the baby's ductus arteriosus and cause kidney complications, especially in the third trimester. It tells her to speak to her doctor or pharmacist first.
 * **Scribe, Not Doctor:** LoveChild never prescribes medications or claims to diagnose. It prepares the mother for her clinical appointment so the doctor can make informed decisions.
-* **Direct Clinical Handoff:** The output of every conversation is designed to empower the doctor during the in-person consultation.
+* **Direct Clinical Handoff:** The output of every conversation is designed to help the doctor during the in-person consultation.
 
 ---
 
@@ -161,7 +171,7 @@ LoveChild/
 │   └── globals.css          # Styling & design system
 ├── components/
 │   ├── ChatInterface.tsx    # Interactive chat with Walrus memory toggle
-│   ├── ClinicalBriefing.tsx # 1-page printable Doctor's Report
+│   ├── ClinicalBriefing.tsx # 1-page printable Doctor's Briefing
 │   ├── Navbar.tsx           # Navigation with blob count & quick actions
 │   └── WalrusVault.tsx      # On-chain blob inspector drawer
 ├── lib/
